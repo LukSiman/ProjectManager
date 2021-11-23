@@ -3,6 +3,7 @@
    <div class="row">
       <div class="col-3" *ngFor='let tempProject of projects'>
          <p> {{ tempProject.name }} </p>
+         <p> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
       </div>
    </div>
 </div>

@@ -13,6 +13,7 @@ export class ProjectService {
 
   constructor(private httpClient: HttpClient) { }
 
+  // Receives JSON objects and maps them to Project array
   getProjectList(): Observable<Project[]> {
     return this.httpClient.get<getJSONProjects>(this.baseUrl).pipe(
       map(response => response._embedded.projects)

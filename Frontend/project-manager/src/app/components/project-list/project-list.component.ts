@@ -17,6 +17,7 @@ export class ProjectListComponent implements OnInit {
     this.displayProjects();    
   }
 
+  // Copies objects from array in service to projects array
   displayProjects(){
     this.projectService.getProjectList().subscribe(
       data => {
