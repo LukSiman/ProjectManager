@@ -31,4 +31,31 @@ INSERT INTO project (`name`, start_date, end_date, `description`) VALUES ('Rando
 INSERT INTO project (`name`, start_date, end_date, `description`) VALUES ('Random19', CURRENT_DATE() - INTERVAL 2 YEAR, CURRENT_DATE() + INTERVAL 1 YEAR, 'A random app!');
 INSERT INTO project (`name`, start_date, end_date, `description`) VALUES ('Random20', CURRENT_DATE() - INTERVAL 2 YEAR, CURRENT_DATE() + INTERVAL 1 YEAR, 'A random app!');
 
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder1.jpg', 1);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 2);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 3);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 4);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder5.jpg', 5);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder6.jpg', 6);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder7.jpg', 7);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder8.jpg', 8);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder1.jpg', 9);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 10);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 11);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 12);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder5.jpg', 13);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder6.jpg', 14);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder7.jpg', 15);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder8.jpg', 16);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder1.jpg', 17);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 18);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 19);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 20);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder5.jpg', 21);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder6.jpg', 22);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder7.jpg', 23);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder8.jpg', 24);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder1.jpg', 25);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 26);
+
 SELECT * FROM `project-manager`.project;
