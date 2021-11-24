@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "project")
+@Table(name = "projects")
 @Getter
 @Setter
 public class Project {
@@ -30,6 +31,6 @@ public class Project {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "project")
-    private Set<ProjectImages> images;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<ProjectImages> images;
 }

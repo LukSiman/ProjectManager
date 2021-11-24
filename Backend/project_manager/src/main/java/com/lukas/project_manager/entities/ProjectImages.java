@@ -19,10 +19,9 @@ public class ProjectImages {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "project_id")
-    private Integer project_id;
-
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+
 }

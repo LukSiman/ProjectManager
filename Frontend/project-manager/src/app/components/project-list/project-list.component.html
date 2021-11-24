@@ -3,9 +3,21 @@
    <div class="row">
       <div class="col-3" *ngFor='let tempProject of projects'>
          <p> {{ tempProject.name }} </p>
+         {{ tempProject.images }}
+            <img src=`` alt="Project image">
+        
          <p> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
       </div>
    </div>
 </div>
 
 <!-- Put into a box pagal maketa -->
+
+<div class="container">
+   <h1 class="mb-4">Images</h1>
+   <div class="row">
+      <div class="col-3" *ngFor='let tempImage of images'>
+         <p> {{ tempImage.imageUrl }} </p>
+      </div>
+   </div>
+</div>

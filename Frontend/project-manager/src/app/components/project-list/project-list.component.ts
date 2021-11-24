@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from 'src/app/entities/project';
+import { ProjectImages } from 'src/app/entities/project-images';
+import { ProjectImagesService } from 'src/app/services/project-images.service';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
@@ -11,19 +13,34 @@ export class ProjectListComponent implements OnInit {
 
   projects: Project[] = [];
 
-  constructor(private projectService: ProjectService) { }
+  images: ProjectImages[] = [];
+
+  constructor(private projectService: ProjectService, private projectImagesService: ProjectImagesService) { }
 
   ngOnInit(): void {
-    this.displayProjects();    
+    this.displayProjects();
+   // this.displayPictures();
   }
 
   // Copies objects from array in service to projects array
-  displayProjects(){
+  displayProjects() {
     this.projectService.getProjectList().subscribe(
       data => {
         this.projects = data;
+        console.log(data);
       }
     );
   }
 
+  // Gets images from the project image service 
+  displayPictures() {
+    const projectId: number = 2;
+
+    this.projectImagesService.getImagesById(projectId).subscribe(
+      data => {
+        this.images = data;
+        console.log(data);
+      }
+    )
+  }
 }
