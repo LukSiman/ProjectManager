@@ -1,23 +1,10 @@
 <div class="container">
    <h1 class="mb-4">Projects</h1>
    <div class="row">
-      <div class="col-3" *ngFor='let tempProject of projects'>
+      <div class="col-3 text-center" *ngFor='let tempProject of projects'>
          <p> {{ tempProject.name }} </p>
-         {{ tempProject.images }}
-            <img src=`` alt="Project image">
-        
+         <img src="{{tempProject.images[0]['imageUrl']}}" alt="Project image" class="img-thumbnail img-fluid w-100">        
          <p> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
-      </div>
-   </div>
-</div>
-
-<!-- Put into a box pagal maketa -->
-
-<div class="container">
-   <h1 class="mb-4">Images</h1>
-   <div class="row">
-      <div class="col-3" *ngFor='let tempImage of images'>
-         <p> {{ tempImage.imageUrl }} </p>
       </div>
    </div>
 </div>

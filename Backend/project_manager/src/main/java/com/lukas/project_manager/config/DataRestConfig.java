@@ -1,5 +1,6 @@
 package com.lukas.project_manager.config;
 
+import com.lukas.project_manager.entities.Project;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -16,5 +17,8 @@ public class DataRestConfig implements RepositoryRestConfigurer {
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         // configure cors mapping
         cors.addMapping(config.getBasePath() + "/**").allowedOrigins(theAllowedOrigins);
+
+        // expose ids
+        config.exposeIdsFor(Project.class);
     }
 }
