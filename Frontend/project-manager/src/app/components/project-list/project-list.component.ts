@@ -19,7 +19,6 @@ export class ProjectListComponent implements OnInit {
 
   ngOnInit(): void {
     this.displayProjects();
-   // this.displayPictures();
   }
 
   // Copies objects from array in service to projects array
@@ -27,15 +26,14 @@ export class ProjectListComponent implements OnInit {
     this.projectService.getProjectList().subscribe(
       data => {
         this.projects = data;
-        console.log(data);
       }
     );
   }
 
   // Gets images from the project image service 
   displayPictures() {
-    const projectId: number = 2;
-
+    let projectId: number = 2;
+    
     this.projectImagesService.getImagesById(projectId).subscribe(
       data => {
         this.images = data;
