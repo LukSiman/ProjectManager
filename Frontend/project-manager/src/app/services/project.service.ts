@@ -20,10 +20,22 @@ export class ProjectService {
       map(response => response._embedded.projects)
     );
   }
+
+  // Receives JSON objects and maps them to Project array with Pagination
+  getProjectListPaginate(thePage: number, thePageSize: number,): Observable<getJSONProjects> {
+    const searchUrl = `${this.baseUrl}/search/findBy?` + `&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<getJSONProjects>(searchUrl);
+  }
 }
 
 interface getJSONProjects {
   _embedded: {
     projects: Project[];
   },
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number
+  }
 }

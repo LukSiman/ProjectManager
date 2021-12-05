@@ -15,10 +15,15 @@ export class ProjectListComponent implements OnInit {
 
   images: ProjectImages[] = [];
 
+  // properties for pagination
+  thePageNumber: number = 0;
+  thePageSize: number = 5;
+  theTotalElements: number = 0;
+
   constructor(private projectService: ProjectService, private projectImagesService: ProjectImagesService) { }
 
   ngOnInit(): void {
-    this.displayProjects();
+    this.displayProjectsPaginate();
   }
 
   // Copies objects from array in service to projects array
@@ -30,10 +35,24 @@ export class ProjectListComponent implements OnInit {
     );
   }
 
+  // Copies objects from array in service to projects array with Pagination
+  displayProjectsPaginate() {
+    this.projectService.getProjectListPaginate(this.thePageNumber - 1, this.thePageSize).subscribe(this.processResult());
+  }
+
+  processResult() {
+    return data => {
+      this.projects = data._embedded.projects;
+      this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
+    }
+  }
+
   // Gets images from the project image service 
   displayPictures() {
     let projectId: number = 2;
-    
+
     this.projectImagesService.getImagesById(projectId).subscribe(
       data => {
         this.images = data;
