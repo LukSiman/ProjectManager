@@ -27,7 +27,14 @@ export class ProjectService {
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
-  // Receives JSON objects and maps them to Project array with Pagination
+  // Searches for projects by name
+  searchProjects(): Observable<Project[]> {
+    return this.httpClient.get<getJSONProjects>(this.baseUrl).pipe(
+      map(response => response._embedded.projects)
+    );
+  }
+
+  // Searches for projects by name with Pagination
   searchProjectListPaginate(thePage: number, thePageSize: number,): Observable<getJSONProjects> {
     const searchUrl = `${this.baseUrl}/search/findBy?` + `&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
