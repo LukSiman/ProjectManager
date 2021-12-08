@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectService } from './services/project.service';
 import { Routes, RouterModule } from '@angular/router';
+import { SearchComponent } from './components/search/search.component';
 
 const routes: Routes = [
   { path: 'projects', component: ProjectListComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     ProjectListComponent,
+    SearchComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

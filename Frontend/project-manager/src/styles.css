@@ -60,6 +60,10 @@ ID SELECTORS
     grid-template-columns: repeat(3, 1fr);
 }
 
+#search{
+  width: 90%;
+}
+
 /**********************************************
 CLASS SELECTORS
 **********************************************/
@@ -85,3 +89,15 @@ CLASS SELECTORS
 /**********************************************
 MEDIA 
 **********************************************/
+
+@media (max-width: 1000px) {
+  #search{
+    width: 85%;
+  }
+}
+
+@media (max-width: 768px) {
+  #search{
+    width: 75%;
+  }
+}
