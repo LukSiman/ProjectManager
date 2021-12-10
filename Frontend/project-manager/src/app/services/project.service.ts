@@ -16,28 +16,31 @@ export class ProjectService {
 
   // Receives JSON objects and maps them to Project array
   getProjectList(): Observable<Project[]> {
-    return this.httpClient.get<getJSONProjects>(this.baseUrl).pipe(
-      map(response => response._embedded.projects)
-    );
+    return this.getProjects(this.baseUrl);
   }
 
   // Receives JSON objects and maps them to Project array with Pagination
-  getProjectListPaginate(thePage: number, thePageSize: number,): Observable<getJSONProjects> {
+  getProjectListPaginate(thePage: number, thePageSize: number): Observable<getJSONProjects> {
     const searchUrl = `${this.baseUrl}/search/findBy?` + `&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
   // Searches for projects by name
-  searchProjects(): Observable<Project[]> {
-    return this.httpClient.get<getJSONProjects>(this.baseUrl).pipe(
-      map(response => response._embedded.projects)
-    );
+  searchProjects(keyword: string): Observable<Project[]> {
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?` + `name=${keyword}`;
+    return this.getProjects(searchUrl);
   }
 
   // Searches for projects by name with Pagination
-  searchProjectListPaginate(thePage: number, thePageSize: number,): Observable<getJSONProjects> {
-    const searchUrl = `${this.baseUrl}/search/findBy?` + `&page=${thePage}&size=${thePageSize}`;
+  searchProjectListPaginate(thePage: number, thePageSize: number, keyword: string): Observable<getJSONProjects> {
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?` + `name=${keyword}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
+  }
+
+  private getProjects(theUrl: string): Observable<Project[]> {
+    return this.httpClient.get<getJSONProjects>(theUrl).pipe(
+      map(response => response._embedded.projects)
+    );
   }
 }
 

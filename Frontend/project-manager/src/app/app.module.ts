@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from './components/search/search.component';
 
 const routes: Routes = [
+  { path: 'search/:keyword', component: ProjectListComponent },
   { path: 'projects', component: ProjectListComponent },
   { path: '', redirectTo: '/projects', pathMatch: 'full' },
   { path: '**', redirectTo: '/projects', pathMatch: 'full' }
@@ -25,7 +25,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
-    AppRoutingModule,
     NgbModule,
     HttpClientModule
   ],

@@ -1,7 +1,5 @@
 <div class="container">
-   <h1 class="m-md-3 my-5">Projects</h1>
-
-   <app-search></app-search>
+   <h1 class="m-md-3 my-5">Projects</h1>   
 
    <div id="card-container" *ngIf="projects.length > 0">
       <div class="card bg-light border-dark m-md-3" *ngFor='let tempProject of projects'>
@@ -22,7 +20,7 @@
       <ngb-pagination   [(page)]="thePageNumber" 
                         [pageSize]="thePageSize" 
                         [collectionSize]="theTotalElements"
-                        (pageChange)="displayProjectsPaginate()">
+                        (pageChange)="displayProjects()">
       </ngb-pagination>
    </div>
 

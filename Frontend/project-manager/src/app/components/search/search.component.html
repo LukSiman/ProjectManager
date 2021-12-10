@@ -1,6 +1,10 @@
+ <div class="mx-auto w-75">
  <nav class="mx-md-3 mt-md-5 mx-sm-2 mx-1">
     <form class="form-row justify-content-between">
-            <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-secondary" type="submit">Search</button> 
+            <input #searchInput id="search" class="form-control" type="text" 
+            placeholder="Search for projects..."
+            (keyup.enter)="searchProject(searchInput.value)">
+            <button class="btn btn-secondary" (click)="searchProject(searchInput.value)">Search</button> 
       </form>
   </nav>
+</div>
