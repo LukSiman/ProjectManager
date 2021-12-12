@@ -11,6 +11,7 @@ id INTEGER PRIMARY KEY AUTO_INCREMENT,
 `name` VARCHAR(50) NOT NULL,
 start_date DATE NOT NULL DEFAULT(CURRENT_DATE()),
 end_date DATE,
+`length` INTEGER,
 `description` TEXT
 );
 
