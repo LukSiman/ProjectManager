@@ -27,6 +27,9 @@ public class Project {
     @Column(name = "end_date")
     private Date endDate;
 
+    @Column(name = "length")
+    private Integer length;
+
     @Column(name = "description")
     private String description;
 
