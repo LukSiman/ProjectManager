@@ -13,6 +13,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // navigate to initiate searching for projects
   searchProject(keyword: string){
     this.router.navigateByUrl(`/search/${keyword}`);
   }

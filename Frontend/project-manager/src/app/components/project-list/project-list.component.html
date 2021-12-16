@@ -1,6 +1,4 @@
 <div class="container">
-   <h1 class="m-md-3 my-5">Projects</h1>   
-
    <div id="card-container" *ngIf="projects.length > 0">
       <div class="card bg-light border-dark m-md-3" *ngFor='let tempProject of projects'>
          <img src="{{tempProject.images[0]['imageUrl']}}" alt="Project image" class="card-img-top">

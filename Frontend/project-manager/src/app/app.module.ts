@@ -8,12 +8,16 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProjectService } from './services/project.service';
 import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from './components/search/search.component';
+import { SortComponent } from './components/sort/sort.component';
+import { LogoComponent } from './components/logo/logo.component';
 
 const routes: Routes = [
+
+  { path: 'projects/:sort', component: ProjectListComponent },
   { path: 'search/:keyword', component: ProjectListComponent },
-  { path: 'projects', component: ProjectListComponent },
-  { path: '', redirectTo: '/projects', pathMatch: 'full' },
-  { path: '**', redirectTo: '/projects', pathMatch: 'full' }
+ // { path: 'projects', component: ProjectListComponent },
+  { path: '', redirectTo: '/projects/nameAsc', pathMatch: 'full' },
+  { path: '**', redirectTo: '/projects/nameAsc', pathMatch: 'full' }
 ];
 
 @NgModule({
@@ -21,6 +25,8 @@ const routes: Routes = [
     AppComponent,
     ProjectListComponent,
     SearchComponent,
+    SortComponent,
+    LogoComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

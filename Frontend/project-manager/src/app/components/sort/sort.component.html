@@ -1,0 +1,3 @@
+<select #sortValue class="custom-select" (change)="sort(sortValue.value)">
+    <option *ngFor="let temp of links" [value]="temp.value">{{ temp.key }}</option>
+</select>

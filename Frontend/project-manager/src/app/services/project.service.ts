@@ -21,22 +21,35 @@ export class ProjectService {
 
   // Receives JSON objects and maps them to Project array with Pagination
   getProjectListPaginate(thePage: number, thePageSize: number): Observable<getJSONProjects> {
-    const searchUrl = `${this.baseUrl}/search/findBy?` + `&page=${thePage}&size=${thePageSize}`;
+    const searchUrl = `${this.baseUrl}/search/findByOrderByNameAsc?` + `&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<getJSONProjects>(searchUrl);
+  }
+
+  // Receives JSON objects and maps them to Project array with Pagination and sorting
+  getProjectListSortPaginate(thePage: number, thePageSize: number, url: string): Observable<getJSONProjects> {
+    const searchUrl = `${this.baseUrl}/search/${url}?` + `&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
   // Searches for projects by name
   searchProjects(keyword: string): Observable<Project[]> {
-    const searchUrl = `${this.baseUrl}/search/findByNameContaining?` + `name=${keyword}`;
+    const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}`;
     return this.getProjects(searchUrl);
   }
 
   // Searches for projects by name with Pagination
   searchProjectListPaginate(thePage: number, thePageSize: number, keyword: string): Observable<getJSONProjects> {
-    const searchUrl = `${this.baseUrl}/search/findByNameContaining?` + `name=${keyword}&page=${thePage}&size=${thePageSize}`;
+    const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
+  // Searches for projects by name with Pagination and sorting
+  searchProjectListSortPaginate(thePage: number, thePageSize: number, keyword: string): Observable<getJSONProjects> {
+    const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<getJSONProjects>(searchUrl);
+  }
+
+  // get projects from the backend
   private getProjects(theUrl: string): Observable<Project[]> {
     return this.httpClient.get<getJSONProjects>(theUrl).pipe(
       map(response => response._embedded.projects)
