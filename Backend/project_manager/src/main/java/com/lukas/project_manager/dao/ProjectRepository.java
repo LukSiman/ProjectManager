@@ -28,6 +28,8 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     Page<Project> findByOrderByLengthDesc(Pageable pageable);
 
+    Page<Project> findByNameContaining(@Param("name") String name, Pageable pageable); // delete this after fixing frontend
+
     Page<Project> findByNameContainingOrderByNameAsc(@Param("name") String name, Pageable pageable);
 
     Page<Project> findByNameContainingOrderByNameDesc(@Param("name") String name, Pageable pageable);
