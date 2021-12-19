@@ -20,9 +20,9 @@ export class ProjectListComponent implements OnInit {
 
   // properties for sorting
   linksMap = new Map<string, string>([
-    ['nameAsc', 'findByOrderByNameAsc'], ['nameDsc', 'findByOrderByNameDesc'],
-    ['dateAsc', 'findByOrderByStartDateDesc'], ['dateDsc', 'findByOrderByStartDateAsc'],
-    ['lengthAsc', 'findByOrderByLengthDesc'], ['lengthDsc', 'findByOrderByLengthAsc']
+    ['nameAsc', 'name'], ['nameDsc', 'name,desc'],
+    ['dateAsc', 'startDate,desc'], ['dateDsc', 'startDate'],
+    ['lengthAsc', 'length,desc'], ['lengthDsc', 'length']
   ]);
 
   // properties for pagination
@@ -43,14 +43,14 @@ export class ProjectListComponent implements OnInit {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
-      this.displaySearchProjects();
+      this.displaySearchProjectsSorted();
     } else {
       this.displayAllProjectsSorted();
     }
   }
 
   // Copies objects from array in service to projects array if project name includes the keyword
-  displaySearchProjects() {
+  displaySearchProjectsSorted() {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
     if (this.previousKeyword != keyword) {
@@ -59,13 +59,13 @@ export class ProjectListComponent implements OnInit {
 
     this.previousKeyword = keyword;
 
-    this.projectService.searchProjectListPaginate(this.thePageNumber - 1, this.thePageSize, keyword)
-      .subscribe(this.processResult());
-  }
+    // gets the value for sorting from url
+    const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
 
-  // Copies objects from array in service to projects array
-  displayAllProjects() {
-    this.projectService.getProjectListPaginate(this.thePageNumber - 1, this.thePageSize)
+    // checks the links map to see which sorting method to use acording to the sorting value
+    const sortUrl: string = this.linksMap.get(sortValue)!;
+
+    this.projectService.searchProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl)
       .subscribe(this.processResult());
   }
 

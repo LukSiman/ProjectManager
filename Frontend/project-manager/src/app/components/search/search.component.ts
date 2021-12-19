@@ -14,7 +14,7 @@ export class SearchComponent implements OnInit {
   }
 
   // navigate to initiate searching for projects
-  searchProject(keyword: string){
+  searchProject(keyword: string) {
     this.router.navigateByUrl(`/search/${keyword}`);
   }
 

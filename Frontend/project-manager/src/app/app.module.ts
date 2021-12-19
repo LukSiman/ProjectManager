@@ -12,10 +12,9 @@ import { SortComponent } from './components/sort/sort.component';
 import { LogoComponent } from './components/logo/logo.component';
 
 const routes: Routes = [
-
   { path: 'projects/:sort', component: ProjectListComponent },
-  { path: 'search/:keyword', component: ProjectListComponent },
- // { path: 'projects', component: ProjectListComponent },
+  { path: 'search/:keyword/:sort', component: ProjectListComponent },
+  { path: 'search/:keyword', redirectTo: '/search/:keyword/nameAsc', pathMatch: 'full' },
   { path: '', redirectTo: '/projects/nameAsc', pathMatch: 'full' },
   { path: '**', redirectTo: '/projects/nameAsc', pathMatch: 'full' }
 ];

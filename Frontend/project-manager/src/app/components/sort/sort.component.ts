@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
 })
 export class SortComponent implements OnInit {
 
-  links: {key: string, value: string}[]  = [
-    {key:'Name A-Z', value:'nameAsc'}, {key:'Name Z-A', value:'nameDsc'},
-    {key:'Newest', value:'dateAsc'}, {key:'Oldest', value:'dateDsc'},
-    {key:'Longest', value:'lengthAsc'}, {key:'Shortest', value:'lengthDsc'}
+  links: { key: string, value: string }[] = [
+    { key: 'Name A-Z', value: 'nameAsc' }, { key: 'Name Z-A', value: 'nameDsc' },
+    { key: 'Newest', value: 'dateAsc' }, { key: 'Oldest', value: 'dateDsc' },
+    { key: 'Longest', value: 'lengthAsc' }, { key: 'Shortest', value: 'lengthDsc' }
   ]
 
   constructor(private router: Router) { }
@@ -20,7 +20,14 @@ export class SortComponent implements OnInit {
   }
 
   // navigate to initiate sorting
-  sort(sortValue: string){
-    this.router.navigateByUrl(`/projects/${sortValue}`);
+  sort(sortValue: string) {
+    const currentUrl = this.router.url;
+
+    if (currentUrl.includes('search')) {
+      const newUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+      this.router.navigateByUrl(`${newUrl}${sortValue}`);
+    } else {
+      this.router.navigateByUrl(`/projects/${sortValue}`);
+    }
   }
 }
