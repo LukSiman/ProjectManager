@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from './components/search/search.component';
 import { SortComponent } from './components/sort/sort.component';
 import { LogoComponent } from './components/logo/logo.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes: Routes = [
   { path: 'projects/:sort', component: ProjectListComponent },
@@ -31,7 +31,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   providers: [ProjectService],
   bootstrap: [AppComponent]
