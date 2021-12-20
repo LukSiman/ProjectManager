@@ -8,6 +8,14 @@
             <p class="card-text"> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
          </div>
       </div>
+
+      <div class="card bg-light border-dark m-md-3">
+         <div class="card-body">
+            <p class="card-title text-center mb-4 card-name"> Add </p>
+         </div>
+      </div>
+
+
    </div>
 
    <div *ngIf="projects.length == 0" class="alert alert-warning">
@@ -15,10 +23,8 @@
    </div>
 
    <div class="mt-4 mr-md-3 float-right">
-      <ngb-pagination   [(page)]="thePageNumber" 
-                        [pageSize]="thePageSize" 
-                        [collectionSize]="theTotalElements"
-                        (pageChange)="displayProjects()">
+      <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [collectionSize]="theTotalElements"
+         (pageChange)="displayProjects()">
       </ngb-pagination>
    </div>
 

@@ -20,7 +20,7 @@ INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VAL
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('Grime fighting searcher', '2021-04-28', '2022-09-25', DATEDIFF(end_date, start_date), 'A random app!');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('Applosion', '2019-06-15', '2020-04-01', DATEDIFF(end_date, start_date), 'A random app!');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('Skyrim 2077', '2016-12-24', '2019-10-05', DATEDIFF(end_date, start_date), 'A random app!');
-INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('AI name Jack', '2018-11-03', '2019-02-02', DATEDIFF(end_date, start_date), 'A random app!');
+INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('AI named Jack', '2018-11-03', '2019-02-02', DATEDIFF(end_date, start_date), 'A random app!');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('Hacker app: Resurection', '2016-10-27', '2018-11-04', DATEDIFF(end_date, start_date), 'A random app!');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('Fakebook', '2018-04-29', '2022-11-05', DATEDIFF(end_date, start_date), 'A random app!');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('FakeTube', '2017-10-01', '2019-05-22', DATEDIFF(end_date, start_date), 'A random app!');
