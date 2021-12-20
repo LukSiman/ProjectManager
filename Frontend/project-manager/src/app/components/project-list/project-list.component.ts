@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
@@ -11,7 +11,7 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./project-list.component.css']
 })
 export class ProjectListComponent implements OnInit {
-  faCoffee = faCoffee;
+  plusIcon = faPlus;
 
   projects: Project[] = [];
   images: ProjectImages[] = [];

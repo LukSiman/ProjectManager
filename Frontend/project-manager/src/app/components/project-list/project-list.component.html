@@ -11,7 +11,7 @@
 
       <div class="card bg-light border-dark m-md-3">
          <div class="card-body">
-            <p class="card-title text-center mb-4 card-name"> <fa-icon [icon]="faCoffee"></fa-icon> </p>
+            <p class="card-title text-center mb-4 card-name"> <fa-icon [icon]="plusIcon" size="10x"></fa-icon> </p>
          </div>
       </div>
 
@@ -23,7 +23,7 @@
    </div>
 
    <div class="mt-4 mr-md-3 float-right">
-      <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [collectionSize]="theTotalElements"
+      <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [collectionSize]="theTotalElements" [boundaryLinks]="true"
          (pageChange)="displayProjects()">
       </ngb-pagination>
    </div>
