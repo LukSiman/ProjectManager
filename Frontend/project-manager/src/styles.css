@@ -12,38 +12,38 @@ HTML SELECTORS
 **********************************************/
 
 html {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 *, *:before, *:after {
-    box-sizing: inherit;
+  box-sizing: inherit;
 }
 
-body{
-    font-family: 'Readex Pro', sans-serif;
+body {
+  font-family: 'Readex Pro', sans-serif;
 }
 
-h1{
-    font-weight: 700;
-    font-size: 3em;
+h1 {
+  font-weight: 700;
+  font-size: 3em;
 }
 
-footer{
+footer {
   margin-top: 30px;
   text-align: center;
 }
 
-footer>p{
+footer>p {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-footer>p>a{
+footer>p>a {
   padding-left: 10px;
 }
 
-footer>p>a:hover{
+footer>p>a:hover {
   transform: scale(1.1);
 }
 
@@ -51,53 +51,36 @@ footer>p>a:hover{
 ID SELECTORS 
 **********************************************/
 
-#no-projects{
-    font-size: 1.5em;
-}
-
-#card-container{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
-
-#search{
-  width: 90%;
+#no-projects {
+  font-size: 1.5em;
 }
 
 /**********************************************
 CLASS SELECTORS
 **********************************************/
 
-.card-name{
-    font-weight: bold;
-    font-size: 1.2em;
+.card-name {
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
-.description-text{
-    width: auto;   
-    overflow: hidden; 
-    height: 3.1em;
+.description-text {
+  width: auto;
+  overflow: hidden;
+  height: 3.1em;
 }
 
 .line-clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;  
-  }
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.card-img-top {
+  height: 14em;
+}
 
 
 /**********************************************
 MEDIA 
 **********************************************/
-
-@media (max-width: 1000px) {
-  #search{
-    width: 85%;
-  }
-}
-
-@media (max-width: 768px) {
-  #search{
-    width: 75%;
-  }
-}

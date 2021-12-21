@@ -1,6 +1,6 @@
-<div class="container">
-   <div id="card-container" *ngIf="projects.length > 0">
-      <div class="card bg-light border-dark m-md-3" *ngFor='let tempProject of projects'>
+<div class="row" *ngIf="projects.length > 0">
+   <div class="col-md-3 mb-3" *ngFor='let tempProject of projects'>
+      <div class="card bg-light border-dark">
          <img src="{{tempProject.images[0]['imageUrl']}}" alt="Project image" class="card-img-top">
          <div class="card-body">
             <p class="card-title text-center mb-4 card-name"> {{ tempProject.name }} </p>
@@ -8,24 +8,18 @@
             <p class="card-text"> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
          </div>
       </div>
-
-      <div class="card bg-light border-dark m-md-3">
-         <div class="card-body">
-            <p class="card-title text-center mb-4 card-name"> <fa-icon [icon]="plusIcon" size="10x"></fa-icon> </p>
-         </div>
-      </div>
-
-
    </div>
 
-   <div *ngIf="projects.length == 0" class="alert alert-warning">
-      <p id="no-projects" class="m-md-2">There are no projects!</p>
-   </div>
+   <button type="button" class="btn btn-secondary mt-4" (click)="hello()">Add a new project</button>
+   
+</div>
 
-   <div class="mt-4 mr-md-3 float-right">
-      <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [collectionSize]="theTotalElements" [boundaryLinks]="true"
-         (pageChange)="displayProjects()">
-      </ngb-pagination>
-   </div>
+<div *ngIf="projects.length == 0" class="alert alert-warning">
+   <p id="no-projects" class="m-md-2">There are no projects!</p>
+</div>
 
+<div class="mt-4 mr-md-3">
+   <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [collectionSize]="theTotalElements"
+      [boundaryLinks]="true" (pageChange)="displayProjects()">
+   </ngb-pagination>
 </div>

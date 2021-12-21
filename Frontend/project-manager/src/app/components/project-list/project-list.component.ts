@@ -29,7 +29,7 @@ export class ProjectListComponent implements OnInit {
 
   // properties for pagination
   thePageNumber: number = 1;
-  thePageSize: number = 5;
+  thePageSize: number = 8;
   theTotalElements: number = 0;
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute) { }
@@ -91,5 +91,10 @@ export class ProjectListComponent implements OnInit {
       this.thePageSize = data.page.size;
       this.theTotalElements = data.page.totalElements;
     }
+  }
+
+
+  hello() {
+    alert('hello');
   }
 }
