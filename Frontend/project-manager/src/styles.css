@@ -62,12 +62,13 @@ CLASS SELECTORS
 .card-name {
   font-weight: bold;
   font-size: 1.2em;
+  height: 3em;
 }
 
 .description-text {
   width: auto;
   overflow: hidden;
-  height: 3.1em;
+  height: 3.15em;
 }
 
 .line-clamp {
@@ -77,7 +78,11 @@ CLASS SELECTORS
 }
 
 .card-img-top {
-  height: 14em;
+  max-height: 14em;
+}
+
+.card-footer{
+  font-size: 1em;
 }
 
 

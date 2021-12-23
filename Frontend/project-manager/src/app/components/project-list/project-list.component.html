@@ -1,17 +1,28 @@
 <div class="row" *ngIf="projects.length > 0">
    <div class="col-md-3 mb-3" *ngFor='let tempProject of projects'>
-      <div class="card bg-light border-dark">
+      <div class="card h-100 bg-light border-dark">
          <img src="{{tempProject.images[0]['imageUrl']}}" alt="Project image" class="card-img-top">
          <div class="card-body">
-            <p class="card-title text-center mb-4 card-name"> {{ tempProject.name }} </p>
-            <p class="card-text description-text line-clamp mb-3"> {{ tempProject.description }}</p>
-            <p class="card-text"> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
+            <p class="card-title text-center card-name"> {{ tempProject.name }} </p>
+            <p class="card-text description-text line-clamp"> {{ tempProject.description }}</p>
          </div>
+
+         <div class="card-footer h-100 text-muted">
+            <p class="mb-1"> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
+            <div *ngIf="tempProject.length > 1; else elseBlock">Total length: {{ tempProject.length }} days</div>
+            <ng-template #elseBlock>
+               <div *ngIf="tempProject.length > 0; else zeroBlock">Total length: {{ tempProject.length }} day</div>
+               <ng-template #zeroBlock>Not finished</ng-template>
+            </ng-template>
+         </div>
+
       </div>
    </div>
 
-   <button type="button" class="btn btn-secondary mt-4" (click)="hello()">Add a new project</button>
-   
+   <div>
+      <button type="button" class="btn btn-secondary mt-2 col-12" (click)="hello()">Add a new project</button>
+   </div>
+
 </div>
 
 <div *ngIf="projects.length == 0" class="alert alert-warning">
