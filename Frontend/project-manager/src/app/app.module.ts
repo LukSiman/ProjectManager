@@ -6,10 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectService } from './services/project.service';
 import { Routes, RouterModule } from '@angular/router';
-import { SearchComponent } from './components/search/search.component';
 import { SortComponent } from './components/sort/sort.component';
-import { LogoComponent } from './components/logo/logo.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 const routes: Routes = [
   { path: 'projects/:sort', component: ProjectListComponent },
@@ -23,9 +22,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     ProjectListComponent,
-    SearchComponent,
     SortComponent,
-    LogoComponent
+    NavbarComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
