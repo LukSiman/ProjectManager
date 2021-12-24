@@ -9,8 +9,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { SortComponent } from './components/sort/sort.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AddProjectComponent } from './components/add-project/add-project.component';
 
 const routes: Routes = [
+  { path: 'newProject', component: AddProjectComponent },
   { path: 'projects/:sort', component: ProjectListComponent },
   { path: 'search/:keyword/:sort', component: ProjectListComponent },
   { path: 'search/:keyword', redirectTo: '/search/:keyword/nameAsc', pathMatch: 'full' },
@@ -23,7 +25,8 @@ const routes: Routes = [
     AppComponent,
     ProjectListComponent,
     SortComponent,
-    NavbarComponent
+    NavbarComponent,
+    AddProjectComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
