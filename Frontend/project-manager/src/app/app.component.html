@@ -5,12 +5,14 @@
         <app-navbar></app-navbar>
     </header>
 
-    <!-- Main content -->
-    <!-- Name of the group sorted by -->
-    <!-- Sort -->
-    <app-sort></app-sort>
+    <main>
+        <!-- Main content -->
+        <!-- Name of the group sorted by -->
+        <!-- Sort -->
+        <router-outlet name='sort'></router-outlet>
+        <router-outlet></router-outlet>
+    </main>
 
-    <router-outlet></router-outlet>
 
     <!-- Footer -->
     <footer>

@@ -10,12 +10,19 @@ import { SortComponent } from './components/sort/sort.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AddProjectComponent } from './components/add-project/add-project.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: 'newProject', component: AddProjectComponent },
+ // { path: 'projects', component: SortComponent, outlet:'sort' },
+  { path: 'sort', component: SortComponent, outlet:'sort' },
   { path: 'projects/:sort', component: ProjectListComponent },
+ // { path: 'search/:keyword/:sort', component: SortComponent, outlet: 'sort' },
+ // { path: 'search/:keyword/:sort', component: SortComponent, outlet: 'sort' },
   { path: 'search/:keyword/:sort', component: ProjectListComponent },
   { path: 'search/:keyword', redirectTo: '/search/:keyword/nameAsc', pathMatch: 'full' },
+  // { path: '', redirectTo: '/projects/nameAsc(sort:sort)', pathMatch: 'full' },
+  // { path: '**', redirectTo: '/projects/nameAsc(sort:sort)', pathMatch: 'full' }
   { path: '', redirectTo: '/projects/nameAsc', pathMatch: 'full' },
   { path: '**', redirectTo: '/projects/nameAsc', pathMatch: 'full' }
 ];
@@ -33,7 +40,8 @@ const routes: Routes = [
     BrowserModule,
     NgbModule,
     HttpClientModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ReactiveFormsModule
   ],
   providers: [ProjectService],
   bootstrap: [AppComponent]

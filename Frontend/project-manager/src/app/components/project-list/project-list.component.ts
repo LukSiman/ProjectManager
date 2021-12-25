@@ -38,6 +38,8 @@ export class ProjectListComponent implements OnInit {
     this.route.paramMap.subscribe(() => {
       this.displayProjects();
     });
+
+    console.log(this.route.snapshot.url);
   }
 
   // call the search or all method depending on if keyword exists
