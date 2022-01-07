@@ -32,7 +32,7 @@ export class ProjectListComponent implements OnInit {
   thePageSize: number = 8;
   theTotalElements: number = 0;
 
-  constructor(private projectService: ProjectService, private route: ActivatedRoute) { }
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -96,7 +96,8 @@ export class ProjectListComponent implements OnInit {
   }
 
 
-  hello() {
-    alert('hello');
+  // navigates to component for adding new projects
+  addNewProjectNavigation() {
+    this.router.navigateByUrl('/newProject');
   }
 }

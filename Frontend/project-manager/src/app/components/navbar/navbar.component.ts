@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
 
   // go to main page and refresh
   refresh() {
-    this.router.navigateByUrl(`/projects/nameAsc`)
+    this.router.navigateByUrl(`/projects`)
       .then(() => {
         window.location.reload()
       });

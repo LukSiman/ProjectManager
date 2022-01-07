@@ -14,17 +14,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: 'newProject', component: AddProjectComponent },
- // { path: 'projects', component: SortComponent, outlet:'sort' },
-  { path: 'sort', component: SortComponent, outlet:'sort' },
   { path: 'projects/:sort', component: ProjectListComponent },
- // { path: 'search/:keyword/:sort', component: SortComponent, outlet: 'sort' },
- // { path: 'search/:keyword/:sort', component: SortComponent, outlet: 'sort' },
+  { path: 'sort', component: SortComponent, outlet: 'sort' },
   { path: 'search/:keyword/:sort', component: ProjectListComponent },
-  { path: 'search/:keyword', redirectTo: '/search/:keyword/nameAsc', pathMatch: 'full' },
-  // { path: '', redirectTo: '/projects/nameAsc(sort:sort)', pathMatch: 'full' },
-  // { path: '**', redirectTo: '/projects/nameAsc(sort:sort)', pathMatch: 'full' }
-  { path: '', redirectTo: '/projects/nameAsc', pathMatch: 'full' },
-  { path: '**', redirectTo: '/projects/nameAsc', pathMatch: 'full' }
+  { path: 'search/:keyword', redirectTo: '/search/:keyword/nameAsc(sort:sort)', pathMatch: 'full' },
+  { path: '', redirectTo: '/projects/nameAsc(sort:sort)', pathMatch: 'full' },
+  { path: '**', redirectTo: '/projects/nameAsc(sort:sort)', pathMatch: 'full' }
 ];
 
 @NgModule({

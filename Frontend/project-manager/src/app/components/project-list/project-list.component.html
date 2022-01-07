@@ -18,17 +18,17 @@
 
       </div>
    </div>
-
-   <div>
-      <button type="button" class="btn btn-secondary mt-2 col-12" routerLink="/newProject">Add a new
-         project</button>
-   </div>
-
 </div>
 
 <div *ngIf="projects.length == 0" class="alert alert-warning">
    <p id="no-projects" class="m-md-2">There are no projects!</p>
 </div>
+
+<div>
+   <button type="button" class="btn btn-secondary mt-2 col-12" (click)="addNewProjectNavigation()">Add a new
+      project</button>
+</div>
+
 
 <div class="mt-4 mr-md-3">
    <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [collectionSize]="theTotalElements"
