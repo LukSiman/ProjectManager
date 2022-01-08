@@ -10,7 +10,11 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
-    Page<Project> findBy(Pageable pageable); // delete this after fixing frontend
+    Page<Project> findBy(Pageable pageable);
+
+    Page<Project> findByNameContaining(@Param("name") String name, Pageable pageable);
+
+/*
 
     Page<Project> findByOrderByNameAsc(Pageable pageable);
 
@@ -28,8 +32,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     Page<Project> findByOrderByLengthDesc(Pageable pageable);
 
-    Page<Project> findByNameContaining(@Param("name") String name, Pageable pageable); // delete this after fixing frontend
-
     Page<Project> findByNameContainingOrderByNameAsc(@Param("name") String name, Pageable pageable);
 
     Page<Project> findByNameContainingOrderByNameDesc(@Param("name") String name, Pageable pageable);
@@ -45,4 +47,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     Page<Project> findByNameContainingOrderByLengthAsc(@Param("name") String name, Pageable pageable);
 
     Page<Project> findByNameContainingOrderByLengthDesc(@Param("name") String name, Pageable pageable);
+
+*/
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -28,11 +29,21 @@ public class Project {
     private Date endDate;
 
     @Column(name = "length")
-    private Integer length;
+    private Long length;
 
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectImages> images;
+
+    public void addImages(ProjectImages image){
+        if(image != null){
+            if(images == null){
+                images = new ArrayList<>();
+            }
+            images.add(image);
+            image.setProject(this);
+        }
+    }
 }
