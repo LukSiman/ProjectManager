@@ -1,8 +1,9 @@
 package com.lukas.project_manager.dto;
 
-import com.lukas.project_manager.entities.ProjectImages;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +13,8 @@ public class ProjectDTO {
 
     private Integer id;
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Long length;
     private String description;
     private List<ProjectImagesDTO> images;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/project")
 public class ProjectController {
 
+    @Autowired
     private final ProjectServiceImpl projectService;
 
     @Autowired
@@ -21,6 +22,18 @@ public class ProjectController {
     @Autowired
     public ProjectController(ProjectServiceImpl projectService) {
         this.projectService = projectService;
+    }
+
+    @GetMapping("{id}")
+    @ResponseBody
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable int id){
+
+        Project project = projectService.getProject(id);
+
+        // convert entity to DTO
+        ProjectDTO projectResponse = modelMapper.map(project, ProjectDTO.class);
+
+        return new ResponseEntity<>(projectResponse, HttpStatus.OK);
     }
 
     @PostMapping("/save")
@@ -46,12 +59,12 @@ public class ProjectController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
+    public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO, @PathVariable int id) {
 
         // convert DTO to entity
         Project projectRequest = modelMapper.map(projectDTO, Project.class);
 
-        Project project = projectService.updateProject(projectRequest);
+        Project project = projectService.updateProject(projectRequest, id);
 
         // convert entity to DTO
         ProjectDTO projectResponse = modelMapper.map(project, ProjectDTO.class);

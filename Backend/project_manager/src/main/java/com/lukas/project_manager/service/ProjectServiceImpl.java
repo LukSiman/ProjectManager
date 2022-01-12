@@ -7,15 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
+    @Autowired
     private final ProjectRepository projectRepository;
 
+    @Autowired
     public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
+    }
+
+    @Override
+    public Project getProject(int id) {
+        return projectRepository.getById(id);
     }
 
     @Override
@@ -23,35 +32,55 @@ public class ProjectServiceImpl implements ProjectService {
     public Project saveProject(Project project) {
 
         // calculate difference between dates for the length
-        if(project.getEndDate() != null){
-            long timeDifference = Math.abs(project.getStartDate().getTime() - project.getEndDate().getTime());
-            long dayDifference = TimeUnit.DAYS.convert(timeDifference, TimeUnit.MILLISECONDS);
+        if (project.getEndDate() != null) {
+            long dayDifference = calculateLength(project.getStartDate(), project.getEndDate());
             project.setLength(dayDifference);
         }
 
-        // add default image if no image has been uploaded
-        if(project.getImages() == null){
-            ProjectImages projectImages = new ProjectImages();
-            projectImages.setImageUrl("assets/images/projects/default.jpg");
-
-            project.addImages(projectImages);
-        } else {
-            System.out.println("Test");
-        }
+        handleImageChange(project);
 
         return projectRepository.save(project);
     }
 
     @Override
-    public Project updateProject(Project project) {
-        /* NEED TO FINISH
-            Probably need to use ids, but do I use them from JSON or from path Variable or both?
-            I think I need to use both, ID to find the object and JSON to update the data
-        */
+    @Transactional
+    public Project updateProject(Project project, int id) {
+        Project projectToUpdate = projectRepository.getById(id);
 
-        int id = project.getId();
-        projectRepository.getById(id);
-        return null;
+        boolean dateChange = false;
+
+        if (!Objects.equals(project.getName(), projectToUpdate.getName())) {
+            projectToUpdate.setName(project.getName());
+        }
+
+        if (!Objects.equals(project.getStartDate(), projectToUpdate.getStartDate())) {
+            projectToUpdate.setStartDate(project.getStartDate());
+            dateChange = true;
+        }
+
+        if (!Objects.equals(project.getEndDate(), projectToUpdate.getEndDate())) {
+            projectToUpdate.setEndDate(project.getEndDate());
+            dateChange = true;
+        }
+
+        if (dateChange) {
+            if (project.getEndDate() != null) {
+                long newLength = calculateLength(project.getStartDate(), project.getEndDate());
+                projectToUpdate.setLength(newLength);
+            }
+        }
+
+        if (!Objects.equals(project.getDescription(), projectToUpdate.getDescription())) {
+            projectToUpdate.setDescription(project.getDescription());
+        }
+
+        // TODO: make image change work
+        if (!Objects.equals(project.getImages(), projectToUpdate.getImages())) {
+            projectToUpdate.setImages(project.getImages());
+            handleImageChange(projectToUpdate);
+        }
+
+        return projectRepository.save(projectToUpdate);
     }
 
     @Override
@@ -59,5 +88,20 @@ public class ProjectServiceImpl implements ProjectService {
         String projectName = projectRepository.getById(id).getName();
         projectRepository.deleteById(id);
         return projectName + " has been deleted";
+    }
+
+    // helper method to calculate day difference between dates
+    private long calculateLength(LocalDate startDate, LocalDate endDate) {
+        return ChronoUnit.DAYS.between(startDate, endDate);
+    }
+
+    // add default image if no image has been uploaded
+    private void handleImageChange(Project project) {
+        if (project.getImages() == null) {
+            ProjectImages projectImages = new ProjectImages();
+            projectImages.setImageUrl("assets/images/projects/default.png");
+
+            project.addImages(projectImages);
+        }
     }
 }
