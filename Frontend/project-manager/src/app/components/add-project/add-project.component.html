@@ -35,6 +35,9 @@
         <div class="mb-3 col">
             <label for="projectEndDate" class="form-label">Project end date:</label>
             <input formControlName="endDate" type="date" class="form-control" id="projectEndDate">
+            <div *ngIf="projectFormGroup?.errors?.['endDateAfterStartDate'] && (endDate?.dirty || endDate?.touched)" class="alert alert-danger mt-1">
+                End date must be after start date.
+            </div>
         </div>
     </div>
 

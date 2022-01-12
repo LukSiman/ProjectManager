@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
 @Component({
@@ -20,7 +20,7 @@ export class AddProjectComponent implements OnInit {
       endDate: [''],
       description: [''],
       images: ['']
-    });
+    }, { validators: CustomValidators.endDateAfterStartDate });
   }
 
   get name() { return this.projectFormGroup.get('name'); }
@@ -37,4 +37,5 @@ export class AddProjectComponent implements OnInit {
 
     this.projectFormGroup.reset();
   }
+
 }

@@ -1,7 +1,7 @@
 <div class="row" *ngIf="projects.length > 0">
    <div class="col-md-3 mb-3" *ngFor='let tempProject of projects'>
-      <div class="card h-100 bg-light border-dark">
-         <img src="{{tempProject.images[0]['imageUrl']}}" alt="Project image" class="card-img-top">
+      <div class="card h-100 bg-light border-dark border border-2">
+         <img src="{{tempProject.images[0]['imageUrl']}}" alt="Project image" class="card-img-top p-1 border-bottom border-2 border-secondary">
          <div class="card-body">
             <p class="card-title text-center card-name"> {{ tempProject.name }} </p>
             <p class="card-text description-text line-clamp"> {{ tempProject.description }}</p>
