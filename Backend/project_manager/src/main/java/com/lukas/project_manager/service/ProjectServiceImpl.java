@@ -97,7 +97,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     // add default image if no image has been uploaded
     private void handleImageChange(Project project) {
-        if (project.getImages() == null) {
+        if (project.getImages() == null || project.getImages().isEmpty()) {
             ProjectImages projectImages = new ProjectImages();
             projectImages.setImageUrl("assets/images/projects/default.png");
 

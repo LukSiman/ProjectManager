@@ -16,7 +16,11 @@ public class DataRestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         // configure cors mapping
-        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(theAllowedOrigins);
+       /* cors.addMapping(config.getBasePath() + "/**")
+                .allowedOrigins(theAllowedOrigins)
+                .allowedMethods("GET", "PUT", "POST", "DELETE");*/
+
+        cors.addMapping("/**");
 
         // expose ids
         config.exposeIdsFor(Project.class);

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/projects")
 public class ProjectController {
 
     @Autowired
@@ -69,6 +69,6 @@ public class ProjectController {
         // convert entity to DTO
         ProjectDTO projectResponse = modelMapper.map(project, ProjectDTO.class);
 
-        return new ResponseEntity<>(projectResponse, HttpStatus.OK);
+        return new ResponseEntity<>(projectResponse, HttpStatus.NO_CONTENT);
     }
 }
