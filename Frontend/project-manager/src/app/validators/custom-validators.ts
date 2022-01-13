@@ -16,6 +16,18 @@ export class CustomValidators {
     static endDateAfterStartDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
         const start = control.get('startDate')?.value;
         const end = control.get('endDate')?.value;
-        return start > end ? { endDateAfterStartDate: true } : null;
+
+        // no end date is valid
+        if (Object.keys(end).length === 0) {
+            return null;
+        }
+
+        // check if end date is after start date
+        if (start > end) {
+            return { 'endDateAfterStartDate': true };
+        } else {
+            // valid, return null
+            return null;
+        }
     }
 }
