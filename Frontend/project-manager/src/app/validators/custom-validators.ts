@@ -18,10 +18,10 @@ export class CustomValidators {
         const end = control.get('endDate')?.value;
 
         // no end date is valid
-        if (Object.keys(end).length === 0) {
+        if(end == null || end.length === 0){
             return null;
         }
-
+        
         // check if end date is after start date
         if (start > end) {
             return { 'endDateAfterStartDate': true };
