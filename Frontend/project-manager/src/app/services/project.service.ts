@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -11,6 +11,10 @@ import { Project } from '../entities/project';
 export class ProjectService {
 
   private baseUrl = environment.springUrl + "/projects";
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   constructor(private httpClient: HttpClient) { }
 
@@ -44,22 +48,23 @@ export class ProjectService {
   }
 
   // Searches for projects by name with Pagination and sorting
-  searchProjectListSortPaginate(thePage: number, thePageSize: number, keyword: string, sortType: string): Observable<getJSONProjects> {   
+  searchProjectListSortPaginate(thePage: number, thePageSize: number, keyword: string, sortType: string): Observable<getJSONProjects> {
     const searchUrl = `${this.baseUrl}/search/findByNameContaining` + `?name=${keyword}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
-  // get projects from the backend
+  // add a new project
+  addProject(project: Project): Observable<Project> {
+    const postUrl = `${this.baseUrl}/save`;
+    return this.httpClient.post<getProject>(postUrl, project, this.httpOptions);
+  }
+
+  // get all projects
   private getProjects(theUrl: string): Observable<Project[]> {
     return this.httpClient.get<getJSONProjects>(theUrl).pipe(
       map(response => response._embedded.projects)
     );
-  }
-
- /* addProject(project: Project): Observable<Project>{
-    const post
-    return this.httpClient.post<Project>(project);
-  }*/
+  }  
 }
 
 interface getJSONProjects {
@@ -72,4 +77,14 @@ interface getJSONProjects {
     totalPages: number,
     number: number
   }
+}
+
+interface getProject {
+  id: number,
+  name: string,
+  startDate: Date,
+  endDate: Date,
+  length: number,
+  description: string,
+  images: []
 }
