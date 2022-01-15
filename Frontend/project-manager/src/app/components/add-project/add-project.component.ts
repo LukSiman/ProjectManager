@@ -1,8 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project } from 'src/app/entities/project';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-project',
@@ -21,7 +23,7 @@ export class AddProjectComponent implements OnInit {
   private resDescription: string;
   private resImages: [];
 
-  constructor(private formBuilder: FormBuilder, private projectService: ProjectService) { }
+  constructor(private formBuilder: FormBuilder, private projectService: ProjectService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.projectFormGroup = this.formBuilder.group({
@@ -37,6 +39,7 @@ export class AddProjectComponent implements OnInit {
   get startDate() { return this.projectFormGroup.get('startDate'); }
   get endDate() { return this.projectFormGroup.get('endDate'); }
   get description() { return this.projectFormGroup.get('description'); }
+  get images() { return this.projectFormGroup.get('images'); }
 
   // checks if required fields have been filed out and marks them if not, otherwise creates a new project
   checkForm() {
@@ -44,14 +47,14 @@ export class AddProjectComponent implements OnInit {
       this.projectFormGroup.markAllAsTouched();
       return;
     }
-    
+
     this.addNewProject();
 
     this.projectFormGroup.reset();
   }
 
   // add a new project
-  private addNewProject(){
+  private addNewProject() {
     const newProject: Project = {
       id: 0,
       name: this.name?.value,
@@ -59,22 +62,50 @@ export class AddProjectComponent implements OnInit {
       endDate: this.endDate?.value,
       length: 0,
       description: this.description?.value,
+      // images: [this.images?.value]
       images: []
     };
 
-    this.projectService.addProject(newProject).subscribe(this.processResult());
+    console.log('Images value: ' + this.images?.value);
+    console.log('Images value array: ' + [this.images?.value]);
+
+    //this.projectService.addProject(newProject).subscribe(this.processResult());
+    this.projectService.addProject(newProject).subscribe(res => console.log(res));
   }
 
   processResult() {
     return (data: any) => {
       this.resId = data.id,
-      this.resName = data.id,
-      this.resStartDate = data.id,
-      this.resEndDate = data.id,
-      this.resLength = data.id,
-      this.resDescription = data.id,
-      this.resImages = data.id;
+        this.resName = data.name,
+        this.resStartDate = data.startDate,
+        this.resEndDate = data.endDate,
+        this.resLength = data.length,
+        this.resDescription = data.description,
+        this.resImages = data.images;
     }
+  }
+
+
+  selectedFile: File;
+
+  onFileSelected(event: any) {
+    this.selectedFile = <File>event.target.files[0];
+  }
+
+  OnUpload() {
+    //Upload file here send a binary data
+    const formData = new FormData();
+    formData.append('image', this.selectedFile, this.selectedFile.name);
+
+    console.log(`selected file: ${this.selectedFile}`);
+
+    console.log(`selected file name: ${this.selectedFile.name}`);
+
+    console.log(`form data: ${formData}`);
+
+
+    /*  this.http.post(environment.springUrl + "/projects/save", this.selectedFile)
+        .subscribe(response => console.log(response));*/
   }
 
 }
