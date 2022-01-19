@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -17,9 +18,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private final ProjectRepository projectRepository;
 
+   /* @Autowired
+    private final ProjectImagesRepository imageRepository;
+*/
     @Autowired
     public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
+      /*  this.imageRepository = imageRepository;*/
     }
 
     @Override
@@ -39,6 +44,21 @@ public class ProjectServiceImpl implements ProjectService {
 
         handleImageChange(project);
 
+       /* ProjectImages projectImages = new ProjectImages();
+        List<ProjectImages> images = project.getImages();
+        projectImages.setImageUrl();
+        */
+
+      /*  projectImages.setImageUrl(project.getImages());
+        projectImages.setImageUrl("assets/images/projects/default.png");
+        project.addImages(projectImages);
+
+
+
+        ProjectImages projectImages = new ProjectImages();
+        projectImages.
+        imageRepository.save(project.getImages());
+*/
         return projectRepository.save(project);
     }
 
@@ -100,8 +120,9 @@ public class ProjectServiceImpl implements ProjectService {
         if (project.getImages() == null || project.getImages().isEmpty()) {
             ProjectImages projectImages = new ProjectImages();
             projectImages.setImageUrl("assets/images/projects/default.png");
-
             project.addImages(projectImages);
+        } else {
+
         }
     }
 }

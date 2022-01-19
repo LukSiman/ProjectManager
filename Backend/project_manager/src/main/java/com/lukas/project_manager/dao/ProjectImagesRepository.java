@@ -10,6 +10,6 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "images", path = "images")
 public interface ProjectImagesRepository extends JpaRepository<ProjectImages, Integer> {
 
-    List<ProjectImages> findByProjectId(@Param("id") Integer id);
+
 }
 */
