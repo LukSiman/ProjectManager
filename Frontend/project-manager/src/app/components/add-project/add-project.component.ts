@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project } from 'src/app/entities/project';
+import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 import { environment } from 'src/environments/environment';
@@ -22,6 +23,7 @@ export class AddProjectComponent implements OnInit {
   private resLength: number;
   private resDescription: string;
   private resImages: [];
+  private selectedFile: File;
 
   constructor(private formBuilder: FormBuilder, private projectService: ProjectService, private http: HttpClient) { }
 
@@ -48,6 +50,8 @@ export class AddProjectComponent implements OnInit {
       return;
     }
 
+    this.uploadImage();
+
     this.addNewProject();
 
     this.projectFormGroup.reset();
@@ -55,6 +59,16 @@ export class AddProjectComponent implements OnInit {
 
   // add a new project
   private addNewProject() {
+    /* let newProjectImages: ProjectImages = {
+       imageUrl: ''
+     }*/
+
+    // if (this.selectedFile != null) {
+    let newProjectImages = {
+      imageUrl: `assets/images/projects/${this.selectedFile.name}`
+      // }
+    }
+
     const newProject: Project = {
       id: 0,
       name: this.name?.value,
@@ -62,12 +76,8 @@ export class AddProjectComponent implements OnInit {
       endDate: this.endDate?.value,
       length: 0,
       description: this.description?.value,
-      // images: [this.images?.value]
-      images: []
+      images: [newProjectImages]
     };
-
-    console.log('Images value: ' + this.images?.value);
-    console.log('Images value array: ' + [this.images?.value]);
 
     //this.projectService.addProject(newProject).subscribe(this.processResult());
     this.projectService.addProject(newProject).subscribe(res => console.log(res));
@@ -85,27 +95,16 @@ export class AddProjectComponent implements OnInit {
     }
   }
 
-
-  selectedFile: File;
-
   onFileSelected(event: any) {
     this.selectedFile = <File>event.target.files[0];
   }
 
-  OnUpload() {
-    //Upload file here send a binary data
+  uploadImage() {
+    //Upload file
     const formData = new FormData();
-    formData.append('image', this.selectedFile, this.selectedFile.name);
-
-    console.log(`selected file: ${this.selectedFile}`);
-
-    console.log(`selected file name: ${this.selectedFile.name}`);
-
-    console.log(`form data: ${formData}`);
-
-
-    /*  this.http.post(environment.springUrl + "/projects/save", this.selectedFile)
-        .subscribe(response => console.log(response));*/
+    formData.append('file', this.selectedFile, this.selectedFile.name);
+    this.http.post(environment.springUrl + "/projects/upload", formData)
+      .subscribe(response => console.log(response));
   }
 
 }
