@@ -5,7 +5,6 @@ import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-project',
@@ -43,32 +42,47 @@ export class AddProjectComponent implements OnInit {
   get description() { return this.projectFormGroup.get('description'); }
   get images() { return this.projectFormGroup.get('images'); }
 
-  // checks if required fields have been filed out and marks them if not, otherwise creates a new project
+  // informs user of required fields and initiates project adding
   checkForm() {
     if (this.projectFormGroup.invalid) {
       this.projectFormGroup.markAllAsTouched();
       return;
     }
 
-    this.uploadImage();
+    console.log('selected file ' + this.selectedFile);
+    console.log('selected file name' + this.selectedFile.name);
+    console.log('selected file type' + typeof this.selectedFile);
 
+    // checks if file was selected
+    if(this.selectedFile != undefined){
+      this.uploadImage();
+    }    
+
+    // add the project
     this.addNewProject();
 
+    // resets the form
+
+    // TODO: FILE DOES NOT RESET, FIX IT!!!
     this.projectFormGroup.reset();
+    
   }
 
   // add a new project
   private addNewProject() {
-    /* let newProjectImages: ProjectImages = {
-       imageUrl: ''
-     }*/
-
-    // if (this.selectedFile != null) {
-    let newProjectImages = {
-      imageUrl: `assets/images/projects/${this.selectedFile.name}`
-      // }
+    // create empty ProjectImges object
+    let newProjectImages: ProjectImages = {
+      imageUrl: ''
     }
 
+    // checks if a file was selected
+    if (this.selectedFile != undefined) {
+    newProjectImages = {
+      imageUrl: `assets/images/projects/${this.selectedFile.name}`
+      }
+    }
+
+    // creates a new project to send to the server
     const newProject: Project = {
       id: 0,
       name: this.name?.value,
@@ -79,32 +93,37 @@ export class AddProjectComponent implements OnInit {
       images: [newProjectImages]
     };
 
-    //this.projectService.addProject(newProject).subscribe(this.processResult());
     this.projectService.addProject(newProject).subscribe(res => console.log(res));
   }
 
-  processResult() {
-    return (data: any) => {
-      this.resId = data.id,
-        this.resName = data.name,
-        this.resStartDate = data.startDate,
-        this.resEndDate = data.endDate,
-        this.resLength = data.length,
-        this.resDescription = data.description,
-        this.resImages = data.images;
-    }
-  }
-
+  // selects the file
   onFileSelected(event: any) {
     this.selectedFile = <File>event.target.files[0];
   }
 
+  // handles image uploading
   uploadImage() {
-    //Upload file
     const formData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
-    this.http.post(environment.springUrl + "/projects/upload", formData)
-      .subscribe(response => console.log(response));
+    this.projectService.uploadImage(formData);
   }
+
+
+
+
+
+
+
+  /*processResult() {
+  return (data: any) => {
+    this.resId = data.id,
+      this.resName = data.name,
+      this.resStartDate = data.startDate,
+      this.resEndDate = data.endDate,
+      this.resLength = data.length,
+      this.resDescription = data.description,
+      this.resImages = data.images;
+  }
+}*/
 
 }

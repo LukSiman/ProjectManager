@@ -59,6 +59,11 @@ export class ProjectService {
     return this.httpClient.post<getProject>(postUrl, project, this.httpOptions);
   }
 
+  uploadImage(formData: FormData) {
+    this.httpClient.post(environment.springUrl + "/projects/upload", formData)
+      .subscribe(response => console.log(response));
+  }
+
   // get all projects
   private getProjects(theUrl: string): Observable<Project[]> {
     return this.httpClient.get<getJSONProjects>(theUrl).pipe(
