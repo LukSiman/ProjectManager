@@ -18,13 +18,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private final ProjectRepository projectRepository;
 
-   /* @Autowired
-    private final ProjectImagesRepository imageRepository;
-*/
     @Autowired
     public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-      /*  this.imageRepository = imageRepository;*/
     }
 
     @Override
@@ -35,30 +31,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Project saveProject(Project project) {
-
         // calculate difference between dates for the length
         if (project.getEndDate() != null) {
             long dayDifference = calculateLength(project.getStartDate(), project.getEndDate());
             project.setLength(dayDifference);
         }
 
-        handleImageChange(project);
+        // add an image
+        handleImages(project);
 
-       /* ProjectImages projectImages = new ProjectImages();
-        List<ProjectImages> images = project.getImages();
-        projectImages.setImageUrl();
-        */
-
-      /*  projectImages.setImageUrl(project.getImages());
-        projectImages.setImageUrl("assets/images/projects/default.png");
-        project.addImages(projectImages);
-
-
-
-        ProjectImages projectImages = new ProjectImages();
-        projectImages.
-        imageRepository.save(project.getImages());
-*/
         return projectRepository.save(project);
     }
 
@@ -97,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
         // TODO: make image change work
         if (!Objects.equals(project.getImages(), projectToUpdate.getImages())) {
             projectToUpdate.setImages(project.getImages());
-            handleImageChange(projectToUpdate);
+            handleImages(projectToUpdate);
         }
 
         return projectRepository.save(projectToUpdate);
@@ -115,14 +96,15 @@ public class ProjectServiceImpl implements ProjectService {
         return ChronoUnit.DAYS.between(startDate, endDate);
     }
 
-    // add default image if no image has been uploaded
-    private void handleImageChange(Project project) {
-        if (project.getImages() == null || project.getImages().isEmpty()) {
-            ProjectImages projectImages = new ProjectImages();
-            projectImages.setImageUrl("assets/images/projects/default.png");
-            project.addImages(projectImages);
-        } else {
-
-        }
+    // handle adding images to the project
+    private void handleImages(Project project) {
+        List<ProjectImages> imageList = project.getImages();
+        imageList.forEach(img -> {
+            // if project has no images add a default image
+            if (img.getImageUrl() == null || img.getImageUrl().isEmpty()) {
+                img.setImageUrl("assets/images/projects/default.png");
+            }
+            img.setProject(project);
+        });
     }
 }
