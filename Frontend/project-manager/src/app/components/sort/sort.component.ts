@@ -25,9 +25,9 @@ export class SortComponent implements OnInit {
 
     if (currentUrl.includes('search')) {
       const newUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
-      this.router.navigateByUrl(`${newUrl}${sortValue}(sort:sort)`);
+      this.router.navigateByUrl(`${newUrl}${sortValue}`);
     } else {
-      this.router.navigateByUrl(`/projects/${sortValue}(sort:sort)`);
+      this.router.navigateByUrl(`/projects/${sortValue}`);
     }
   }
 }
