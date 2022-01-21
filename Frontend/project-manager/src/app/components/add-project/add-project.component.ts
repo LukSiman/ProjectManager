@@ -15,14 +15,8 @@ export class AddProjectComponent implements OnInit {
 
   projectFormGroup: FormGroup;
 
-  private resId: number;
-  private resName: string;
-  private resStartDate: Date;
-  private resEndDate: Date;
-  private resLength: number;
-  private resDescription: string;
-  private resImages: [];
   private selectedFile: File;
+  private newFileName: string;
 
   constructor(private formBuilder: FormBuilder, private projectService: ProjectService, private http: HttpClient) { }
 
@@ -32,7 +26,7 @@ export class AddProjectComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: [''],
       description: [''],
-      images: ['']
+      images: ['', CustomValidators.correctFileType]
     }, { validators: CustomValidators.endDateAfterStartDate });
   }
 
@@ -42,45 +36,33 @@ export class AddProjectComponent implements OnInit {
   get description() { return this.projectFormGroup.get('description'); }
   get images() { return this.projectFormGroup.get('images'); }
 
-  // informs user of required fields and initiates project adding
+  // informs user of required fields and initiates project adding to DB
   checkForm() {
+    // required field check
     if (this.projectFormGroup.invalid) {
       this.projectFormGroup.markAllAsTouched();
       return;
     }
 
-    console.log('selected file ' + this.selectedFile);
-    console.log('selected file name' + this.selectedFile.name);
-    console.log('selected file type' + typeof this.selectedFile);
-
     // checks if file was selected
-    if(this.selectedFile != undefined){
+    if (this.selectedFile != undefined || this.selectedFile != null) {
       this.uploadImage();
-    }    
+    }
 
     // add the project
     this.addNewProject();
 
     // resets the form
-
-    // TODO: FILE DOES NOT RESET, FIX IT!!!
     this.projectFormGroup.reset();
-    
+
+    // resets the selected file
+    this.selectedFile = undefined as unknown as File;
   }
 
   // add a new project
   private addNewProject() {
-    // create empty ProjectImges object
-    let newProjectImages: ProjectImages = {
-      imageUrl: ''
-    }
-
-    // checks if a file was selected
-    if (this.selectedFile != undefined) {
-    newProjectImages = {
-      imageUrl: `assets/images/projects/${this.selectedFile.name}`
-      }
-    }
+    // create a project image object 
+    let newProjectImage: ProjectImages = this.handleProjectImages();
 
     // creates a new project to send to the server
     const newProject: Project = {
@@ -90,10 +72,29 @@ export class AddProjectComponent implements OnInit {
       endDate: this.endDate?.value,
       length: 0,
       description: this.description?.value,
-      images: [newProjectImages]
+      images: [newProjectImage]
     };
 
+    // call service to add the project
     this.projectService.addProject(newProject).subscribe(res => console.log(res));
+  }
+
+  // create and return a new ProjectImage object
+  private handleProjectImages(): ProjectImages {
+    // create empty ProjectImages object
+    let newProjectImages: ProjectImages = {
+      imageUrl: ''
+    }
+
+    // checks if a file was selected and set as the image
+    if (this.selectedFile != undefined || this.selectedFile != null) {
+      newProjectImages = {
+        //imageUrl: `assets/images/projects/${this.selectedFile.name}`
+        imageUrl: `assets/images/projects/${this.newFileName}`
+      }
+    }
+
+    return newProjectImages;
   }
 
   // selects the file
@@ -102,17 +103,30 @@ export class AddProjectComponent implements OnInit {
   }
 
   // handles image uploading
-  uploadImage() {
+  private uploadImage() {
     const formData = new FormData();
-    formData.append('file', this.selectedFile, this.selectedFile.name);
+    this.newFileName = this.fileNameGenerator(this.selectedFile.name);
+    formData.append('file', this.selectedFile, this.newFileName);
     this.projectService.uploadImage(formData);
+  }
+
+  // Add a timestamp to the filename
+  private fileNameGenerator(fileName: string): string {
+    const date = new Date();
+    const timeStamp = date.getTime();
+    fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+    return `${fileName}${timeStamp}.png`;
   }
 
 
 
-
-
-
+   /* private resId: number;
+  private resName: string;
+  private resStartDate: Date;
+  private resEndDate: Date;
+  private resLength: number;
+  private resDescription: string;
+  private resImages: [];*/
 
   /*processResult() {
   return (data: any) => {
