@@ -89,7 +89,6 @@ export class AddProjectComponent implements OnInit {
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
       newProjectImages = {
-        //imageUrl: `assets/images/projects/${this.selectedFile.name}`
         imageUrl: `assets/images/projects/${this.newFileName}`
       }
     }
@@ -119,6 +118,7 @@ export class AddProjectComponent implements OnInit {
   }
 
 
+  
 
    /* private resId: number;
   private resName: string;
