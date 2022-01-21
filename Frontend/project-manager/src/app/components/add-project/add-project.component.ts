@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
@@ -58,7 +59,7 @@ export class AddProjectComponent implements OnInit {
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
   }
-
+  
   // add a new project
   private addNewProject() {
     // create a project image object 
@@ -106,7 +107,7 @@ export class AddProjectComponent implements OnInit {
     const formData = new FormData();
     this.newFileName = this.fileNameGenerator(this.selectedFile.name);
     formData.append('file', this.selectedFile, this.newFileName);
-    this.projectService.uploadImage(formData);
+    this.projectService.uploadImage(formData).subscribe(res => console.log(res), (error) => console.log(error));
   }
 
   // Add a timestamp to the filename
@@ -118,15 +119,15 @@ export class AddProjectComponent implements OnInit {
   }
 
 
-  
 
-   /* private resId: number;
-  private resName: string;
-  private resStartDate: Date;
-  private resEndDate: Date;
-  private resLength: number;
-  private resDescription: string;
-  private resImages: [];*/
+
+  /* private resId: number;
+ private resName: string;
+ private resStartDate: Date;
+ private resEndDate: Date;
+ private resLength: number;
+ private resDescription: string;
+ private resImages: [];*/
 
   /*processResult() {
   return (data: any) => {
