@@ -1,6 +1,7 @@
 package com.lukas.project_manager.controller;
 
 import com.lukas.project_manager.service.FileServiceImpl;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,9 @@ public class FileController {
 
             return status(HttpStatus.OK)
                     .body(new UploadResponseMessage("Uploaded the file successfully: " + file.getOriginalFilename()));
-       } catch (IllegalStateException max) {
+
+            // TODO: Move stuff to exception handlers
+        } catch (MaxUploadSizeExceededException max) {
             return status(HttpStatus.PAYLOAD_TOO_LARGE)
                     .body(new UploadResponseMessage("The file is too large: " + file.getOriginalFilename() + "!"));
         } catch (Exception e) {
