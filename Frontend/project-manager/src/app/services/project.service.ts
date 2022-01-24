@@ -63,7 +63,6 @@ export class ProjectService {
   uploadImage(formData: FormData): Observable<Object> {
     const uploadUrl = `${this.baseUrl}/upload`;
     return this.httpClient.post(uploadUrl, formData).pipe(catchError(this.handleError));
-    //return this.httpClient.post(uploadUrl, formData).subscribe(res => console.log(res));
   }
 
   // Handles errors
@@ -71,15 +70,15 @@ export class ProjectService {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);
+    } else if (error.status === 413) {
+      return throwError('The file is too large, maximum file size is 200KB');
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
-      console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
+      console.error(`Backend returned code ${error.status}, body was: `, error.error);
     }
     // Return an observable with a user-facing error message.
-    return throwError(
-      'Something bad happened; please try again later.');
+    return throwError('Something bad happened; please try again later.');
   }
 
   // get all projects

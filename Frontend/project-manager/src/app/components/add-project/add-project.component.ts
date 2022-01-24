@@ -15,6 +15,7 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 export class AddProjectComponent implements OnInit {
 
   projectFormGroup: FormGroup;
+  errorMessage: string;
 
   private selectedFile: File;
   private newFileName: string;
@@ -58,8 +59,10 @@ export class AddProjectComponent implements OnInit {
 
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
+
+    // TODO: Error message handle, if image upload fails don't make a project
   }
-  
+
   // add a new project
   private addNewProject() {
     // create a project image object 
@@ -107,7 +110,7 @@ export class AddProjectComponent implements OnInit {
     const formData = new FormData();
     this.newFileName = this.fileNameGenerator(this.selectedFile.name);
     formData.append('file', this.selectedFile, this.newFileName);
-    this.projectService.uploadImage(formData).subscribe(res => console.log(res), (error) => console.log(error));
+    this.projectService.uploadImage(formData).subscribe(res => console.log(res), (error) => this.errorMessage = error);
   }
 
   // Add a timestamp to the filename
