@@ -12,6 +12,7 @@ import static org.springframework.http.ResponseEntity.status;
 @ControllerAdvice
 public class FileUploadExceptionAdvice {
 
+    // Handle files that are above file size limit
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<UploadResponseMessage> uploadSizeLimitHandler() {
         return status(HttpStatus.PAYLOAD_TOO_LARGE)
