@@ -38,7 +38,7 @@ export class AddProjectComponent implements OnInit {
   get description() { return this.projectFormGroup.get('description'); }
   get images() { return this.projectFormGroup.get('images'); }
 
-  // informs user of required fields and initiates project adding to DB
+  // informs user of required fields and initiates project adding to DB 
   checkForm() {
     // required field check
     if (this.projectFormGroup.invalid) {
