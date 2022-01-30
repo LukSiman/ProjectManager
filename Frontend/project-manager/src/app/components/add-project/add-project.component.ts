@@ -1,7 +1,6 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
@@ -39,32 +38,62 @@ export class AddProjectComponent implements OnInit {
   get images() { return this.projectFormGroup.get('images'); }
 
   // informs user of required fields and initiates project adding to DB 
-  checkForm() {
+  checkForm(): void {
+    // resets the error message is not empty
+    if (this.errorMessage != undefined || this.errorMessage != '') {
+      this.errorMessage = '';
+    }
+
     // required field check
     if (this.projectFormGroup.invalid) {
       this.projectFormGroup.markAllAsTouched();
       return;
     }
 
-    // checks if file was selected
+    this.projectCreationController();
+  }
+
+  private async projectCreationController(): Promise<void> {
     if (this.selectedFile != undefined || this.selectedFile != null) {
-      this.uploadImage();
+      try {
+        // upload the image
+        let imgRes = await this.uploadImage();
+        console.log(imgRes); // TODO: delete later
+
+        // add the project
+        let prjRes = await this.addNewProject();
+        console.log(prjRes); // TODO: delete later
+
+      } catch (error: any) {
+        this.errorMessage = error;
+        return;
+      }
+    } else {
+      // add the project
+      let prjRes = await this.addNewProject();
+      console.log(prjRes); // TODO: delete later
     }
 
-    // add the project
-    this.addNewProject();
+    this.formCleaner();
+  }
 
+  // resets fields of the form
+  private formCleaner(): void {
     // resets the form
     this.projectFormGroup.reset();
 
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
-
-    // TODO: Error message handle, if image upload fails don't make a project
   }
 
+    // manual form reset
+   formCleanerManual(): void {
+      this.formCleaner();
+      this.errorMessage = '';
+    }
+
   // add a new project
-  private addNewProject() {
+  private addNewProject(): Promise<Object> {
     // create a project image object 
     let newProjectImage: ProjectImages = this.handleProjectImages();
 
@@ -80,8 +109,15 @@ export class AddProjectComponent implements OnInit {
     };
 
     // call service to add the project
-    this.projectService.addProject(newProject).subscribe(res => console.log(res));
+    return new Promise((resolve, reject) => {
+      this.projectService.addProject(newProject).subscribe(response => {
+        resolve(response);
+      }, (error) => {
+        reject(error);
+      });
+    });
   }
+
 
   // create and return a new ProjectImage object
   private handleProjectImages(): ProjectImages {
@@ -101,16 +137,23 @@ export class AddProjectComponent implements OnInit {
   }
 
   // selects the file
-  onFileSelected(event: any) {
+  onFileSelected(event: any): void {
     this.selectedFile = <File>event.target.files[0];
   }
 
   // handles image uploading
-  private uploadImage() {
+  private uploadImage(): Promise<Object> {
     const formData = new FormData();
     this.newFileName = this.fileNameGenerator(this.selectedFile.name);
     formData.append('file', this.selectedFile, this.newFileName);
-    this.projectService.uploadImage(formData).subscribe(res => console.log(res), (error) => this.errorMessage = error);
+
+    return new Promise((resolve, reject) => {
+      this.projectService.uploadImage(formData).subscribe(response => {
+        resolve(response);
+      }, (error) => {
+        reject(error);
+      });
+    });
   }
 
   // Add a timestamp to the filename
