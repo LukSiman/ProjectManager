@@ -11,6 +11,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EditProjectComponent } from './components/edit-project/edit-project.component';
 
 const routes: Routes = [
   { path: 'newProject', component: AddProjectComponent },
@@ -27,7 +28,8 @@ const routes: Routes = [
     ProjectListComponent,
     SortComponent,
     NavbarComponent,
-    AddProjectComponent
+    AddProjectComponent,
+    EditProjectComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

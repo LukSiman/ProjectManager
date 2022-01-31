@@ -55,6 +55,8 @@ ID SELECTORS
   font-size: 1.5em;
 }
 
+
+
 /**********************************************
 CLASS SELECTORS
 **********************************************/
@@ -81,10 +83,17 @@ CLASS SELECTORS
   max-height: 14em;
 }
 
-.card-footer{
+.card-footer {
   font-size: 1em;
 }
 
+.cardBlur {
+  filter: blur(10px);
+}
+
+.blur-button{
+  width: 5em;
+}
 
 /**********************************************
 MEDIA 

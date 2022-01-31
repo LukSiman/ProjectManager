@@ -3,7 +3,7 @@
 
 <div class="row" *ngIf="projects.length > 0">
    <div class="col-md-3 mb-3" *ngFor='let tempProject of projects'>
-      <div class="card h-100 bg-light border-dark border border-2">
+      <div class="card h-100 bg-light border-dark border border-2" id="projectCard" (click)="blurCard()">
          <img src="{{tempProject.images[0]['imageUrl']}}" alt="Project image"
             class="card-img-top p-1 border-bottom border-2 border-secondary">
          <div class="card-body">
@@ -19,7 +19,11 @@
                <ng-template #zeroBlock>Not finished</ng-template>
             </ng-template>
          </div>
-
+         <div class="d-flex justify-content-around">
+            <button class="btn btn-secondary blur-button">Edit</button>
+            <button class="btn btn-danger blur-button">Delete</button>
+         </div>
+         
       </div>
    </div>
 </div>

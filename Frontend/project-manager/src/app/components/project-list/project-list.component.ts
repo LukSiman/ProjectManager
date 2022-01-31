@@ -41,7 +41,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   // call the search or all method depending on if keyword exists
-  displayProjects() {
+  displayProjects(): void {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
@@ -52,7 +52,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   // Copies objects from array in service to projects array if project name includes the keyword
-  displaySearchProjectsSorted() {
+  private displaySearchProjectsSorted(): void {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
     if (this.previousKeyword != keyword) {
@@ -72,7 +72,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   // Copies objects from array in service to projects array with different sorting
-  displayAllProjectsSorted() {
+  private displayAllProjectsSorted(): void {
     // gets the value for sorting from url
     const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
 
@@ -84,7 +84,7 @@ export class ProjectListComponent implements OnInit {
       .subscribe(this.processResult());
   }
 
-  processResult() {
+  private processResult() {
     return (data: any) => {
       this.projects = data._embedded.projects;
       this.thePageNumber = data.page.number + 1;
@@ -93,9 +93,13 @@ export class ProjectListComponent implements OnInit {
     }
   }
 
-
   // navigates to component for adding new projects
-  addNewProjectNavigation() {
+  addNewProjectNavigation(): void {
     this.router.navigateByUrl('/newProject');
+  }
+
+  blurCard(): void {
+    let element = document.getElementById('projectCard');
+    element?.classList.toggle('cardBlur');
   }
 }
