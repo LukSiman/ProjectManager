@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Project } from 'src/app/entities/project';
@@ -31,6 +31,8 @@ export class ProjectListComponent implements OnInit {
   thePageNumber: number = 1;
   thePageSize: number = 8;
   theTotalElements: number = 0;
+
+  private previousCard: HTMLElement;
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute, private router: Router) { }
 
@@ -98,8 +100,32 @@ export class ProjectListComponent implements OnInit {
     this.router.navigateByUrl('/newProject');
   }
 
-  blurCard(): void {
-    let element = document.getElementById('projectCard');
-    element?.classList.toggle('cardBlur');
+  // click eventListener to blur the cards
+  @HostListener('click', ['$event.target'])
+  onClick(currentCard: HTMLElement): void {
+    // removes blur and buttons from previous card 
+    if (this.previousCard != currentCard) {
+      let bluredCards = document.querySelectorAll('.cardBlur');
+      bluredCards.forEach((card) => {
+        card.classList.remove('cardBlur');
+        card.lastElementChild?.classList.add('d-none');
+      });
+    }   
+
+    // TODO: buttons are not blured
+
+    // ensures that only the correct parent element gets manipulated
+    let parent = currentCard.parentElement;
+    let biggerParent = currentCard.parentElement?.parentElement;
+
+    if (parent?.id == 'cardParent') {
+      parent.classList.toggle('cardBlur');
+      parent.lastElementChild?.classList.toggle('d-none');
+    } else if (biggerParent?.id) {
+      biggerParent.classList.toggle('cardBlur');
+      biggerParent.lastElementChild?.classList.toggle('d-none');
+    }
+
+    this.previousCard = currentCard;
   }
 }

@@ -55,7 +55,17 @@ ID SELECTORS
   font-size: 1.5em;
 }
 
+#cardParent:hover {
+  transform: scale(1.02)
+}
 
+#cardParent:hover {
+  transform: scale(1.02)
+}
+
+#cardButtons{
+  
+}
 
 /**********************************************
 CLASS SELECTORS
@@ -88,7 +98,7 @@ CLASS SELECTORS
 }
 
 .cardBlur {
-  filter: blur(10px);
+  filter: blur(6px);
 }
 
 .blur-button{
