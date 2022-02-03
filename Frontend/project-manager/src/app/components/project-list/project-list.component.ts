@@ -100,32 +100,38 @@ export class ProjectListComponent implements OnInit {
     this.router.navigateByUrl('/newProject');
   }
 
-  // click eventListener to blur the cards
+  // click eventListener to blur the cards and show buttons
   @HostListener('click', ['$event.target'])
-  onClick(currentCard: HTMLElement): void {
-    // removes blur and buttons from previous card 
-    if (this.previousCard != currentCard) {
-      let bluredCards = document.querySelectorAll('.cardBlur');
-      bluredCards.forEach((card) => {
-        card.classList.remove('cardBlur');
-        card.lastElementChild?.classList.add('d-none');
-      });
-    }   
+  onClick(currentElement: HTMLElement): void {
+    let currentCard: HTMLElement = currentElement;
 
-    // TODO: buttons are not blured
-
-    // ensures that only the correct parent element gets manipulated
-    let parent = currentCard.parentElement;
-    let biggerParent = currentCard.parentElement?.parentElement;
-
-    if (parent?.id == 'cardParent') {
-      parent.classList.toggle('cardBlur');
-      parent.lastElementChild?.classList.toggle('d-none');
-    } else if (biggerParent?.id) {
-      biggerParent.classList.toggle('cardBlur');
-      biggerParent.lastElementChild?.classList.toggle('d-none');
+    // makes sure that only the correct card is being manipulated
+    if (currentElement.parentElement?.id == 'cardParent') {
+      currentCard = currentElement.parentElement;
+    } else if (currentElement.parentElement?.parentElement?.id == 'cardParent') {
+      currentCard = currentElement.parentElement.parentElement;
+    } else {
+      return;
     }
 
+    // removes blur and buttons from previous card 
+    if (this.previousCard != currentCard) {
+      let bluredCards = document.body.querySelectorAll('#cardParent');
+      bluredCards.forEach((card) => {
+        card.lastElementChild?.classList.add('d-none');
+      });      
+    }   
+
+    // toggles the blur effect
+    currentCard.lastElementChild?.classList.toggle('d-none');
+
     this.previousCard = currentCard;
+  }
+
+
+  //TODO: finish this function
+  // deletes the selected project
+  deleteProject(): void{
+    alert('Are you sure you want to delete this project?');
   }
 }

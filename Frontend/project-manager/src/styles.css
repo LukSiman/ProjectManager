@@ -59,12 +59,14 @@ ID SELECTORS
   transform: scale(1.02)
 }
 
-#cardParent:hover {
-  transform: scale(1.02)
+#cardButtons{
+  width: 100%; 
 }
 
-#cardButtons{
-  
+#blurBackground{
+  backdrop-filter: blur(6px);
+  width: 100%;
+  height: 100%;
 }
 
 /**********************************************
@@ -97,12 +99,9 @@ CLASS SELECTORS
   font-size: 1em;
 }
 
-.cardBlur {
-  filter: blur(6px);
-}
-
 .blur-button{
-  width: 5em;
+  width: 5em;  
+  height: 3em;
 }
 
 /**********************************************
