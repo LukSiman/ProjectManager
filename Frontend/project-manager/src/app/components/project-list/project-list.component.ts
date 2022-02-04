@@ -1,6 +1,7 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
@@ -34,7 +35,7 @@ export class ProjectListComponent implements OnInit {
 
   private previousCard: HTMLElement;
 
-  constructor(private projectService: ProjectService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -119,8 +120,8 @@ export class ProjectListComponent implements OnInit {
       let bluredCards = document.body.querySelectorAll('#cardParent');
       bluredCards.forEach((card) => {
         card.lastElementChild?.classList.add('d-none');
-      });      
-    }   
+      });
+    }
 
     // toggles the blur effect
     currentCard.lastElementChild?.classList.toggle('d-none');
@@ -129,9 +130,39 @@ export class ProjectListComponent implements OnInit {
   }
 
 
+
   //TODO: finish this function
   // deletes the selected project
-  deleteProject(): void{
-    alert('Are you sure you want to delete this project?');
+  deleteProject(): void {
+    const modalRef = this.modalService.open(NgbdModalContent, { centered: true });
+    modalRef.componentInstance.name = 'World';
   }
 }
+
+@Component({
+  selector: 'ngbd-modal-content',
+  template: `
+    <div class="modal-header">
+      <h4 class="modal-title fs-4 fw-bold">Project deletion</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="fw-bold">Are you sure you want to delete this project?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary fw-bold" (click)="activeModal.dismiss('cancel click')">Cancel</button>
+      <button type="button" class="btn btn-danger fw-bold" (click)="activeModal.close('Ok click')">Yes, DELETE this!</button>
+    </div>
+  `
+})
+
+export class NgbdModalContent {
+  @Input() name: any;
+
+  constructor(public activeModal: NgbActiveModal) { }
+}
+
+
+
