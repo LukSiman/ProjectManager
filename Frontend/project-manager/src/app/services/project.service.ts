@@ -9,7 +9,6 @@ import { Project } from '../entities/project';
   providedIn: 'root'
 })
 export class ProjectService {
-
   private baseUrl = environment.springUrl + "/projects";
 
   httpOptions = {
@@ -57,6 +56,12 @@ export class ProjectService {
   addProject(project: Project): Observable<Project> {
     const postUrl = `${this.baseUrl}/save`;
     return this.httpClient.post<getProject>(postUrl, project, this.httpOptions);
+  }
+
+  // delete the project from DB
+  deleteProject(id: number): Observable<string> {
+    const deleteUrl = `${this.baseUrl}/${id}`;
+    return this.httpClient.delete(deleteUrl, { responseType: 'text'});
   }
 
   // uploads the selected file to api

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectService } from './services/project.service';
 import { Routes, RouterModule } from '@angular/router';
@@ -12,8 +12,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditProjectComponent } from './components/edit-project/edit-project.component';
+import { DeletionBoxComponent } from './components/deletion-box/deletion-box.component';
 
 const routes: Routes = [
+  { path: 'edit', component: EditProjectComponent },
   { path: 'newProject', component: AddProjectComponent },
   { path: 'projects/:sort', component: ProjectListComponent },
   { path: 'search/:keyword/:sort', component: ProjectListComponent },
@@ -29,7 +31,8 @@ const routes: Routes = [
     SortComponent,
     NavbarComponent,
     AddProjectComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    DeletionBoxComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -39,7 +42,7 @@ const routes: Routes = [
     FontAwesomeModule,
     ReactiveFormsModule
   ],
-  providers: [ProjectService],
+  providers: [ProjectService, NgbActiveModal, DeletionBoxComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

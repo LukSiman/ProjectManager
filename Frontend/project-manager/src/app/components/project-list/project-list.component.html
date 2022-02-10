@@ -1,8 +1,7 @@
 <!-- Sort bar -->
 <app-sort></app-sort>
 
-<div class='row' *ngIf='projects.length > 0' id='cardContainer'>
-   <!-- TODO: Remove cardContainer id if not using -->
+<div class='row' *ngIf='projects.length > 0'>
    <div class='col-md-3 mb-3' *ngFor='let tempProject of projects'>
       <div class='card h-100 bg-light border-dark border border-2 position-relative' id='cardParent'>
          <img src="{{tempProject.images[0]['imageUrl']}}" alt='Project image'
@@ -24,12 +23,11 @@
          <div class='position-absolute top-50 start-50 translate-middle d-none' id='blurBackground'>
             <div class='d-flex justify-content-around position-absolute top-50 start-50 translate-middle'
                id='cardButtons'>
-               <button class='btn btn-secondary blur-button border border-dark border-2'>Edit</button>
+               <button class='btn btn-secondary blur-button border border-dark border-2' routerLink='/edit'>Edit</button>
                <button class='btn btn-danger blur-button border border-dark border-2'
-                  (click)='deleteProject()'>Delete</button>
+                  (click)='deletionConfirmation(tempProject.id)'>Delete</button>
             </div>
          </div>
-
       </div>
    </div>
 </div>
