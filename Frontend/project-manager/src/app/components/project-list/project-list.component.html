@@ -23,7 +23,7 @@
          <div class='position-absolute top-50 start-50 translate-middle d-none' id='blurBackground'>
             <div class='d-flex justify-content-around position-absolute top-50 start-50 translate-middle'
                id='cardButtons'>
-               <button class='btn btn-secondary blur-button border border-dark border-2' routerLink='/edit'>Edit</button>
+              <button class='btn btn-secondary blur-button border border-dark border-2' routerLink='/edit/{{tempProject.id}}'>Edit</button>
                <button class='btn btn-danger blur-button border border-dark border-2'
                   (click)='deletionConfirmation(tempProject.id)'>Delete</button>
             </div>

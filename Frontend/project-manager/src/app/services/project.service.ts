@@ -22,6 +22,12 @@ export class ProjectService {
     return this.getProjects(this.baseUrl);
   }
 
+  // Receive a single JSON object by id
+  getSingleProject(id: number): Observable<Project>{
+    const getUrl = `${this.baseUrl}/${id}`;
+    return this.httpClient.get<getProject>(getUrl);
+  }
+
   // Receives JSON objects and maps them to Project array with Pagination
   getProjectListPaginate(thePage: number, thePageSize: number): Observable<getJSONProjects> {
     const searchUrl = `${this.baseUrl}/search/findByOrderByNameAsc?` + `&page=${thePage}&size=${thePageSize}`;
@@ -62,6 +68,12 @@ export class ProjectService {
   deleteProject(id: number): Observable<string> {
     const deleteUrl = `${this.baseUrl}/${id}`;
     return this.httpClient.delete(deleteUrl, { responseType: 'text'});
+  }
+
+  updateProject(project: Project): Observable<Project>{
+    const projectId = project.id;
+    const putUrl = `${this.baseUrl}/${projectId}`;
+    return this.httpClient.put<getProject>(putUrl, project);
   }
 
   // uploads the selected file to api

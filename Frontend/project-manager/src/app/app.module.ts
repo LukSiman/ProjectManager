@@ -15,7 +15,7 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
 import { DeletionBoxComponent } from './components/deletion-box/deletion-box.component';
 
 const routes: Routes = [
-  { path: 'edit', component: EditProjectComponent },
+  { path: 'edit/:id', component: EditProjectComponent },
   { path: 'newProject', component: AddProjectComponent },
   { path: 'projects/:sort', component: ProjectListComponent },
   { path: 'search/:keyword/:sort', component: ProjectListComponent },
