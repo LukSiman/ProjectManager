@@ -9,11 +9,13 @@ import { ProjectService } from 'src/app/services/project.service';
 })
 export class DeletionBoxComponent {
 
+  // holds the project ID
   @Input() deleteID: number;
 
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
 
-  deleteProjectConfirm() {
+  // deletes the selected project and reloads page
+  deleteProjectConfirm(): void {
     this.projectService.deleteProject(this.deleteID).subscribe(res => console.log(res));
     window.location.reload();
   }

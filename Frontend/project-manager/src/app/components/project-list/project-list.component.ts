@@ -37,7 +37,7 @@ export class ProjectListComponent implements OnInit {
   private previousCard: HTMLElement;
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: NgbModal ) { }
+    private router: Router, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -54,6 +54,19 @@ export class ProjectListComponent implements OnInit {
     } else {
       this.displayAllProjectsSorted();
     }
+  }
+
+  // Copies objects from array in service to projects array with different sorting
+  private displayAllProjectsSorted(): void {
+    // gets the value for sorting from url
+    const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
+
+    // checks the links map to see which sorting method to use acording to the sorting value
+    const sortUrl: string = this.linksMap.get(sortValue)!;
+
+    // send page number, size and sorting url to service for it to get data from the backend
+    this.projectService.getProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl)
+      .subscribe(this.processResult());
   }
 
   // Copies objects from array in service to projects array if project name includes the keyword
@@ -73,19 +86,6 @@ export class ProjectListComponent implements OnInit {
     const sortUrl: string = this.linksMap.get(sortValue)!;
 
     this.projectService.searchProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl)
-      .subscribe(this.processResult());
-  }
-
-  // Copies objects from array in service to projects array with different sorting
-  private displayAllProjectsSorted(): void {
-    // gets the value for sorting from url
-    const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
-
-    // checks the links map to see which sorting method to use acording to the sorting value
-    const sortUrl: string = this.linksMap.get(sortValue)!;
-
-    // send page number, size and sorting url to service for it to get data from the backend
-    this.projectService.getProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl)
       .subscribe(this.processResult());
   }
 

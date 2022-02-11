@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project } from 'src/app/entities/project';
@@ -19,7 +18,7 @@ export class AddProjectComponent implements OnInit {
   private selectedFile: File;
   private newFileName: string;
 
-  constructor(private formBuilder: FormBuilder, private projectService: ProjectService, private http: HttpClient) { }
+  constructor(private formBuilder: FormBuilder, private projectService: ProjectService) { }
 
   ngOnInit(): void {
     this.projectFormGroup = this.formBuilder.group({
@@ -163,28 +162,4 @@ export class AddProjectComponent implements OnInit {
     fileName = fileName.substring(0, fileName.lastIndexOf('.'));
     return `${fileName}${timeStamp}.png`;
   }
-
-
-
-
-  /* private resId: number;
- private resName: string;
- private resStartDate: Date;
- private resEndDate: Date;
- private resLength: number;
- private resDescription: string;
- private resImages: [];*/
-
-  /*processResult() {
-  return (data: any) => {
-    this.resId = data.id,
-      this.resName = data.name,
-      this.resStartDate = data.startDate,
-      this.resEndDate = data.endDate,
-      this.resLength = data.length,
-      this.resDescription = data.description,
-      this.resImages = data.images;
-  }
-}*/
-
 }
