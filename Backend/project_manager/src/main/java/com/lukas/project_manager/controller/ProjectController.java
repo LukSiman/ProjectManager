@@ -59,16 +59,16 @@ public class ProjectController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO, @PathVariable int id) {
+    public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
 
         // convert DTO to entity
         Project projectRequest = modelMapper.map(projectDTO, Project.class);
 
-        Project project = projectService.updateProject(projectRequest, id);
+        Project project = projectService.updateProject(projectRequest);
 
         // convert entity to DTO
         ProjectDTO projectResponse = modelMapper.map(project, ProjectDTO.class);
 
-        return new ResponseEntity<>(projectResponse, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(projectResponse, HttpStatus.OK);
     }
 }

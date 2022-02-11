@@ -45,8 +45,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public Project updateProject(Project project, int id) {
-        Project projectToUpdate = projectRepository.getById(id);
+    public Project updateProject(Project project) {
+        Project projectToUpdate = projectRepository.getById(project.getId());
 
         boolean dateChange = false;
 

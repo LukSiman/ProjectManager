@@ -8,7 +8,7 @@ public interface ProjectService {
 
     Project saveProject(Project project);
 
-    Project updateProject(Project project, int id);
+    Project updateProject(Project project);
 
     String deleteProject(int id);
 }
