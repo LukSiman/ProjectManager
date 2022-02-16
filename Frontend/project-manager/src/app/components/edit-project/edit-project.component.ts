@@ -14,6 +14,7 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 export class EditProjectComponent implements OnInit {
 
   project: Project = new Project();
+  projectImages: ProjectImages[] = [];
   projectFormGroup: FormGroup;
   errorMessage: string;
 
@@ -61,7 +62,9 @@ export class EditProjectComponent implements OnInit {
     this.startDate?.setValue(`${this.project.startDate}`);
     this.endDate?.setValue(`${this.project.endDate}`);
     this.description?.setValue(`${this.project.description}`);
-    // this.images?.setValue();
+    // this.images?.setValue(`${this.project.images}`);
+    console.log(this.project.images); //TODO: DELETE LATER
+    console.log(this.projectImages);
   }
 
   get name() { return this.projectFormGroup.get('name'); }
@@ -87,14 +90,37 @@ export class EditProjectComponent implements OnInit {
     this.updateProject();
   }
 
-  private updateProject(): void{
+  private updateProject(): void {
     this.project.name = this.name?.value,
-    this.project.startDate = this.startDate?.value,
-    this.project.endDate = this.endDate?.value,
-    this.project.description = this.description?.value,
-    // this.project.images = [newProjectImage]
+      this.project.startDate = this.startDate?.value,
+      this.project.endDate = this.endDate?.value,
+      this.project.description = this.description?.value,
+      // this.project.images = [newProjectImage]
 
-    this.projectService.updateProject(this.project).subscribe(res => console.log(res));
+      this.projectService.updateProject(this.project).subscribe(res => console.log(res));
+
+    // TODO: How to handle images
+    // Show current
+    // Remove images
+    // Add new images
+
+    // shows a message that changes have been save
+    this.changesMessage(); 
+  }
+
+  // shows a message and fades out
+  private changesMessage(): void{
+    let updateConfirmation = document.getElementById('changes');
+    updateConfirmation?.classList.toggle('d-none');
+
+    setTimeout(() => {
+      updateConfirmation?.classList.toggle('fade-out');      
+    }, 2000);
+
+    setTimeout(() => {
+      updateConfirmation?.classList.add('d-none');    
+      updateConfirmation?.classList.remove('fade-out');    
+    }, 3000);   
   }
 
   private async projectCreationController(): Promise<void> {
@@ -194,6 +220,7 @@ export class EditProjectComponent implements OnInit {
     this.project.length = responseProject.length;
     this.project.description = responseProject.description;
     this.project.images = responseProject.images;
+    this.projectImages = responseProject.images;
   }
 
   // handles image uploading

@@ -41,6 +41,20 @@
         </div>
     </div>
 
+
+
+
+    <div class='mb-3'>
+        <label for='projectImages' class='form-label'>Project images:</label>
+        <br>
+        <div *ngFor='let tempImage of projectImages'>
+            <img src="{{ tempImage['imageUrl'] }}" alt='Project image' class='img-thumbnail'>
+        </div>
+    </div>
+
+
+
+
     <div class='mb-3'>
         <label for='projectImageUpload' class='form-label'>Image upload:</label>
         <input formControlName='images' class='form-control' type='file' id='projectImageUpload'
@@ -59,5 +73,9 @@
         <button type='sumbit' class='btn btn-secondary'>Save Changes</button>
         <button type='button' class='btn btn-danger' (click)='formCleanerManual()'>Reset</button>
         <button type='button' class='btn btn-primary' routerLink='/projects'>Go back</button>
+    </div>
+
+    <div id='changes' class='mt-3 d-none'>
+        <p>Changes saved</p>
     </div>
 </form>

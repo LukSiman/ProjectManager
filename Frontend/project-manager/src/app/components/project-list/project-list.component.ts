@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/entities/project';
-import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
 import { DeletionBoxComponent } from '../deletion-box/deletion-box.component';
 
@@ -16,7 +15,6 @@ export class ProjectListComponent implements OnInit {
   plusIcon = faPlus;
 
   projects: Project[] = [];
-  images: ProjectImages[] = [];
 
   // properties for searching
   searchMode: boolean = false;
