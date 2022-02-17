@@ -56,7 +56,7 @@ ID SELECTORS
 }
 
 #cardParent:hover {
-  transform: scale(1.02)
+  transform: scale(1.02);
 }
 
 #cardButtons{
@@ -107,6 +107,28 @@ CLASS SELECTORS
 .fade-out{
   transition: 1s;
   opacity: 0;
+}
+
+.thumbnailImage{
+  height: 200px;
+}
+
+.thumbnailImage:hover{
+  transform: scale(1.05);
+}
+
+.deleteImg{
+  border-radius: 20px;
+  border: solid 3px;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  line-height: 35px;
+  font-size: 30px;
+}
+
+.blurImage{
+  filter: blur(6px);
 }
 
 /**********************************************

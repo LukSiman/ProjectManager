@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { faPlusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
@@ -12,11 +13,11 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
   styleUrls: ['./edit-project.component.css']
 })
 export class EditProjectComponent implements OnInit {
-
   project: Project = new Project();
   projectImages: ProjectImages[] = [];
   projectFormGroup: FormGroup;
   errorMessage: string;
+  closeBtn = faTimes;
 
   private selectedFile: File;
   private newFileName: string;
@@ -63,8 +64,7 @@ export class EditProjectComponent implements OnInit {
     this.endDate?.setValue(`${this.project.endDate}`);
     this.description?.setValue(`${this.project.description}`);
     // this.images?.setValue(`${this.project.images}`);
-    console.log(this.project.images); //TODO: DELETE LATER
-    console.log(this.projectImages);
+    console.log(this.projectImages);//TODO: DELETE LATER
   }
 
   get name() { return this.projectFormGroup.get('name'); }
@@ -91,36 +91,77 @@ export class EditProjectComponent implements OnInit {
   }
 
   private updateProject(): void {
-    this.project.name = this.name?.value,
-      this.project.startDate = this.startDate?.value,
-      this.project.endDate = this.endDate?.value,
-      this.project.description = this.description?.value,
-      // this.project.images = [newProjectImage]
+    this.project.name = this.name?.value;
+    this.project.startDate = this.startDate?.value;
 
-      this.projectService.updateProject(this.project).subscribe(res => console.log(res));
+    if (this.endDate?.value != 'null') {
+      this.project.endDate = this.endDate?.value;
+    }
+
+    this.project.description = this.description?.value;
+    // this.project.images = [newProjectImage]
+
+    this.projectService.updateProject(this.project).subscribe(res => console.log(res));
 
     // TODO: How to handle images
-    // Show current
     // Remove images
     // Add new images
 
     // shows a message that changes have been save
-    this.changesMessage(); 
+    this.changesMessage();
   }
 
   // shows a message and fades out
-  private changesMessage(): void{
+  private changesMessage(): void {
     let updateConfirmation = document.getElementById('changes');
     updateConfirmation?.classList.toggle('d-none');
 
     setTimeout(() => {
-      updateConfirmation?.classList.toggle('fade-out');      
+      updateConfirmation?.classList.toggle('fade-out');
     }, 2000);
 
     setTimeout(() => {
-      updateConfirmation?.classList.add('d-none');    
-      updateConfirmation?.classList.remove('fade-out');    
-    }, 3000);   
+      updateConfirmation?.classList.add('d-none');
+      updateConfirmation?.classList.remove('fade-out');
+    }, 3000);
+  }
+
+  // removes the clicked image
+  removeImage(): void {
+    let thumb = document.getElementById('projectImage');
+    thumb?.classList.toggle('blurImage');
+  }
+
+  // // click eventListener to blur the cards and show buttons
+  // @HostListener('click', ['$event.target'])
+  // onClick(currentElement: HTMLElement): void {
+  //   let currentCard: HTMLElement = currentElement;
+
+  //   // makes sure that only the correct card is being manipulated
+  //   if (currentElement.parentElement?.id == 'cardParent') {
+  //     currentCard = currentElement.parentElement;
+  //   } else if (currentElement.parentElement?.parentElement?.id == 'cardParent') {
+  //     currentCard = currentElement.parentElement.parentElement;
+  //   } else {
+  //     return;
+  //   }
+
+  //   // removes blur and buttons from previous card 
+  //   if (this.previousCard != currentCard) {
+  //     let bluredCards = document.body.querySelectorAll('#cardParent');
+  //     bluredCards.forEach((card) => {
+  //       card.lastElementChild?.classList.add('d-none');
+  //     });
+  //   }
+
+  //   // toggles the blur effect
+  //   currentCard.lastElementChild?.classList.toggle('d-none');
+
+  //   this.previousCard = currentCard;
+  // }
+
+  displayRemoval(): void {
+
   }
 
   private async projectCreationController(): Promise<void> {
