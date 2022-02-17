@@ -12,8 +12,6 @@ import { DeletionBoxComponent } from '../deletion-box/deletion-box.component';
   styleUrls: ['./project-list.component.css']
 })
 export class ProjectListComponent implements OnInit {
-  plusIcon = faPlus;
-
   projects: Project[] = [];
 
   // properties for searching
