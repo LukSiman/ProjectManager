@@ -21,6 +21,7 @@ export class EditProjectComponent implements OnInit {
 
   private selectedFile: File;
   private newFileName: string;
+  private previousImage: HTMLElement;
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
@@ -65,6 +66,7 @@ export class EditProjectComponent implements OnInit {
     this.description?.setValue(`${this.project.description}`);
     // this.images?.setValue(`${this.project.images}`);
     console.log(this.projectImages);//TODO: DELETE LATER
+    console.log(this.project);
   }
 
   get name() { return this.projectFormGroup.get('name'); }
@@ -126,42 +128,37 @@ export class EditProjectComponent implements OnInit {
     }, 3000);
   }
 
-  // removes the clicked image
-  removeImage(): void {
-    let thumb = document.getElementById('projectImage');
-    thumb?.classList.toggle('blurImage');
+  // click eventListener to blur the image and show deletion button
+  @HostListener('click', ['$event.target'])
+  onClick(currentElement: HTMLElement): void {
+    let currentImage: HTMLElement = currentElement;
+
+    //  making sure onyl the correct element is being manipulated
+    if (currentElement.parentElement?.id == 'projectImage') {
+      currentImage = currentElement.parentElement;
+    } else {
+      return;
+    }
+
+    // if this is a different image than before, unblur everything else
+    if (this.previousImage != currentImage) {
+      let blurredImages = document.body.querySelectorAll('#projectImage');
+      blurredImages.forEach((image) => {
+        image.firstElementChild?.classList.remove('blurImage');
+        image.lastElementChild?.classList.add('d-none');
+      });
+    }
+
+    // blur image and unhide the deletion button
+    currentImage.firstElementChild?.classList.toggle('blurImage');
+    currentImage.lastElementChild?.classList.toggle('d-none');
+
+    this.previousImage = currentImage;
   }
 
-  // // click eventListener to blur the cards and show buttons
-  // @HostListener('click', ['$event.target'])
-  // onClick(currentElement: HTMLElement): void {
-  //   let currentCard: HTMLElement = currentElement;
-
-  //   // makes sure that only the correct card is being manipulated
-  //   if (currentElement.parentElement?.id == 'cardParent') {
-  //     currentCard = currentElement.parentElement;
-  //   } else if (currentElement.parentElement?.parentElement?.id == 'cardParent') {
-  //     currentCard = currentElement.parentElement.parentElement;
-  //   } else {
-  //     return;
-  //   }
-
-  //   // removes blur and buttons from previous card 
-  //   if (this.previousCard != currentCard) {
-  //     let bluredCards = document.body.querySelectorAll('#cardParent');
-  //     bluredCards.forEach((card) => {
-  //       card.lastElementChild?.classList.add('d-none');
-  //     });
-  //   }
-
-  //   // toggles the blur effect
-  //   currentCard.lastElementChild?.classList.toggle('d-none');
-
-  //   this.previousCard = currentCard;
-  // }
-
-  displayRemoval(): void {
-
+  removeImage(id: number): void {
+    console.log(`buts for id ${id}`);
+    this.proj
   }
 
   private async projectCreationController(): Promise<void> {

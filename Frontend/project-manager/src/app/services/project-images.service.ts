@@ -14,7 +14,7 @@ export class ProjectImagesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // Receives JSON objects for the images and maps them to the array
+  // Receives JSON objects for the images and maps them to the array //TODO: Remove later
   getImagesById(projectId: number): Observable<ProjectImages[]> {
     const searchImageUrl = `${this.imagesUrl}/search/findByProjectId?id=${projectId}`;
 
@@ -22,6 +22,12 @@ export class ProjectImagesService {
       map(response => response._embedded.images)
     );
   }
+
+  // removes an image from the project
+  removeImage(od: number): void {
+    
+  }
+
 }
 
 interface getJSONImages {

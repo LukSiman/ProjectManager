@@ -118,6 +118,7 @@ CLASS SELECTORS
 }
 
 .deleteImg{
+  color: rgb(233, 230, 230);
   border-radius: 20px;
   border: solid 3px;
   height: 40px;

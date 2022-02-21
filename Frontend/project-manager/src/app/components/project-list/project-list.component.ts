@@ -1,6 +1,5 @@
 import { Component, HostListener, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/entities/project';
 import { ProjectService } from 'src/app/services/project.service';
@@ -62,7 +61,10 @@ export class ProjectListComponent implements OnInit {
 
     // send page number, size and sorting url to service for it to get data from the backend
     this.projectService.getProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl)
-      .subscribe(this.processResult());
+      .subscribe(response => {
+        this.processResult(response);
+        this.populateImages();
+      });
   }
 
   // Copies objects from array in service to projects array if project name includes the keyword
@@ -82,16 +84,27 @@ export class ProjectListComponent implements OnInit {
     const sortUrl: string = this.linksMap.get(sortValue)!;
 
     this.projectService.searchProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl)
-      .subscribe(this.processResult());
+      .subscribe(response => {
+        this.processResult(response);
+        this.populateImages();
+      });
   }
 
-  private processResult() {
-    return (data: any) => {
-      this.projects = data._embedded.projects;
-      this.thePageNumber = data.page.number + 1;
-      this.thePageSize = data.page.size;
-      this.theTotalElements = data.page.totalElements;
-    }
+  // add images to the projects
+  private populateImages(): void {
+    this.projects.forEach(project => {
+      this.projectService.getSingleProject(project.id).subscribe(response => {
+        project.images = response.images;
+      });
+    });
+  }
+
+  // processes the results from server
+  private processResult(response: any): void {
+    this.projects = response._embedded.projects;
+    this.thePageNumber = response.page.number + 1;
+    this.thePageSize = response.page.size;
+    this.theTotalElements = response.page.totalElements;
   }
 
   // navigates to component for adding new projects

@@ -33,8 +33,8 @@ INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VAL
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`) VALUES ('1 day project', '2021-12-22', '2021-12-23', DATEDIFF(end_date, start_date), '1 day app for testing purposes.');
 
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder1.jpg', 1);
-#INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 1);
-#INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 1);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 1);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 1);
 #INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 1);
 #INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder5.jpg', 1);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 2);
@@ -63,6 +63,7 @@ INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projec
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder1.jpg', 25);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 26);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 27);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 27);
 
 
 SELECT * FROM `project-manager`.projects;
