@@ -1,6 +1,7 @@
 package com.lukas.project_manager.service;
 
 import com.lukas.project_manager.dao.ProjectRepository;
+import com.lukas.project_manager.dao.ProjectImagesRepository;
 import com.lukas.project_manager.entities.Project;
 import com.lukas.project_manager.entities.ProjectImages;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    private final ProjectImagesRepository projectImagesRepository;
+
+    @Autowired
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectImagesRepository projectImagesRepository) {
         this.projectRepository = projectRepository;
+        this.projectImagesRepository = projectImagesRepository;
     }
 
     @Override
@@ -89,6 +94,15 @@ public class ProjectServiceImpl implements ProjectService {
         String projectName = projectRepository.getById(id).getName();
         projectRepository.deleteById(id);
         return projectName + " has been deleted";
+    }
+
+    @Override
+    public String deleteProjectImage(int id, int imgID) {
+        String projectImageName = projectImagesRepository.getById(imgID).getImageUrl();
+        projectImagesRepository.deleteById(imgID);
+
+        //TODO: MOVE to projectimageservice?
+        return projectImageName + " has been deleted";
     }
 
     // helper method to calculate day difference between dates

@@ -1,4 +1,4 @@
-/*package com.lukas.project_manager.dao;
+package com.lukas.project_manager.dao;
 
 import com.lukas.project_manager.entities.ProjectImages;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +12,3 @@ public interface ProjectImagesRepository extends JpaRepository<ProjectImages, In
 
 
 }
-*/
