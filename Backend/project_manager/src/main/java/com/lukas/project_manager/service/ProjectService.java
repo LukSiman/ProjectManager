@@ -11,6 +11,4 @@ public interface ProjectService {
     Project updateProject(Project project);
 
     String deleteProject(int id);
-
-    String deleteProjectImage(int id, int imgID);
 }

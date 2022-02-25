@@ -1,7 +1,6 @@
 package com.lukas.project_manager.service;
 
 import com.lukas.project_manager.dao.ProjectRepository;
-import com.lukas.project_manager.dao.ProjectImagesRepository;
 import com.lukas.project_manager.entities.Project;
 import com.lukas.project_manager.entities.ProjectImages;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,12 +20,8 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 
     @Autowired
-    private final ProjectImagesRepository projectImagesRepository;
-
-    @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectImagesRepository projectImagesRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-        this.projectImagesRepository = projectImagesRepository;
     }
 
     @Override
@@ -53,22 +49,27 @@ public class ProjectServiceImpl implements ProjectService {
     public Project updateProject(Project project) {
         Project projectToUpdate = projectRepository.getById(project.getId());
 
+        // checks if there was a date change
         boolean dateChange = false;
 
+        // update if names are different
         if (!Objects.equals(project.getName(), projectToUpdate.getName())) {
             projectToUpdate.setName(project.getName());
         }
 
+        // update if start dates are different and set boolean to true
         if (!Objects.equals(project.getStartDate(), projectToUpdate.getStartDate())) {
             projectToUpdate.setStartDate(project.getStartDate());
             dateChange = true;
         }
 
+        // update if end dates are different and set boolean to true
         if (!Objects.equals(project.getEndDate(), projectToUpdate.getEndDate())) {
             projectToUpdate.setEndDate(project.getEndDate());
             dateChange = true;
         }
 
+        // if there was a date change then calculate the new length of the project
         if (dateChange) {
             if (project.getEndDate() != null) {
                 long newLength = calculateLength(project.getStartDate(), project.getEndDate());
@@ -76,12 +77,13 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
+        // update if description is different
         if (!Objects.equals(project.getDescription(), projectToUpdate.getDescription())) {
             projectToUpdate.setDescription(project.getDescription());
         }
 
-        // TODO: make image change work
-        if (!Objects.equals(project.getImages(), projectToUpdate.getImages())) {
+        // update if images are different
+        if (project.getImages() != projectToUpdate.getImages()) {
             projectToUpdate.setImages(project.getImages());
             handleImages(projectToUpdate);
         }
@@ -94,15 +96,6 @@ public class ProjectServiceImpl implements ProjectService {
         String projectName = projectRepository.getById(id).getName();
         projectRepository.deleteById(id);
         return projectName + " has been deleted";
-    }
-
-    @Override
-    public String deleteProjectImage(int id, int imgID) {
-        String projectImageName = projectImagesRepository.getById(imgID).getImageUrl();
-        projectImagesRepository.deleteById(imgID);
-
-        //TODO: MOVE to projectimageservice?
-        return projectImageName + " has been deleted";
     }
 
     // helper method to calculate day difference between dates

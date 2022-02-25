@@ -57,13 +57,6 @@ public class ProjectController {
         return projectService.deleteProject(id);
     }
 
-    @DeleteMapping("/images/{id}/{imgID}")
-    @ResponseBody
-    public String deleteProjectImage(@PathVariable int id, @PathVariable int imgID) {
-        return projectService.deleteProjectImage(id, imgID);
-//        return "The id is: " + id + " and the image id is: " + imgID;
-    }
-
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
