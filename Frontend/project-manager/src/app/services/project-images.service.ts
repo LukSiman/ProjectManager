@@ -23,11 +23,16 @@ export class ProjectImagesService {
     );
   }
 
-  // removes an image from the project
-  removeImage(od: number): void {
-    
+  getDefaultImage(): Observable<string>{
+    const imageUrl = `${this.imagesUrl}/default`;
+    return this.httpClient.get(imageUrl, { responseType: 'text'});
   }
 
+  // removes an image from the project
+  removeImageByID(id: number): Observable<string> {
+    const deleteUrl = `${this.imagesUrl}/${id}`;
+    return this.httpClient.delete(deleteUrl, { responseType: 'text'});
+  }
 }
 
 interface getJSONImages {

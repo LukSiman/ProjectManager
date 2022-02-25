@@ -1,9 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { faPlusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute } from '@angular/router';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
+import { ProjectImagesService } from 'src/app/services/project-images.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
@@ -23,7 +24,7 @@ export class EditProjectComponent implements OnInit {
   private newFileName: string;
   private previousImage: HTMLElement;
 
-  constructor(private projectService: ProjectService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private formBuilder: FormBuilder, private imageService: ProjectImagesService) { }
 
   ngOnInit(): void {
     this.projectFormGroup = this.formBuilder.group({
@@ -47,7 +48,6 @@ export class EditProjectComponent implements OnInit {
   // Receives the project by id
   private initializeProject(): Promise<Object> {
     const id: number = <number><unknown>this.route.snapshot.paramMap.get('id')!;
-    // this.projectService.getSingleProject(id).subscribe(res => this.processResult(res));
 
     return new Promise((resolve, reject) => {
       this.projectService.getSingleProject(id).subscribe(response => {
@@ -59,14 +59,25 @@ export class EditProjectComponent implements OnInit {
     });
   }
 
+  // Initializes the project fields
+  private processResult(responseProject: Project): void {
+    this.project.id = responseProject.id;
+    this.project.name = responseProject.name;
+    this.project.startDate = responseProject.startDate;
+    this.project.endDate = responseProject.endDate;
+    this.project.length = responseProject.length;
+    this.project.description = responseProject.description;
+    this.project.images = responseProject.images;
+    this.projectImages = responseProject.images;
+  }
+
+  // sets initial project values into the appropriate fields
   private initialValues(): void {
     this.name?.setValue(`${this.project.name}`);
     this.startDate?.setValue(`${this.project.startDate}`);
     this.endDate?.setValue(`${this.project.endDate}`);
     this.description?.setValue(`${this.project.description}`);
-    // this.images?.setValue(`${this.project.images}`);
-    console.log(this.projectImages);//TODO: DELETE LATER
-    console.log(this.project);
+    this.images?.reset();
   }
 
   get name() { return this.projectFormGroup.get('name'); }
@@ -88,11 +99,34 @@ export class EditProjectComponent implements OnInit {
       return;
     }
 
-    // this.projectCreationController();
-    this.updateProject();
+    this.projectUpdateController();
   }
 
-  private updateProject(): void {
+  // Controller for handling updating the project
+  private async projectUpdateController(): Promise<void> {
+    if (this.selectedFile != undefined || this.selectedFile != null) {
+      try {
+        // upload the image
+        await this.uploadImage();
+
+        // update the project
+        await this.updateProject();
+
+      } catch (error: any) {
+        this.errorMessage = error;
+        return;
+      }
+    } else {
+      // update the project
+      await this.updateProject();
+    }
+
+    window.location.reload();
+  }
+
+
+  // updates the project with the new values
+  private updateProject(): Promise<Object> {
     this.project.name = this.name?.value;
     this.project.startDate = this.startDate?.value;
 
@@ -101,16 +135,22 @@ export class EditProjectComponent implements OnInit {
     }
 
     this.project.description = this.description?.value;
-    // this.project.images = [newProjectImage]
 
-    this.projectService.updateProject(this.project).subscribe(res => console.log(res));
+    // checks if a file was selected and set as the image
+    if (this.selectedFile != undefined || this.selectedFile != null) {
+      let newProjectImage: ProjectImages = this.handleProjectImages();
+      this.project.images = [newProjectImage];
+    }
 
-    // TODO: How to handle images
-    // Remove images
-    // Add new images
+    this.projectService.updateProject(this.project).subscribe();
 
-    // shows a message that changes have been save
+    // shows a message that changes have been saved
     this.changesMessage();
+
+    // call service to add the project
+    return new Promise((resolve) => {
+      resolve('OK');
+    });
   }
 
   // shows a message and fades out
@@ -156,33 +196,10 @@ export class EditProjectComponent implements OnInit {
     this.previousImage = currentImage;
   }
 
+  // removes the image from DB and reloads page
   removeImage(id: number): void {
-    console.log(`buts for id ${id}`);
-    this.proj
-  }
-
-  private async projectCreationController(): Promise<void> {
-    if (this.selectedFile != undefined || this.selectedFile != null) {
-      try {
-        // upload the image
-        let imgRes = await this.uploadImage();
-        console.log(imgRes); // TODO: delete later
-
-        // add the project
-        let prjRes = await this.addNewProject();
-        console.log(prjRes); // TODO: delete later
-
-      } catch (error: any) {
-        this.errorMessage = error;
-        return;
-      }
-    } else {
-      // add the project
-      let prjRes = await this.addNewProject();
-      console.log(prjRes); // TODO: delete later
-    }
-
-    this.formCleaner();
+    this.imageService.removeImageByID(id).subscribe(response => console.log(response));
+    window.location.reload();
   }
 
   // resets fields of the form
@@ -200,45 +217,11 @@ export class EditProjectComponent implements OnInit {
     this.errorMessage = '';
   }
 
-  // add a new project
-  private addNewProject(): Promise<Object> {
-    // create a project image object 
-    let newProjectImage: ProjectImages = this.handleProjectImages();
-
-    // creates a new project to send to the server
-    const newProject: Project = {
-      id: 0,
-      name: this.name?.value,
-      startDate: this.startDate?.value,
-      endDate: this.endDate?.value,
-      length: 0,
-      description: this.description?.value,
-      images: [newProjectImage]
-    };
-
-    // call service to add the project
-    return new Promise((resolve, reject) => {
-      this.projectService.addProject(newProject).subscribe(response => {
-        resolve(response);
-      }, (error) => {
-        reject(error);
-      });
-    });
-  }
-
-
   // create and return a new ProjectImage object
   private handleProjectImages(): ProjectImages {
-    // create empty ProjectImages object
+    // create a new ProjectImages object and set the file name
     let newProjectImages: ProjectImages = {
-      imageUrl: ''
-    }
-
-    // checks if a file was selected and set as the image
-    if (this.selectedFile != undefined || this.selectedFile != null) {
-      newProjectImages = {
-        imageUrl: `assets/images/projects/${this.newFileName}`
-      }
+      imageUrl: `assets/images/projects/${this.newFileName}`
     }
 
     return newProjectImages;
@@ -249,23 +232,13 @@ export class EditProjectComponent implements OnInit {
     this.selectedFile = <File>event.target.files[0];
   }
 
-  // Initializes the project fields
-  private processResult(responseProject: Project): void {
-    this.project.id = responseProject.id;
-    this.project.name = responseProject.name;
-    this.project.startDate = responseProject.startDate;
-    this.project.endDate = responseProject.endDate;
-    this.project.length = responseProject.length;
-    this.project.description = responseProject.description;
-    this.project.images = responseProject.images;
-    this.projectImages = responseProject.images;
-  }
-
   // handles image uploading
   private uploadImage(): Promise<Object> {
     const formData = new FormData();
     this.newFileName = this.fileNameGenerator(this.selectedFile.name);
     formData.append('file', this.selectedFile, this.newFileName);
+
+    // TODO: MOVE upload image to image service
 
     return new Promise((resolve, reject) => {
       this.projectService.uploadImage(formData).subscribe(response => {
