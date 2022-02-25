@@ -2,6 +2,8 @@ import { Component, HostListener, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/entities/project';
+import { ProjectImages } from 'src/app/entities/project-images';
+import { ProjectImagesService } from 'src/app/services/project-images.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { DeletionBoxComponent } from '../deletion-box/deletion-box.component';
 
@@ -12,6 +14,8 @@ import { DeletionBoxComponent } from '../deletion-box/deletion-box.component';
 })
 export class ProjectListComponent implements OnInit {
   projects: Project[] = [];
+
+  defaultImage: string = '';
 
   // properties for searching
   searchMode: boolean = false;
@@ -31,13 +35,14 @@ export class ProjectListComponent implements OnInit {
 
   private previousCard: HTMLElement;
 
-  constructor(private projectService: ProjectService, private route: ActivatedRoute,
+  constructor(private projectService: ProjectService, private imageService: ProjectImagesService, private route: ActivatedRoute,
     private router: Router, private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(() => {
-      this.displayProjects();
-    });
+    // gets the default image url from the server
+    this.imageService.getDefaultImage().subscribe(res => this.defaultImage = res);
+
+    this.displayProjects();
   }
 
   // call the search or all method depending on if keyword exists
