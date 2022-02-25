@@ -117,7 +117,6 @@ export class AddProjectComponent implements OnInit {
     });
   }
 
-
   // create and return a new ProjectImage object
   private handleProjectImages(): ProjectImages {
     // create empty ProjectImages object
