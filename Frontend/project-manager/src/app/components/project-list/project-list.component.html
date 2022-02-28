@@ -6,13 +6,19 @@
       <div class="card h-100 bg-light border-dark border border-2 position-relative" id="cardParent">
 
          <div *ngIf="tempProject.images != undefined">
-            <img *ngIf="tempProject.images.length > 0" src="{{ tempProject.images[0]['imageUrl'] }}" alt="Project image"
-               class="card-img-top p-1 border-bottom border-2 border-secondary">
-
+            <ngb-carousel>
+               <ng-template ngbSlide *ngFor="let tempImage of tempProject.images">
+                  <div>
+                     <img *ngIf="tempProject.images.length > 0" src="{{ tempImage['imageUrl'] }}" alt="Project image"
+                        class="card-img-top p-1 border-bottom border-2 border-secondary">
+                  </div>
+               </ng-template>
+            </ngb-carousel>
+            
             <img *ngIf="tempProject.images.length == 0" src="{{ defaultImage }}" alt="Project image"
                class="card-img-top p-1 border-bottom border-2 border-secondary">
          </div>
-         
+
          <div class="card-body">
             <p class="card-title text-center card-name"> {{ tempProject.name }} </p>
             <p class="card-text description-text line-clamp"> {{ tempProject.description }}</p>

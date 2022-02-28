@@ -123,10 +123,10 @@ export class ProjectListComponent implements OnInit {
     let currentCard: HTMLElement = currentElement;
 
     // makes sure that only the correct card is being manipulated
-    if (currentElement.parentElement?.id == 'cardParent') {
-      currentCard = currentElement.parentElement;
-    } else if (currentElement.parentElement?.parentElement?.id == 'cardParent') {
-      currentCard = currentElement.parentElement.parentElement;
+    if (currentElement.closest('#cardParent') && !(currentElement.classList.contains('carousel-control-next') ||
+      currentElement.classList.contains('carousel-control-next-icon') || currentElement.classList.contains('carousel-control-prev') ||
+      currentElement.classList.contains('carousel-control-prev-icon'))) {
+      currentCard = currentElement.closest('#cardParent')!;
     } else {
       return;
     }
