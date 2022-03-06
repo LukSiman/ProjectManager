@@ -3,18 +3,20 @@ package com.lukas.project_manager.service;
 import com.lukas.project_manager.dao.ProjectRepository;
 import com.lukas.project_manager.entities.Project;
 import com.lukas.project_manager.entities.ProjectImages;
+import com.lukas.project_manager.exceptions.TooManyImagesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
+
+    private static final int MAX_IMAGES = 6;
 
     @Autowired
     private final ProjectRepository projectRepository;
@@ -106,6 +108,12 @@ public class ProjectServiceImpl implements ProjectService {
     // handle adding images to the project
     private void handleImages(Project project) {
         List<ProjectImages> imageList = project.getImages();
+
+        // throw exception if more image than maximum size
+        if (imageList.size() > MAX_IMAGES) {
+            throw new TooManyImagesException();
+        }
+
         imageList.forEach(img -> {
             // if project has no images add a default image
             if (img.getImageUrl() == null || img.getImageUrl().isEmpty()) {
