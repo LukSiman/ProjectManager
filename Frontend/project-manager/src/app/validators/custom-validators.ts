@@ -23,7 +23,8 @@ export class CustomValidators {
             // extension is valid, return null
             if (extension.toLowerCase() == 'png' ||
                 extension.toLowerCase() == 'jpeg' ||
-                extension.toLowerCase() == 'jpg') {
+                extension.toLowerCase() == 'jpg'||
+                name.length == 0) {
                 return null;
             } else {
                 // invalid, return error

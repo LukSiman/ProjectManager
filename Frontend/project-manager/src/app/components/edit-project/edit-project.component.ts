@@ -106,22 +106,29 @@ export class EditProjectComponent implements OnInit {
   private async projectUpdateController(): Promise<void> {
     if (this.selectedFile != undefined || this.selectedFile != null) {
       try {
-        // upload the image
-        await this.uploadImage();
+        if (this.project.images.length < 6) {
+          // upload the image
+          await this.uploadImage();
 
-        // update the project
-        await this.updateProject();
+          // update the project
+          await this.updateProject();
+        } else {
+          this.errorMessage = "You can't upload more than 6 images to a single project!";
+          return;
+        }
 
       } catch (error: any) {
-        this.errorMessage = error;
+        this.errorMessage = error.responseMessage;
         return;
       }
     } else {
       // update the project
       await this.updateProject();
     }
-
-    window.location.reload();
+    
+    // reset the form
+    this.initializeForm();
+    this.formCleanerManual();
   }
 
 
@@ -139,17 +146,18 @@ export class EditProjectComponent implements OnInit {
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
       let newProjectImage: ProjectImages = this.handleProjectImages();
-      this.project.images = [newProjectImage];
+      this.project.images.push(newProjectImage);
     }
 
-    this.projectService.updateProject(this.project).subscribe();
-
-    // shows a message that changes have been saved
-    this.changesMessage();
-
     // call service to add the project
-    return new Promise((resolve) => {
-      resolve('OK');
+    return new Promise((resolve, reject) => {
+      this.projectService.updateProject(this.project).subscribe(response => {
+        resolve(response);
+        // shows a message that changes have been saved
+        this.changesMessage();
+      }, (error) => {
+        reject(error);
+      });
     });
   }
 
@@ -209,6 +217,9 @@ export class EditProjectComponent implements OnInit {
 
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
+    
+    // reset the file name
+    this.newFileName = undefined as unknown as string;
   }
 
   // manual form reset
@@ -223,7 +234,6 @@ export class EditProjectComponent implements OnInit {
     let newProjectImages: ProjectImages = {
       imageUrl: `assets/images/projects/${this.newFileName}`
     }
-
     return newProjectImages;
   }
 
@@ -237,8 +247,6 @@ export class EditProjectComponent implements OnInit {
     const formData = new FormData();
     this.newFileName = this.fileNameGenerator(this.selectedFile.name);
     formData.append('file', this.selectedFile, this.newFileName);
-
-    // TODO: MOVE upload image to image service
 
     return new Promise((resolve, reject) => {
       this.projectService.uploadImage(formData).subscribe(response => {

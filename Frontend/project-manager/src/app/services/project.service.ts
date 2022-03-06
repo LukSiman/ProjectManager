@@ -73,7 +73,7 @@ export class ProjectService {
   updateProject(project: Project): Observable<Project>{
     const projectId = project.id;
     const putUrl = `${this.baseUrl}/${projectId}`;
-    return this.httpClient.put<getProject>(putUrl, project);
+    return this.httpClient.put<getProject>(putUrl, project).pipe(catchError(this.handleError));
   }
 
   // uploads the selected file to api
@@ -88,7 +88,7 @@ export class ProjectService {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);
     } else if (error.status === 413) {
-      return throwError('The file is too large, maximum file size is 200KB');
+      return throwError(error.error);
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
