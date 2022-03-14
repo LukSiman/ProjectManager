@@ -13,4 +13,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     Page<Project> findBy(Pageable pageable);
 
     Page<Project> findByNameContaining(@Param("name") String name, Pageable pageable);
+
+    Page<Project> findByStatusContaining(@Param("status") String name, Pageable pageable);
 }

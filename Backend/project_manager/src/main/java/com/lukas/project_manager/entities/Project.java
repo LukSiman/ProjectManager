@@ -34,6 +34,9 @@ public class Project {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "status")
+    private String status;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectImages> images;
 

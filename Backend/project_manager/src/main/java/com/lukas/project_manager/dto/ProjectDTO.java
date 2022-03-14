@@ -16,5 +16,6 @@ public class ProjectDTO {
     private LocalDate endDate;
     private Long length;
     private String description;
+    private String status;
     private List<ProjectImagesDTO> images;
 }

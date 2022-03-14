@@ -12,7 +12,8 @@ id INTEGER PRIMARY KEY AUTO_INCREMENT,
 start_date DATE NOT NULL DEFAULT(CURRENT_DATE()),
 end_date DATE,
 `length` INTEGER,
-`description` TEXT
+`description` TEXT,
+`status` TEXT
 );
 
 
