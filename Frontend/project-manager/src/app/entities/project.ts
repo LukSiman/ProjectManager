@@ -7,5 +7,6 @@ export class Project {
     endDate: Date;
     length: number;
     description: string;
+    status: string;
     images: ProjectImages[] = [];
 }

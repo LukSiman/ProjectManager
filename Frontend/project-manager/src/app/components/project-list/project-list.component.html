@@ -1,5 +1,11 @@
-<!-- Sort bar -->
-<app-sort></app-sort>
+<div class="row d-flex justify-content-end">
+   <!-- Filter bar -->
+   <app-filter class="col-md-2"></app-filter>
+
+   <!-- Sort bar -->
+   <app-sort class="col-md-2"></app-sort>
+</div>
+
 
 <div class="row" *ngIf="projects.length > 0">
    <div class="col-md-3 mb-3" *ngFor="let tempProject of projects">
@@ -14,7 +20,7 @@
                   </div>
                </ng-template>
             </ngb-carousel>
-            
+
             <img *ngIf="tempProject.images.length == 0" src="{{ defaultImage }}" alt="Project image"
                class="card-img-top p-1 border-bottom border-2 border-secondary">
          </div>
@@ -31,13 +37,14 @@
                <div *ngIf="tempProject.length > 0; else zeroBlock">Total length: {{ tempProject.length }} day</div>
                <ng-template #zeroBlock>Not finished</ng-template>
             </ng-template>
+            <p class="mt-1 fw-bold">Status: {{ tempProject.status }} </p>
          </div>
 
          <div class="position-absolute top-50 start-50 translate-middle d-none" id="blurBackground">
             <div class="d-flex justify-content-around position-absolute top-50 start-50 translate-middle"
                id="cardButtons">
                <button class="btn btn-secondary blur-button border border-dark border-2"
-                  routerLink="/edit/{{tempProject.id}}">Edit</button>
+                  routerLink="/edit/{{tempProject.id}}">More</button>
                <button class="btn btn-danger blur-button border border-dark border-2"
                   (click)="deletionConfirmation(tempProject.id)">Delete</button>
             </div>

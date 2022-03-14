@@ -23,7 +23,7 @@ export class ProjectService {
   }
 
   // Receive a single JSON object by id
-  getSingleProject(id: number): Observable<Project>{
+  getSingleProject(id: number): Observable<Project> {
     const getUrl = `${this.baseUrl}/${id}`;
     return this.httpClient.get<getProject>(getUrl);
   }
@@ -43,6 +43,12 @@ export class ProjectService {
   // Searches for projects by name
   searchProjects(keyword: string): Observable<Project[]> {
     const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}`;
+    return this.getProjects(searchUrl);
+  }
+
+  // Searches for projects by status
+  filterProjects(keyword: string): Observable<Project[]> {
+    const searchUrl = `${this.baseUrl}/search/findByStatusContainingOrderByNameAsc?` + `name=${keyword}`;
     return this.getProjects(searchUrl);
   }
 
@@ -67,10 +73,10 @@ export class ProjectService {
   // delete the project from DB
   deleteProject(id: number): Observable<string> {
     const deleteUrl = `${this.baseUrl}/${id}`;
-    return this.httpClient.delete(deleteUrl, { responseType: 'text'});
+    return this.httpClient.delete(deleteUrl, { responseType: 'text' });
   }
 
-  updateProject(project: Project): Observable<Project>{
+  updateProject(project: Project): Observable<Project> {
     const projectId = project.id;
     const putUrl = `${this.baseUrl}/${projectId}`;
     return this.httpClient.put<getProject>(putUrl, project).pipe(catchError(this.handleError));
@@ -125,5 +131,6 @@ interface getProject {
   endDate: Date,
   length: number,
   description: string,
+  status: string,
   images: []
 }

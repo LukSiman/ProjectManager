@@ -1,0 +1,9 @@
+<div class="mb-4">
+    <p class="mb-2">Filter status:</p>
+    <select #filterValue class="form-select" id="filterSelect" (change)="filter(filterValue.value)">
+        <!-- (change)="sort(sortValue.value)" -->
+        <option *ngFor="let temp of statusList">{{ temp }}</option>
+
+        <!-- [value]="temp.value" -->
+    </select>
+</div>

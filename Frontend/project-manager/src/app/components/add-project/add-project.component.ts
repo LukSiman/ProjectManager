@@ -34,6 +34,7 @@ export class AddProjectComponent implements OnInit {
   get startDate() { return this.projectFormGroup.get('startDate'); }
   get endDate() { return this.projectFormGroup.get('endDate'); }
   get description() { return this.projectFormGroup.get('description'); }
+  get status() { return this.projectFormGroup.get('status'); }
   get images() { return this.projectFormGroup.get('images'); }
 
   // informs user of required fields and initiates project adding to DB 
@@ -104,6 +105,7 @@ export class AddProjectComponent implements OnInit {
       endDate: this.endDate?.value,
       length: 0,
       description: this.description?.value,
+      status: this.status?.value,
       images: [newProjectImage]
     };
 

@@ -13,11 +13,14 @@ import { AddProjectComponent } from './components/add-project/add-project.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditProjectComponent } from './components/edit-project/edit-project.component';
 import { DeletionBoxComponent } from './components/deletion-box/deletion-box.component';
+import { FilterComponent } from './components/filter/filter.component';
 
 const routes: Routes = [
   { path: 'edit/:id', component: EditProjectComponent },
   { path: 'newProject', component: AddProjectComponent },
-  { path: 'projects/:sort', component: ProjectListComponent },
+  // { path: 'projects/:sort/:filter/', component: ProjectListComponent },
+  // { path: 'projects/:sort', redirectTo: '/projects/nameAsc/All', pathMatch: 'full' },
+  { path: 'projects/:sort', component: ProjectListComponent }, //TODO: REMOVE later
   { path: 'search/:keyword/:sort', component: ProjectListComponent },
   { path: 'search/:keyword', redirectTo: '/search/:keyword/nameAsc', pathMatch: 'full' },
   { path: '', redirectTo: '/projects/nameAsc', pathMatch: 'full' },
@@ -32,7 +35,8 @@ const routes: Routes = [
     NavbarComponent,
     AddProjectComponent,
     EditProjectComponent,
-    DeletionBoxComponent
+    DeletionBoxComponent,
+    FilterComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

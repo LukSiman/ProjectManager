@@ -2,7 +2,6 @@ import { Component, HostListener, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/entities/project';
-import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectImagesService } from 'src/app/services/project-images.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { DeletionBoxComponent } from '../deletion-box/deletion-box.component';
@@ -38,11 +37,13 @@ export class ProjectListComponent implements OnInit {
   constructor(private projectService: ProjectService, private imageService: ProjectImagesService, private route: ActivatedRoute,
     private router: Router, private modalService: NgbModal) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {   
     // gets the default image url from the server
     this.imageService.getDefaultImage().subscribe(res => this.defaultImage = res);
 
-    this.displayProjects();
+    this.route.paramMap.subscribe(() => {
+      this.displayProjects();
+    });
   }
 
   // call the search or all method depending on if keyword exists
