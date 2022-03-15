@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { PRIMARY_OUTLET, Router, UrlSegment, UrlTree } from '@angular/router';
 
 @Component({
   selector: 'app-sort',
@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
 })
 export class SortComponent implements OnInit {
 
-  links: { key: string, value: string }[] = [
-    { key: 'Name A-Z', value: 'nameAsc' }, { key: 'Name Z-A', value: 'nameDsc' },
-    { key: 'Newest', value: 'dateAsc' }, { key: 'Oldest', value: 'dateDsc' },
-    { key: 'Longest', value: 'lengthAsc' }, { key: 'Shortest', value: 'lengthDsc' }
+  sortList: { key: string, value: string }[] = [
+    { key: 'Name A-Z', value: 'na' }, { key: 'Name Z-A', value: 'nd' },
+    { key: 'Newest', value: 'da' }, { key: 'Oldest', value: 'dd' },
+    { key: 'Longest', value: 'la' }, { key: 'Shortest', value: 'ld' }
   ]
 
   constructor(private router: Router) { }
@@ -20,14 +20,19 @@ export class SortComponent implements OnInit {
   }
 
   // navigate to initiate sorting
-  sort(sortValue: string) {
-    const currentUrl = this.router.url;
+  sort(sortValue: string): void {
+    const currentUrl: string = this.router.url;
+    const urlTree: UrlTree = this.router.parseUrl(currentUrl);
+    const urlSegments: UrlSegment[] = urlTree.root.children[PRIMARY_OUTLET].segments;
 
-    if (currentUrl.includes('search')) {
-      const newUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
-      this.router.navigateByUrl(`${newUrl}${sortValue}`);
+    let newUrl: string = '';
+
+    if (currentUrl.includes('search')){
+      newUrl = (`${urlSegments[0]}/${urlSegments[1]}/${sortValue}/${urlSegments[3]}`);
     } else {
-      this.router.navigateByUrl(`/projects/${sortValue}`);
+      newUrl = (`${urlSegments[0]}/${sortValue}/${urlSegments[2]}`);
     }
+
+    this.router.navigateByUrl(newUrl);
   }
 }

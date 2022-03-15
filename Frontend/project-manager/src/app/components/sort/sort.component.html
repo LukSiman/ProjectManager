@@ -1,6 +1,6 @@
 <div class="mb-4">
     <p class="mb-2">Sort by:</p>
     <select #sortValue class="form-select" id="sortSelect" (change)="sort(sortValue.value)">
-        <option *ngFor="let temp of links" [value]="temp.value">{{ temp.key }}</option>
+        <option *ngFor="let temp of sortList" [value]="temp.value">{{ temp.key }}</option>
     </select>
 </div>

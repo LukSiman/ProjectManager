@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { PRIMARY_OUTLET, Router, UrlSegment, UrlTree } from '@angular/router';
 
 @Component({
   selector: 'app-filter',
@@ -8,27 +8,32 @@ import { Router } from '@angular/router';
 })
 export class FilterComponent implements OnInit {
 
-  statusList: string[] = ['All', 'New idea', 'In progress', 'On hold', 'Dropped', 'Completed'];
+  filterList: { key: string, value: string }[] = [
+    { key: 'All', value: 'al' }, { key: 'New idea', value: 'ni' },
+    { key: 'In progress', value: 'ip' }, { key: 'On hold', value: 'oh' },
+    { key: 'Dropped', value: 'dr' }, { key: 'Completed', value: 'co' }
+  ]
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  // navigate to filter
-  filter(filterValue: string) {
-    const currentUrl = this.router.url;
+  // navigate to filter url
+  filter(filterValue: string): void {
+    const currentUrl: string = this.router.url;
+    const urlTree: UrlTree = this.router.parseUrl(currentUrl);
+    const urlSegments: UrlSegment[] = urlTree.root.children[PRIMARY_OUTLET].segments;
 
-    console.log(`${currentUrl}/${filterValue}`);
+    let newUrl: string = '';
 
-    this.router.navigateByUrl(`${currentUrl}/${filterValue}`);
+    if (currentUrl.includes('search')) {
+      newUrl = (`${urlSegments[0]}/${urlSegments[1]}/${urlSegments[2]}/${filterValue}`);
+    } else {
+      newUrl = (`${urlSegments[0]}/${urlSegments[1]}/${filterValue}`);
+    }
 
-    // if (currentUrl.includes('search')) {
-    //   const newUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
-    //   this.router.navigateByUrl(`${newUrl}${sortValue}`);
-    // } else {
-    //   this.router.navigateByUrl(`/projects/${sortValue}`);
-    // }
+    this.router.navigateByUrl(newUrl);
   }
 
 }

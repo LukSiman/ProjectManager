@@ -21,10 +21,17 @@ export class ProjectListComponent implements OnInit {
   previousKeyword: string = '';
 
   // properties for sorting
-  linksMap = new Map<string, string>([
-    ['nameAsc', 'name'], ['nameDsc', 'name,desc'],
-    ['dateAsc', 'startDate,desc'], ['dateDsc', 'startDate'],
-    ['lengthAsc', 'length,desc'], ['lengthDsc', 'length']
+  sortMap = new Map<string, string>([
+    ['na', 'name'], ['nd', 'name,desc'],
+    ['da', 'startDate,desc'], ['dd', 'startDate'],
+    ['la', 'length,desc'], ['ld', 'length']
+  ]);
+
+  // properties for filtering
+  filterMap = new Map<string, string>([
+    ['al', ''], ['ni', 'new'],
+    ['ip', 'progress'], ['oh', 'hold'],
+    ['dr', 'dropped'], ['co', 'completed']
   ]);
 
   // properties for pagination
@@ -37,7 +44,7 @@ export class ProjectListComponent implements OnInit {
   constructor(private projectService: ProjectService, private imageService: ProjectImagesService, private route: ActivatedRoute,
     private router: Router, private modalService: NgbModal) { }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
     // gets the default image url from the server
     this.imageService.getDefaultImage().subscribe(res => this.defaultImage = res);
 
@@ -53,20 +60,27 @@ export class ProjectListComponent implements OnInit {
     if (this.searchMode) {
       this.displaySearchProjectsSorted();
     } else {
-      this.displayAllProjectsSorted();
+      // this.displayAllProjectsSorted();
+      this.displayAllProjectsSortedFiltered();
     }
   }
 
-  // Copies objects from array in service to projects array with different sorting
-  private displayAllProjectsSorted(): void {
+  // Copies objects from array in service to projects array with sorting and filtering
+  private displayAllProjectsSortedFiltered(): void {
     // gets the value for sorting from url
     const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
 
-    // checks the links map to see which sorting method to use acording to the sorting value
-    const sortUrl: string = this.linksMap.get(sortValue)!;
+    // gets the value for filtering from url
+    const filterValue: string = this.route.snapshot.paramMap.get('filter')!;
+
+    // checks the sorting map to see which sorting method to use
+    const sortUrl: string = this.sortMap.get(sortValue)!;
+
+    // checks the filter map to see which filtering method to use
+    const filterUrl: string = this.filterMap.get(filterValue)!;
 
     // send page number, size and sorting url to service for it to get data from the backend
-    this.projectService.getProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl)
+    this.projectService.getProjectListSortFilterPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl, filterUrl)
       .subscribe(response => {
         this.processResult(response);
         this.populateImages();
@@ -87,7 +101,7 @@ export class ProjectListComponent implements OnInit {
     const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
 
     // checks the links map to see which sorting method to use acording to the sorting value
-    const sortUrl: string = this.linksMap.get(sortValue)!;
+    const sortUrl: string = this.sortMap.get(sortValue)!;
 
     this.projectService.searchProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl)
       .subscribe(response => {
@@ -152,3 +166,21 @@ export class ProjectListComponent implements OnInit {
     modalRef.componentInstance.deleteID = id;
   }
 }
+
+
+
+// Copies objects from array in service to projects array with different sorting
+// private displayAllProjectsSorted(): void {
+//   // gets the value for sorting from url
+//   const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
+
+//   // checks the links map to see which sorting method to use acording to the sorting value
+//   const sortUrl: string = this.sortMap.get(sortValue)!;
+
+//   // send page number, size and sorting url to service for it to get data from the backend
+//   this.projectService.getProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl)
+//     .subscribe(response => {
+//       this.processResult(response);
+//       this.populateImages();
+//     });
+// }
