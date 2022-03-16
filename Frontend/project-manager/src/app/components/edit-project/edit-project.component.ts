@@ -19,6 +19,7 @@ export class EditProjectComponent implements OnInit {
   projectFormGroup: FormGroup;
   errorMessage: string;
   closeBtn = faTimes;
+  statuses: string[] = ['New idea', 'In progress', 'On hold', 'Dropped', 'Completed'];
 
   private selectedFile: File;
   private newFileName: string;
@@ -29,13 +30,17 @@ export class EditProjectComponent implements OnInit {
   ngOnInit(): void {
     this.projectFormGroup = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
+      description: [''],
       startDate: ['', Validators.required],
       endDate: [''],
-      description: [''],
+      status: [''],
       images: ['', CustomValidators.correctFileType]
     }, { validators: CustomValidators.endDateAfterStartDate });
 
     this.initializeForm();
+
+    // disables the main fields
+    this.projectFormGroup.disable();
   }
 
   // Creates the form and fills out the project data
@@ -63,10 +68,11 @@ export class EditProjectComponent implements OnInit {
   private processResult(responseProject: Project): void {
     this.project.id = responseProject.id;
     this.project.name = responseProject.name;
+    this.project.description = responseProject.description;
     this.project.startDate = responseProject.startDate;
     this.project.endDate = responseProject.endDate;
     this.project.length = responseProject.length;
-    this.project.description = responseProject.description;
+    this.project.status = responseProject.status;
     this.project.images = responseProject.images;
     this.projectImages = responseProject.images;
   }
@@ -74,16 +80,18 @@ export class EditProjectComponent implements OnInit {
   // sets initial project values into the appropriate fields
   private initialValues(): void {
     this.name?.setValue(`${this.project.name}`);
+    this.description?.setValue(`${this.project.description}`);
     this.startDate?.setValue(`${this.project.startDate}`);
     this.endDate?.setValue(`${this.project.endDate}`);
-    this.description?.setValue(`${this.project.description}`);
+    this.status?.setValue(`${this.project.status}`);
     this.images?.reset();
   }
 
   get name() { return this.projectFormGroup.get('name'); }
+  get description() { return this.projectFormGroup.get('description'); }
   get startDate() { return this.projectFormGroup.get('startDate'); }
   get endDate() { return this.projectFormGroup.get('endDate'); }
-  get description() { return this.projectFormGroup.get('description'); }
+  get status() { return this.projectFormGroup.get('status'); }
   get images() { return this.projectFormGroup.get('images'); }
 
   // informs user of required fields and initiates project adding to DB 
@@ -125,7 +133,7 @@ export class EditProjectComponent implements OnInit {
       // update the project
       await this.updateProject();
     }
-    
+
     // reset the form
     this.initializeForm();
     this.formCleanerManual();
@@ -135,13 +143,14 @@ export class EditProjectComponent implements OnInit {
   // updates the project with the new values
   private updateProject(): Promise<Object> {
     this.project.name = this.name?.value;
+    this.project.description = this.description?.value;
     this.project.startDate = this.startDate?.value;
 
     if (this.endDate?.value != 'null') {
       this.project.endDate = this.endDate?.value;
     }
 
-    this.project.description = this.description?.value;
+    this.project.status = this.status?.value;
 
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
@@ -179,29 +188,33 @@ export class EditProjectComponent implements OnInit {
   // click eventListener to blur the image and show deletion button
   @HostListener('click', ['$event.target'])
   onClick(currentElement: HTMLElement): void {
-    let currentImage: HTMLElement = currentElement;
+    // disable image manipulation if form is disabled
+    if (this.projectFormGroup.status != 'DISABLED') {
+      let currentImage: HTMLElement = currentElement;
 
-    //  making sure onyl the correct element is being manipulated
-    if (currentElement.parentElement?.id == 'projectImage') {
-      currentImage = currentElement.parentElement;
-    } else {
-      return;
+      //  making sure only the correct element is being manipulated
+      if (currentElement.parentElement?.id == 'projectImage') {
+        currentImage = currentElement.parentElement;
+      } else {
+        return;
+      }
+
+      // if this is a different image than before, unblur everything else
+      if (this.previousImage != currentImage) {
+        let blurredImages = document.body.querySelectorAll('#projectImage');
+        blurredImages.forEach((image) => {
+          image.firstElementChild?.classList.remove('blurImage');
+          image.lastElementChild?.classList.add('d-none');
+        });
+      }
+
+      // blur image and unhide the deletion button
+      currentImage.firstElementChild?.classList.toggle('blurImage');
+      currentImage.lastElementChild?.classList.toggle('d-none');
+
+      this.previousImage = currentImage;
     }
 
-    // if this is a different image than before, unblur everything else
-    if (this.previousImage != currentImage) {
-      let blurredImages = document.body.querySelectorAll('#projectImage');
-      blurredImages.forEach((image) => {
-        image.firstElementChild?.classList.remove('blurImage');
-        image.lastElementChild?.classList.add('d-none');
-      });
-    }
-
-    // blur image and unhide the deletion button
-    currentImage.firstElementChild?.classList.toggle('blurImage');
-    currentImage.lastElementChild?.classList.toggle('d-none');
-
-    this.previousImage = currentImage;
   }
 
   // removes the image from DB and reloads page
@@ -217,7 +230,7 @@ export class EditProjectComponent implements OnInit {
 
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
-    
+
     // reset the file name
     this.newFileName = undefined as unknown as string;
   }
@@ -263,5 +276,14 @@ export class EditProjectComponent implements OnInit {
     const timeStamp = date.getTime();
     fileName = fileName.substring(0, fileName.lastIndexOf('.'));
     return `${fileName}${timeStamp}.png`;
+  }
+
+  // toggles if the fields can be edited
+  toggleEditable() {
+    if (this.projectFormGroup.status == 'DISABLED') {
+      this.projectFormGroup.enable();
+    } else {
+      this.projectFormGroup.disable();
+    }
   }
 }

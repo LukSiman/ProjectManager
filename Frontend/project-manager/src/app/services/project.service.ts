@@ -28,22 +28,15 @@ export class ProjectService {
     return this.httpClient.get<getProject>(getUrl);
   }
 
-  // Receives JSON objects and maps them to Project array with Pagination and sorting
-  getProjectListSortPaginate(thePage: number, thePageSize: number, sortType: string): Observable<getJSONProjects> {
-    const searchUrl = `${this.baseUrl}/search/findBy` + `?sort=${sortType}&page=${thePage}&size=${thePageSize}`;
-    return this.httpClient.get<getJSONProjects>(searchUrl);
-  }
-  
-  // Receives JSON objects and maps them to Project array with pagination, sorting anf filtering
+  // Receives JSON objects and maps them to Project array with pagination, sorting and filtering
   getProjectListSortFilterPaginate(thePage: number, thePageSize: number, sortType: string, filterType: string): Observable<getJSONProjects> {
     const searchUrl = `${this.baseUrl}/search/findByStatusContaining` + `?status=${filterType}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
-  // Searches for projects by name with Pagination and sorting
-  searchProjectListSortPaginate(thePage: number, thePageSize: number, keyword: string, sortType: string): Observable<getJSONProjects> {
-    const searchUrl = `${this.baseUrl}/search/findByNameContaining` + `?name=${keyword}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
-    console.log(searchUrl);
+  // Searches for projects by name with pagination, sorting and filtering
+  searchProjectListSortFilterPaginate(thePage: number, thePageSize: number, keyword: string, sortType: string, filterType: string): Observable<getJSONProjects> {
+    const searchUrl = `${this.baseUrl}/search/findByNameContainingAndStatusContaining` + `?name=${keyword}&status=${filterType}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
@@ -119,27 +112,40 @@ interface getProject {
 }
 
 
-
+//TODO: DELETE LATER
 // Receives JSON objects and maps them to Project array with Pagination
-  // getProjectListPaginate(thePage: number, thePageSize: number): Observable<getJSONProjects> {
-  //   const searchUrl = `${this.baseUrl}/search/findByOrderByNameAsc?` + `&page=${thePage}&size=${thePageSize}`;
-  //   return this.httpClient.get<getJSONProjects>(searchUrl);
-  // }
+// getProjectListPaginate(thePage: number, thePageSize: number): Observable<getJSONProjects> {
+//   const searchUrl = `${this.baseUrl}/search/findByOrderByNameAsc?` + `&page=${thePage}&size=${thePageSize}`;
+//   return this.httpClient.get<getJSONProjects>(searchUrl);
+// }
 
-  // // Searches for projects by name
-  // searchProjects(keyword: string): Observable<Project[]> {
-  //   const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}`;
-  //   return this.getProjects(searchUrl);
-  // }
+// // Searches for projects by name
+// searchProjects(keyword: string): Observable<Project[]> {
+//   const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}`;
+//   return this.getProjects(searchUrl);
+// }
 
-  // // Searches for projects by status
-  // filterProjects(keyword: string): Observable<Project[]> {
-  //   const searchUrl = `${this.baseUrl}/search/findByStatusContainingOrderByNameAsc?` + `name=${keyword}`;
-  //   return this.getProjects(searchUrl);
-  // }    
+// // Searches for projects by status
+// filterProjects(keyword: string): Observable<Project[]> {
+//   const searchUrl = `${this.baseUrl}/search/findByStatusContainingOrderByNameAsc?` + `name=${keyword}`;
+//   return this.getProjects(searchUrl);
+// }
 
-  // Searches for projects by name with Pagination
-  // searchProjectListPaginate(thePage: number, thePageSize: number, keyword: string): Observable<getJSONProjects> {
-  //   const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}&page=${thePage}&size=${thePageSize}`;
-  //   return this.httpClient.get<getJSONProjects>(searchUrl);
-  // }
+// Searches for projects by name with Pagination
+// searchProjectListPaginate(thePage: number, thePageSize: number, keyword: string): Observable<getJSONProjects> {
+//   const searchUrl = `${this.baseUrl}/search/findByNameContainingOrderByNameAsc?` + `name=${keyword}&page=${thePage}&size=${thePageSize}`;
+//   return this.httpClient.get<getJSONProjects>(searchUrl);
+// }
+
+// Receives JSON objects and maps them to Project array with Pagination and sorting
+// getProjectListSortPaginate(thePage: number, thePageSize: number, sortType: string): Observable<getJSONProjects> {
+//   const searchUrl = `${this.baseUrl}/search/findBy` + `?sort=${sortType}&page=${thePage}&size=${thePageSize}`;
+//   return this.httpClient.get<getJSONProjects>(searchUrl);
+// }
+
+// Searches for projects by name with Pagination and sorting
+// searchProjectListSortPaginate(thePage: number, thePageSize: number, keyword: string, sortType: string): Observable < getJSONProjects > {
+//   const searchUrl = `${this.baseUrl}/search/findByNameContaining` + `?name=${keyword}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
+//   console.log(searchUrl);
+//   return this.httpClient.get<getJSONProjects>(searchUrl);
+// }

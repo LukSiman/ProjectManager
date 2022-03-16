@@ -42,6 +42,13 @@
     </div>
 
     <div class="mb-3">
+        <label for="projectStatus" class="form-label">Project status:</label>
+        <select formControlName="status" class="form-control" id="projectStatus">
+            <option *ngFor="let temp of statuses">{{ temp }}</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label for="projectImageUpload" class="form-label">Image upload:</label>
         <input formControlName="images" class="form-control" type="file" id="projectImageUpload"
             (change)="onFileSelected($event)">

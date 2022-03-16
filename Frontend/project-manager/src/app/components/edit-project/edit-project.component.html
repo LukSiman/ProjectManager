@@ -1,3 +1,7 @@
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-secondary" (click)="toggleEditable()">Edit details</button>
+</div>
+
 <form #projectForm [formGroup]="projectFormGroup" (ngSubmit)="checkForm()">
     <div class="mb-3">
         <label for="projectName" class="form-label">Project name:</label>
@@ -41,31 +45,37 @@
         </div>
     </div>
 
-    
+    <div class="mb-3">
+        <label for="projectStatus" class="form-label">Project status:</label>
+        <select formControlName="status" class="form-control" id="projectStatus">
+            <option *ngFor="let temp of statuses">{{ temp }}</option>
+        </select>
+    </div>
+
 
     <div class="mb-3 list-group">
         <label for="projectTasks" class="form-label">Project tasks:</label>
         <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          First checkbox
+            <input class="form-check-input me-1" type="checkbox" value="">
+            First checkbox
         </label>
         <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Second checkbox
+            <input class="form-check-input me-1" type="checkbox" value="">
+            Second checkbox
         </label>
         <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Third checkbox
+            <input class="form-check-input me-1" type="checkbox" value="">
+            Third checkbox
         </label>
         <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Fourth checkbox
+            <input class="form-check-input me-1" type="checkbox" value="">
+            Fourth checkbox
         </label>
         <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Fifth checkbox
+            <input class="form-check-input me-1" type="checkbox" value="">
+            Fifth checkbox
         </label>
-      </div>
+    </div>
 
 
     <div class="mb-3" *ngIf="projectImages.length > 0">
@@ -74,7 +84,9 @@
             <div *ngFor="let tempImage of projectImages" class="col-2">
                 <div class="position-relative" id="projectImage">
                     <img src="{{ tempImage['imageUrl'] }}" alt="Project image" class="img-thumbnail thumbnailImage">
-                        <fa-icon [icon]="closeBtn" class="position-absolute top-50 start-50 translate-middle deleteImg d-none" id="deleteButton" (click)="removeImage(tempImage['id'])"></fa-icon>
+                    <fa-icon [icon]="closeBtn"
+                        class="position-absolute top-50 start-50 translate-middle deleteImg d-none" id="deleteButton"
+                        (click)="removeImage(tempImage['id'])"></fa-icon>
                 </div>
             </div>
         </div>
@@ -95,7 +107,7 @@
     </div>
 
     <div class="d-flex gap-2 mt-4">
-        <button type="sumbit" class="btn btn-secondary">Save Changes</button>
+        <button type="submit" class="btn btn-secondary">Save Changes</button>
         <button type="button" class="btn btn-danger" (click)="formCleanerManual()">Reset</button>
         <button type="button" class="btn btn-primary" routerLink="/projects">Go back</button>
     </div>

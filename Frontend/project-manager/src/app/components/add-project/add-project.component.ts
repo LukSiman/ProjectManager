@@ -14,6 +14,7 @@ export class AddProjectComponent implements OnInit {
 
   projectFormGroup: FormGroup;
   errorMessage: string;
+  statuses: string[] = ['New idea', 'In progress', 'On hold', 'Dropped', 'Completed'];
 
   private selectedFile: File;
   private newFileName: string;
@@ -23,17 +24,18 @@ export class AddProjectComponent implements OnInit {
   ngOnInit(): void {
     this.projectFormGroup = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
+      description: [''],
       startDate: ['', Validators.required],
       endDate: [''],
-      description: [''],
+      status: [this.statuses[0]],
       images: ['', CustomValidators.correctFileType]
     }, { validators: CustomValidators.endDateAfterStartDate });
   }
 
   get name() { return this.projectFormGroup.get('name'); }
+  get description() { return this.projectFormGroup.get('description'); }
   get startDate() { return this.projectFormGroup.get('startDate'); }
   get endDate() { return this.projectFormGroup.get('endDate'); }
-  get description() { return this.projectFormGroup.get('description'); }
   get status() { return this.projectFormGroup.get('status'); }
   get images() { return this.projectFormGroup.get('images'); }
 
@@ -57,12 +59,10 @@ export class AddProjectComponent implements OnInit {
     if (this.selectedFile != undefined || this.selectedFile != null) {
       try {
         // upload the image
-        let imgRes = await this.uploadImage();
-        console.log(imgRes); // TODO: delete later
+        await this.uploadImage();
 
         // add the project
-        let prjRes = await this.addNewProject();
-        console.log(prjRes); // TODO: delete later
+        await this.addNewProject();
 
       } catch (error: any) {
         this.errorMessage = error;
@@ -70,8 +70,7 @@ export class AddProjectComponent implements OnInit {
       }
     } else {
       // add the project
-      let prjRes = await this.addNewProject();
-      console.log(prjRes); // TODO: delete later
+      await this.addNewProject();
     }
 
     this.formCleaner();
@@ -84,6 +83,8 @@ export class AddProjectComponent implements OnInit {
 
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
+
+    this.status?.setValue(this.statuses[0]);
   }
 
     // manual form reset
@@ -101,10 +102,10 @@ export class AddProjectComponent implements OnInit {
     const newProject: Project = {
       id: 0,
       name: this.name?.value,
+      description: this.description?.value,
       startDate: this.startDate?.value,
       endDate: this.endDate?.value,
       length: 0,
-      description: this.description?.value,
       status: this.status?.value,
       images: [newProjectImage]
     };

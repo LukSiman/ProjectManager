@@ -58,9 +58,8 @@ export class ProjectListComponent implements OnInit {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
-      this.displaySearchProjectsSorted();
+      this.displaySearchProjectsSortedFiltered();
     } else {
-      // this.displayAllProjectsSorted();
       this.displayAllProjectsSortedFiltered();
     }
   }
@@ -70,11 +69,11 @@ export class ProjectListComponent implements OnInit {
     // gets the value for sorting from url
     const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
 
-    // gets the value for filtering from url
-    const filterValue: string = this.route.snapshot.paramMap.get('filter')!;
-
     // checks the sorting map to see which sorting method to use
     const sortUrl: string = this.sortMap.get(sortValue)!;
+
+    // gets the value for filtering from url
+    const filterValue: string = this.route.snapshot.paramMap.get('filter')!;
 
     // checks the filter map to see which filtering method to use
     const filterUrl: string = this.filterMap.get(filterValue)!;
@@ -87,8 +86,9 @@ export class ProjectListComponent implements OnInit {
       });
   }
 
-  // Copies objects from array in service to projects array if project name includes the keyword
-  private displaySearchProjectsSorted(): void {
+  // Copies objects from array in service to projects array with sorting and filtering
+  private displaySearchProjectsSortedFiltered(): void {
+    // gets the searched keyword
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
     if (this.previousKeyword != keyword) {
@@ -100,10 +100,16 @@ export class ProjectListComponent implements OnInit {
     // gets the value for sorting from url
     const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
 
-    // checks the links map to see which sorting method to use acording to the sorting value
+    // checks the sorting map to see which sorting method to use
     const sortUrl: string = this.sortMap.get(sortValue)!;
 
-    this.projectService.searchProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl)
+    // gets the value for filtering from url
+    const filterValue: string = this.route.snapshot.paramMap.get('filter')!;
+
+    // checks the filter map to see which filtering method to use
+    const filterUrl: string = this.filterMap.get(filterValue)!;
+
+    this.projectService.searchProjectListSortFilterPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl, filterUrl)
       .subscribe(response => {
         this.processResult(response);
         this.populateImages();
@@ -179,6 +185,30 @@ export class ProjectListComponent implements OnInit {
 
 //   // send page number, size and sorting url to service for it to get data from the backend
 //   this.projectService.getProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl)
+//     .subscribe(response => {
+//       this.processResult(response);
+//       this.populateImages();
+//     });
+// }
+
+
+ // Copies objects from array in service to projects array if project name includes the keyword
+//  private displaySearchProjectsSorted(): void {
+//   const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
+
+//   if (this.previousKeyword != keyword) {
+//     this.thePageNumber = 1;
+//   }
+
+//   this.previousKeyword = keyword;
+
+//   // gets the value for sorting from url
+//   const sortValue: string = this.route.snapshot.paramMap.get('sort')!;
+
+//   // checks the links map to see which sorting method to use acording to the sorting value
+//   const sortUrl: string = this.sortMap.get(sortValue)!;
+
+//   this.projectService.searchProjectListSortPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl)
 //     .subscribe(response => {
 //       this.processResult(response);
 //       this.populateImages();
