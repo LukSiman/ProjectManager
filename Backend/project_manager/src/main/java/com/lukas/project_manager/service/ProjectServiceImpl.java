@@ -84,6 +84,11 @@ public class ProjectServiceImpl implements ProjectService {
             projectToUpdate.setDescription(project.getDescription());
         }
 
+        // update if description is different
+        if (!Objects.equals(project.getStatus(), projectToUpdate.getStatus())) {
+            projectToUpdate.setStatus(project.getStatus());
+        }
+
         // update if images are different
         if (project.getImages() != projectToUpdate.getImages()) {
             projectToUpdate.setImages(project.getImages());
