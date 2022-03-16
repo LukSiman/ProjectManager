@@ -21,12 +21,16 @@ export class SortComponent implements OnInit {
 
   // navigate to initiate sorting
   sort(sortValue: string): void {
+    // get the current url
     const currentUrl: string = this.router.url;
+
+    // separate the url into separate segments 
     const urlTree: UrlTree = this.router.parseUrl(currentUrl);
     const urlSegments: UrlSegment[] = urlTree.root.children[PRIMARY_OUTLET].segments;
 
     let newUrl: string = '';
 
+    // build new url from segments
     if (currentUrl.includes('search')){
       newUrl = (`${urlSegments[0]}/${urlSegments[1]}/${sortValue}/${urlSegments[3]}`);
     } else {

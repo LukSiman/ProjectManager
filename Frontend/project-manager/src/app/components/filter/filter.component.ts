@@ -21,12 +21,16 @@ export class FilterComponent implements OnInit {
 
   // navigate to filter url
   filter(filterValue: string): void {
+    // get the current url
     const currentUrl: string = this.router.url;
+
+    // put the url into segment array
     const urlTree: UrlTree = this.router.parseUrl(currentUrl);
     const urlSegments: UrlSegment[] = urlTree.root.children[PRIMARY_OUTLET].segments;
 
     let newUrl: string = '';
 
+    // build new url from the segments
     if (currentUrl.includes('search')) {
       newUrl = (`${urlSegments[0]}/${urlSegments[1]}/${urlSegments[2]}/${filterValue}`);
     } else {

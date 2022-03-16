@@ -20,15 +20,10 @@ const routes: Routes = [
   { path: 'newProject', component: AddProjectComponent },
   { path: 'projects/:sort/:filter', component: ProjectListComponent },
   { path: 'projects/:sort', redirectTo: '/projects/na/al', pathMatch: 'full' },
-  // { path: 'projects/:sort', component: ProjectListComponent }, //TODO: REMOVE later
   { path: 'search/:keyword/:sort/:filter', component: ProjectListComponent },
   { path: 'search/:keyword', redirectTo: '/search/:keyword/na/al', pathMatch: 'full' },
-  // { path: 'search/:keyword/:sort', component: ProjectListComponent }, //TODO: REMOVE later
-  // { path: 'search/:keyword', redirectTo: '/search/:keyword/nameAsc', pathMatch: 'full' }, //TODO: REMOVE later
   { path: '', redirectTo: '/projects/na/al', pathMatch: 'full' },
   { path: '**', redirectTo: '/projects/na/al', pathMatch: 'full' }
-  // { path: '', redirectTo: '/projects/nameAsc', pathMatch: 'full' }, //TODO: REMOVE later
-  // { path: '**', redirectTo: '/projects/nameAsc', pathMatch: 'full' } //TODO: REMOVE later
 ];
 
 @NgModule({
