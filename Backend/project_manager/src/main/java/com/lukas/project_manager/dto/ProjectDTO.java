@@ -18,4 +18,5 @@ public class ProjectDTO {
     private String description;
     private String status;
     private List<ProjectImagesDTO> images;
+    private List<ProjectTasksDTO> tasks;
 }

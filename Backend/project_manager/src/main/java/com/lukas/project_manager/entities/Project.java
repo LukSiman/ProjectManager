@@ -40,13 +40,17 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectImages> images;
 
-    public void addImages(ProjectImages image){
-        if(image != null){
-            if(images == null){
-                images = new ArrayList<>();
-            }
-            images.add(image);
-            image.setProject(this);
-        }
-    }
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProjectTasks> tasks;
+
+    // TODO: Delete later?
+//    public void addImages(ProjectImages image){
+//        if(image != null){
+//            if(images == null){
+//                images = new ArrayList<>();
+//            }
+//            images.add(image);
+//            image.setProject(this);
+//        }
+//    }
 }
