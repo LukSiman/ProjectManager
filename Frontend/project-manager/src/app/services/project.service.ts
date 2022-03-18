@@ -108,7 +108,8 @@ interface getProject {
   length: number,
   description: string,
   status: string,
-  images: []
+  images: [],
+  tasks: []
 }
 
 

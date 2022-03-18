@@ -11,7 +11,8 @@ export class SortComponent implements OnInit {
   sortList: { key: string, value: string }[] = [
     { key: 'Name A-Z', value: 'na' }, { key: 'Name Z-A', value: 'nd' },
     { key: 'Newest', value: 'da' }, { key: 'Oldest', value: 'dd' },
-    { key: 'Longest', value: 'la' }, { key: 'Shortest', value: 'ld' }
+    { key: 'Longest', value: 'la' }, { key: 'Shortest', value: 'ld' },
+    { key: 'Status A-Z', value: 'sa' }, { key: 'Status Z-A', value: 'sd' }
   ]
 
   constructor(private router: Router) { }

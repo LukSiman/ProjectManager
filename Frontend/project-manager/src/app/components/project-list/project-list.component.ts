@@ -24,7 +24,8 @@ export class ProjectListComponent implements OnInit {
   sortMap = new Map<string, string>([
     ['na', 'name'], ['nd', 'name,desc'],
     ['da', 'startDate,desc'], ['dd', 'startDate'],
-    ['la', 'length,desc'], ['ld', 'length']
+    ['la', 'length,desc'], ['ld', 'length'],
+    ['sa', 'status'], ['sd', 'status,desc']
   ]);
 
   // properties for filtering

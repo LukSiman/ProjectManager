@@ -28,7 +28,8 @@ export class AddProjectComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: [''],
       status: [this.statuses[0]],
-      images: ['', CustomValidators.correctFileType]
+      images: ['', CustomValidators.correctFileType],
+      tasks: ['']
     }, { validators: CustomValidators.endDateAfterStartDate });
   }
 
@@ -38,6 +39,7 @@ export class AddProjectComponent implements OnInit {
   get endDate() { return this.projectFormGroup.get('endDate'); }
   get status() { return this.projectFormGroup.get('status'); }
   get images() { return this.projectFormGroup.get('images'); }
+  get tasks() { return this.projectFormGroup.get('tasks'); }
 
   // informs user of required fields and initiates project adding to DB 
   checkForm(): void {
@@ -107,7 +109,8 @@ export class AddProjectComponent implements OnInit {
       endDate: this.endDate?.value,
       length: 0,
       status: this.status?.value,
-      images: [newProjectImage]
+      images: [newProjectImage],
+      tasks: []
     };
 
     // call service to add the project

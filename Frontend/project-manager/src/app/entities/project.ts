@@ -1,4 +1,5 @@
 import { ProjectImages } from "./project-images";
+import { ProjectTasks } from "./project-tasks";
 
 export class Project {
     id: number;
@@ -9,4 +10,5 @@ export class Project {
     description: string;
     status: string;
     images: ProjectImages[] = [];
+    tasks: ProjectTasks[] = [];
 }

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
+import { ProjectTasks } from 'src/app/entities/project-tasks';
 import { ProjectImagesService } from 'src/app/services/project-images.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
@@ -16,6 +17,7 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 export class EditProjectComponent implements OnInit {
   project: Project = new Project();
   projectImages: ProjectImages[] = [];
+  projectTasks: ProjectTasks[] = [];
   projectFormGroup: FormGroup;
   errorMessage: string;
   closeBtn = faTimes;
@@ -34,7 +36,8 @@ export class EditProjectComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: [''],
       status: [''],
-      images: ['', CustomValidators.correctFileType]
+      images: ['', CustomValidators.correctFileType],
+      tasks: ['']
     }, { validators: CustomValidators.endDateAfterStartDate });
 
     this.initializeForm();
@@ -75,6 +78,7 @@ export class EditProjectComponent implements OnInit {
     this.project.status = responseProject.status;
     this.project.images = responseProject.images;
     this.projectImages = responseProject.images;
+    this.projectTasks = responseProject.tasks;
   }
 
   // sets initial project values into the appropriate fields
@@ -85,6 +89,7 @@ export class EditProjectComponent implements OnInit {
     this.endDate?.setValue(`${this.project.endDate}`);
     this.status?.setValue(`${this.project.status}`);
     this.images?.reset();
+    this.tasks?.setValue(`${this.project.tasks}`);
   }
 
   get name() { return this.projectFormGroup.get('name'); }
@@ -93,6 +98,7 @@ export class EditProjectComponent implements OnInit {
   get endDate() { return this.projectFormGroup.get('endDate'); }
   get status() { return this.projectFormGroup.get('status'); }
   get images() { return this.projectFormGroup.get('images'); }
+  get tasks() { return this.projectFormGroup.get('tasks'); }
 
   // informs user of required fields and initiates project adding to DB 
   checkForm(): void {
