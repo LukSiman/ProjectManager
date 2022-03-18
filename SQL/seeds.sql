@@ -1,6 +1,6 @@
 USE `project-manager`;
 
-INSERT INTO projects (`name`, start_date, `description`, `status`) VALUES ('Project Manager', '2021-11-12', 'A fullstack app that tracks your projects.', 'New idea');
+INSERT INTO projects (`name`, start_date, `description`, `status`) VALUES ('1 Project Manager', '2021-11-12', 'A fullstack app that tracks your projects.', 'New idea');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`, `status`) VALUES ('Hacker app', CURRENT_DATE(), '2022-12-12', DATEDIFF(end_date, start_date), 'An app that hacks anyone automaticaly', 'Completed');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`, `status`) VALUES ('Robot dog', CURRENT_DATE(), CURRENT_DATE() + INTERVAL 1 YEAR, DATEDIFF(end_date, start_date), 'A robot dog that listen to commands.', 'In progress');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`, `status`) VALUES ('Fakeazon', '2020-01-01', '2020-10-10', DATEDIFF(end_date, start_date), 'An e-commerce website where you can buy stuff!', 'Completed');
@@ -32,11 +32,13 @@ INSERT INTO projects (`name`, start_date, end_date, `length`, `description`, `st
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`, `status`) VALUES ('Random app 3', CURRENT_DATE() - INTERVAL 2 YEAR, CURRENT_DATE() + INTERVAL 1 YEAR, DATEDIFF(end_date, start_date), 'A random app!', 'In progress');
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`, `status`) VALUES ('1 day project', '2021-12-22', '2021-12-23', DATEDIFF(end_date, start_date), '1 day app for testing purposes.', 'Completed');
 
+
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder1.jpg', 1);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 1);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 1);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 1);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder5.jpg', 1);
+INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder6.jpg', 1);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 2);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 3);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 4);
@@ -64,6 +66,73 @@ INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projec
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder2.jpg', 26);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder3.jpg', 27);
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 27);
+
+
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Create a plan', 'Completed', 1);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Design the project', 'Completed', 1);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Create the project', 'Completed', 1);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (4, 'Implement functionality', 'In progress', 1);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (5, 'Add additional functionality', 'On hold', 1);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (6, 'Polish the design', 'Not started', 1);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task', 'Completed', 2);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Design the project', 'Completed', 2);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Create the project', 'Completed', 2);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Create a plan', 'Completed', 3);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Design the project', 'Completed', 3);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Create the project', 'Completed', 3);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Create a plan', 'Completed', 10);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Design the project', 'Completed', 10);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Create the project', 'Completed', 10);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 2);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 2);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 2);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 3);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 3);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 3);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 10);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 10);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 10);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (4, 'Random task4', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (5, 'Random task5', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (6, 'Random task6', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (7, 'Random task7', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (8, 'Random task8', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (9, 'Random task9', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (10, 'Random task10', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (11, 'Random task11', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (12, 'Random task12', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (13, 'Random task13', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (14, 'Random task14', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (15, 'Random task15', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (16, 'Random task16', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (17, 'Random task17', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (18, 'Random task18', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (19, 'Random task19', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (20, 'Random task20', 'Completed', 11);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 12);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 12);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 12);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 13);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 13);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 13);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 14);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 14);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 14);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 15);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 15);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 15);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 16);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task2', 'Completed', 16);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task3', 'Completed', 16);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task6', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task4', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task5', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task3', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task2', 'Completed', 20);
 
 
 SELECT * FROM `project-manager`.projects;

@@ -4,6 +4,7 @@ USE `project-manager`;
 
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS project_images;
+DROP TABLE IF EXISTS project_tasks;
 
 -- project table
 CREATE TABLE projects(
@@ -13,7 +14,7 @@ start_date DATE NOT NULL DEFAULT(CURRENT_DATE()),
 end_date DATE,
 `length` INTEGER,
 `description` TEXT,
-`status` TEXT
+`status` VARCHAR(50) NOT NULL
 );
 
 
@@ -24,6 +25,18 @@ image_url VARCHAR(255) NOT NULL,
 project_id INTEGER NOT NULL,
 KEY fk_project (project_id),
 CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+);
+
+
+-- project tasks table
+CREATE TABLE project_tasks(
+id INTEGER PRIMARY KEY AUTO_INCREMENT,
+`order` INTEGER NOT NULL,
+`description` TEXT NOT NULL,
+`status` VARCHAR(50) NOT NULL,
+project_id INTEGER NOT NULL,
+KEY fk_project2 (project_id),
+CONSTRAINT fk_project2 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
 SELECT * FROM `project-manager`.projects;
