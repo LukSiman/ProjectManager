@@ -130,9 +130,9 @@ INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES 
 INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task1', 'Completed', 20);
 INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task6', 'Completed', 20);
 INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task4', 'Completed', 20);
-INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (1, 'Random task5', 'Completed', 20);
-INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (2, 'Random task3', 'Completed', 20);
-INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (3, 'Random task2', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (4, 'Random task5', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (5, 'Random task3', 'Completed', 20);
+INSERT INTO project_tasks (`order`, `description`, `status`, project_id) VALUES (6, 'Random task2', 'Completed', 20);
 
 
 SELECT * FROM `project-manager`.projects;

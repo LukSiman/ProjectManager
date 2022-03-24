@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, Form, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Project } from 'src/app/entities/project';
@@ -17,11 +17,11 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 export class EditProjectComponent implements OnInit {
   project: Project = new Project();
   projectImages: ProjectImages[] = [];
-  projectTasks: ProjectTasks[] = [];
   projectFormGroup: FormGroup;
   errorMessage: string;
   closeBtn = faTimes;
   statuses: string[] = ['New idea', 'In progress', 'On hold', 'Dropped', 'Completed'];
+  taskStatuses: string[] = ['Not started', 'In progress', 'On hold', 'Completed'];
 
   private selectedFile: File;
   private newFileName: string;
@@ -37,14 +37,12 @@ export class EditProjectComponent implements OnInit {
       endDate: [''],
       status: [''],
       images: ['', CustomValidators.correctFileType],
-      tasks: ['']
+      tasks: this.formBuilder.array([])
     }, { validators: CustomValidators.endDateAfterStartDate });
 
     this.initializeForm();
-
-    // disables the main fields
-    this.projectFormGroup.disable();
   }
+
 
   // Creates the form and fills out the project data
   private async initializeForm(): Promise<void> {
@@ -76,21 +74,36 @@ export class EditProjectComponent implements OnInit {
     this.project.endDate = responseProject.endDate;
     this.project.length = responseProject.length;
     this.project.status = responseProject.status;
-    this.project.images = responseProject.images;
-    this.projectImages = responseProject.images;
-    this.projectTasks = responseProject.tasks;
+    this.projectImages = responseProject.images; //TODO: Fix this?
+    this.project.tasks = responseProject.tasks;
   }
 
   // sets initial project values into the appropriate fields
   private initialValues(): void {
-    this.name?.setValue(`${this.project.name}`);
-    this.description?.setValue(`${this.project.description}`);
-    this.startDate?.setValue(`${this.project.startDate}`);
-    this.endDate?.setValue(`${this.project.endDate}`);
-    this.status?.setValue(`${this.project.status}`);
+    this.name?.setValue(this.project.name);
+    this.description?.setValue(this.project.description);
+    this.startDate?.setValue(this.project.startDate);
+    this.endDate?.setValue(this.project.endDate);
+    this.status?.setValue(this.project.status);
+
+    for (let project of this.project.tasks) {
+      let projectTask = this.formBuilder.group({
+        taskOrder: [project.order],
+        taskDescription: [project.description],
+        taskStatus: [project.status]
+      });
+
+      this.tasks.push(projectTask);
+    }
+
     this.images?.reset();
-    this.tasks?.setValue(`${this.project.tasks}`);
+
+    // disables the main fields
+    this.projectFormGroup.disable();
   }
+
+  //TODO: tasks initialization method
+  //TODO: tasks removal after saving and getting new ones
 
   get name() { return this.projectFormGroup.get('name'); }
   get description() { return this.projectFormGroup.get('description'); }
@@ -98,7 +111,7 @@ export class EditProjectComponent implements OnInit {
   get endDate() { return this.projectFormGroup.get('endDate'); }
   get status() { return this.projectFormGroup.get('status'); }
   get images() { return this.projectFormGroup.get('images'); }
-  get tasks() { return this.projectFormGroup.get('tasks'); }
+  get tasks() { return this.projectFormGroup.get('tasks') as FormArray; }
 
   // informs user of required fields and initiates project adding to DB 
   checkForm(): void {
@@ -163,6 +176,10 @@ export class EditProjectComponent implements OnInit {
       let newProjectImage: ProjectImages = this.handleProjectImages();
       this.project.images.push(newProjectImage);
     }
+
+    console.log(this.project.tasks);
+    console.log(this.tasks.value);
+    // this.project.tasks = this.tasks.value;
 
     // call service to add the project
     return new Promise((resolve, reject) => {

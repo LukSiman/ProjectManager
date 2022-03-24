@@ -48,26 +48,34 @@
     <div class="mb-3">
         <label for="projectStatus" class="form-label">Project status:</label>
         <select formControlName="status" class="form-control" id="projectStatus">
-            <option *ngFor="let temp of statuses">{{ temp }}</option>
+            <option *ngFor="let temp of statuses">{{temp}}</option>
         </select>
     </div>
 
-    <div class="mb-3">
+    <div formArrayName="tasks" class="mb-3">
         <div class="mb-2 list-group">
             <label for="projectTasks" class="form-label">Project tasks:</label>
-            <div *ngIf="projectTasks.length > 0; else elseBlock">
-                <div *ngFor="let tempTask of projectTasks">
-                    <label class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="">
-                        {{ tempTask.description }}
-                    </label>
+            <div *ngIf="project.tasks.length > 0; else elseBlock">
+                <div class=form-group *ngFor="let tempTask of tasks.controls">
+                    <div [formGroup]="$any(tempTask)" class="row">
+                        <div class="col-9 col-lg-10 mb-1">
+                            <div class="input-group">
+                                <input formControlName="taskDescription" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-3 col-lg-2 my-auto text-center">
+                            <select formControlName="taskStatus" class="form-control" id="projectTasks">
+                                <option *ngFor="let temp of taskStatuses" [value]="temp">{{temp}}</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ng-template #elseBlock>
                 <label class="list-group-item"> No tasks have been added to this project.</label>
             </ng-template>
         </div>
-        <button type="button" class="btn btn-secondary">Add tasks</button>
+        <button type="button" class="btn btn-secondary">Add new task</button>
     </div>
 
     <div class="mb-3" *ngIf="projectImages.length > 0">
@@ -75,7 +83,7 @@
         <div class="row mt-1">
             <div *ngFor="let tempImage of projectImages" class="col-2">
                 <div class="position-relative" id="projectImage">
-                    <img src="{{ tempImage['imageUrl'] }}" alt="Project image" class="img-thumbnail thumbnailImage">
+                    <img src="{{tempImage['imageUrl']}}" alt="Project image" class="img-thumbnail thumbnailImage">
                     <fa-icon [icon]="closeBtn"
                         class="position-absolute top-50 start-50 translate-middle deleteImg d-none" id="deleteButton"
                         (click)="removeImage(tempImage['id'])"></fa-icon>
@@ -94,7 +102,7 @@
             </div>
         </div>
         <div *ngIf="errorMessage" class="alert alert-danger mt-1">
-            {{ errorMessage }}
+            {{errorMessage}}
         </div>
     </div>
 
