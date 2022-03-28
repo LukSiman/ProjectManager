@@ -3,6 +3,7 @@ package com.lukas.project_manager.service;
 import com.lukas.project_manager.dao.ProjectRepository;
 import com.lukas.project_manager.entities.Project;
 import com.lukas.project_manager.entities.ProjectImages;
+import com.lukas.project_manager.entities.ProjectTasks;
 import com.lukas.project_manager.exceptions.TooManyImagesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,12 @@ public class ProjectServiceImpl implements ProjectService {
             projectToUpdate.setStatus(project.getStatus());
         }
 
+        // update if tasks are different
+        if (!Objects.equals(project.getTasks(), projectToUpdate.getTasks())) {
+            projectToUpdate.setTasks(project.getTasks());
+            handleTasks(projectToUpdate);
+        }
+
         // update if images are different
         if (project.getImages() != projectToUpdate.getImages()) {
             projectToUpdate.setImages(project.getImages());
@@ -108,6 +115,12 @@ public class ProjectServiceImpl implements ProjectService {
     // helper method to calculate day difference between dates
     private long calculateLength(LocalDate startDate, LocalDate endDate) {
         return ChronoUnit.DAYS.between(startDate, endDate);
+    }
+
+    // handle adding tasks to the project
+    private void handleTasks(Project project) {
+        List<ProjectTasks> taskList = project.getTasks();
+        taskList.forEach(task -> task.setProject(project));
     }
 
     // handle adding images to the project
