@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ProjectImagesDTO {
 
-    private Integer id;
+    private Integer image_id;
     private String imageUrl;
 }

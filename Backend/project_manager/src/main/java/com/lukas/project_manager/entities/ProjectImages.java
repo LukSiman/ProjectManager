@@ -13,8 +13,8 @@ public class ProjectImages {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "image_id")
+    private Integer image_id;
 
     @Column(name = "image_url")
     private String imageUrl;

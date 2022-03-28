@@ -13,19 +13,19 @@ public class ProjectTasks {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "task_id")
+    private Integer task_id;
 
-    @Column(name = "order")
-    private Integer order;
+    @Column(name = "task_order")
+    private Integer task_order;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "task_description")
+    private String task_description;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "task_status")
+    private String task_status;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id_task")
     private Project project;
 }
