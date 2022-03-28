@@ -12,6 +12,10 @@
                 Name is required.
             </div>
 
+            <div *ngIf="name?.errors?.maxlength">
+                Name must be less than 50 characters long.
+            </div>
+
             <div *ngIf="name?.errors?.minlength">
                 Name must be at least 4 characters long.
             </div>
@@ -56,17 +60,40 @@
         <div class="mb-2 list-group">
             <label for="projectTasks" class="form-label">Project tasks:</label>
             <div *ngIf="project.tasks.length > 0; else elseBlock">
-                <div class=form-group *ngFor="let tempTask of tasks.controls">
-                    <div [formGroup]="$any(tempTask)" class="row">
-                        <div class="col-9 col-lg-10 mb-1">
-                            <div class="input-group">
-                                <input formControlName="taskDescription" type="text" class="form-control">
+                <div class=form-group *ngFor="let tempTask of tasks.controls, index as i">
+                    <div [formGroup]="$any(tempTask)" class="d-flex flex-row">
+                        <div class="row flex-fill">
+                            <div class="col-9 col-lg-10 mb-1">
+                                <!-- <input formControlName="task_description" type="text" class="form-control"> -->
+                                <textarea formControlName="task_description" class="form-control" rows="1"></textarea>
+
+                                <div *ngIf="tempTask.get('task_description')?.invalid && (tempTask.get('task_description')?.dirty || tempTask.get('task_description')?.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="tempTask.get('task_description')?.errors?.required || 
+                                    tempTask.get('task_description')?.errors?.notOnlyWhitespace">
+                                        Task name is required.
+                                    </div>
+
+                                    <div *ngIf="tempTask.get('task_description')?.errors?.minlength">
+                                        Task name must be at least 4 characters long.
+                                    </div>
+
+                                    <div *ngIf="tempTask.get('task_description')?.errors?.maxlength">
+                                        Task name must be less than 200 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 col-lg-2">
+                                <select formControlName="task_status" class="form-control text-center" id="projectTasks">
+                                    <option *ngFor="let temp of taskStatuses" [value]="temp">{{temp}}</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-3 col-lg-2 my-auto text-center">
-                            <select formControlName="taskStatus" class="form-control" id="projectTasks">
-                                <option *ngFor="let temp of taskStatuses" [value]="temp">{{temp}}</option>
-                            </select>
+
+                        <div>
+                            <button type="button" class="btn btn-danger" (click)="removeTask(i)">
+                                <fa-icon [icon]="closeBtn"></fa-icon>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -75,7 +102,7 @@
                 <label class="list-group-item"> No tasks have been added to this project.</label>
             </ng-template>
         </div>
-        <button type="button" class="btn btn-secondary">Add new task</button>
+        <button type="button" class="btn btn-secondary" (click)="addNewTask()">Add new task</button>
     </div>
 
     <div class="mb-3" *ngIf="projectImages.length > 0">

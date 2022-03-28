@@ -31,7 +31,7 @@ export class EditProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectFormGroup = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
+      name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50), CustomValidators.notOnlyWhitespace]],
       description: [''],
       startDate: ['', Validators.required],
       endDate: [''],
@@ -74,7 +74,8 @@ export class EditProjectComponent implements OnInit {
     this.project.endDate = responseProject.endDate;
     this.project.length = responseProject.length;
     this.project.status = responseProject.status;
-    this.projectImages = responseProject.images; //TODO: Fix this?
+    this.projectImages = responseProject.images; //TODO: Fix this
+    this.project.images = responseProject.images; //TODO: Fix this
     this.project.tasks = responseProject.tasks;
   }
 
@@ -86,11 +87,13 @@ export class EditProjectComponent implements OnInit {
     this.endDate?.setValue(this.project.endDate);
     this.status?.setValue(this.project.status);
 
+    // initialization for the projects tasks
     for (let project of this.project.tasks) {
       let projectTask = this.formBuilder.group({
-        taskOrder: [project.order],
-        taskDescription: [project.description],
-        taskStatus: [project.status]
+        task_id: [project.task_id],
+        task_order: [project.task_order],
+        task_description: [project.task_description],
+        task_status: [project.task_status]
       });
 
       this.tasks.push(projectTask);
@@ -101,9 +104,6 @@ export class EditProjectComponent implements OnInit {
     // disables the main fields
     this.projectFormGroup.disable();
   }
-
-  //TODO: tasks initialization method
-  //TODO: tasks removal after saving and getting new ones
 
   get name() { return this.projectFormGroup.get('name'); }
   get description() { return this.projectFormGroup.get('description'); }
@@ -155,7 +155,7 @@ export class EditProjectComponent implements OnInit {
 
     // reset the form
     this.initializeForm();
-    this.formCleanerManual();
+    this.formCleaner();
   }
 
 
@@ -171,15 +171,14 @@ export class EditProjectComponent implements OnInit {
 
     this.project.status = this.status?.value;
 
+    this.project.tasks = this.tasks.value;
+    console.log(this.project.tasks);
+
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
       let newProjectImage: ProjectImages = this.handleProjectImages();
       this.project.images.push(newProjectImage);
     }
-
-    console.log(this.project.tasks);
-    console.log(this.tasks.value);
-    // this.project.tasks = this.tasks.value;
 
     // call service to add the project
     return new Promise((resolve, reject) => {
@@ -191,6 +190,31 @@ export class EditProjectComponent implements OnInit {
         reject(error);
       });
     });
+  }
+
+  // adds a new task to the task list
+  addNewTask(): void {
+    let projectTask = this.formBuilder.group({
+      task_order: [this.tasks.length + 1],
+      task_description: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
+      task_status: [this.taskStatuses[0], Validators.required]
+    });
+
+    this.tasks.push(projectTask);
+  }
+
+  // adds a new task to the task list
+  removeTask(index: number): void{
+    if (this.projectFormGroup.status == 'DISABLED') {
+      return;
+    }
+
+    // console.log(this.tasks.value);
+    // console.log('index is: ' + index);
+
+    this.tasks.removeAt(index);
+
+    //TODO: FINISH THIS
   }
 
   // shows a message and fades out
@@ -212,31 +236,34 @@ export class EditProjectComponent implements OnInit {
   @HostListener('click', ['$event.target'])
   onClick(currentElement: HTMLElement): void {
     // disable image manipulation if form is disabled
-    if (this.projectFormGroup.status != 'DISABLED') {
-      let currentImage: HTMLElement = currentElement;
-
-      //  making sure only the correct element is being manipulated
-      if (currentElement.parentElement?.id == 'projectImage') {
-        currentImage = currentElement.parentElement;
-      } else {
-        return;
-      }
-
-      // if this is a different image than before, unblur everything else
-      if (this.previousImage != currentImage) {
-        let blurredImages = document.body.querySelectorAll('#projectImage');
-        blurredImages.forEach((image) => {
-          image.firstElementChild?.classList.remove('blurImage');
-          image.lastElementChild?.classList.add('d-none');
-        });
-      }
-
-      // blur image and unhide the deletion button
-      currentImage.firstElementChild?.classList.toggle('blurImage');
-      currentImage.lastElementChild?.classList.toggle('d-none');
-
-      this.previousImage = currentImage;
+    if (this.projectFormGroup.status == 'DISABLED') {
+      return;
     }
+
+    let currentImage: HTMLElement = currentElement;
+
+    //  making sure only the correct element is being manipulated
+    if (currentElement.parentElement?.id == 'projectImage') {
+      currentImage = currentElement.parentElement;
+    } else {
+      return;
+    }
+
+    // if this is a different image than before, unblur everything else
+    if (this.previousImage != currentImage) {
+      let blurredImages = document.body.querySelectorAll('#projectImage');
+      blurredImages.forEach((image) => {
+        image.firstElementChild?.classList.remove('blurImage');
+        image.lastElementChild?.classList.add('d-none');
+      });
+    }
+
+    // blur image and unhide the deletion button
+    currentImage.firstElementChild?.classList.toggle('blurImage');
+    currentImage.lastElementChild?.classList.toggle('d-none');
+
+    this.previousImage = currentImage;
+
 
   }
 
@@ -248,20 +275,23 @@ export class EditProjectComponent implements OnInit {
 
   // resets fields of the form
   private formCleaner(): void {
-    // resets the form
-    this.initialValues();
+    // resets tasks FormArray
+    this.tasks.clear();
 
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
 
     // reset the file name
     this.newFileName = undefined as unknown as string;
+
+    // reset the error message
+    this.errorMessage = '';
   }
 
   // manual form reset
   formCleanerManual(): void {
     this.formCleaner();
-    this.errorMessage = '';
+    this.initializeForm();
   }
 
   // create and return a new ProjectImage object
