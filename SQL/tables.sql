@@ -20,23 +20,27 @@ end_date DATE,
 
 -- project images table
 CREATE TABLE project_images(
-id INTEGER PRIMARY KEY AUTO_INCREMENT,
+image_id INTEGER PRIMARY KEY AUTO_INCREMENT,
 image_url VARCHAR(255) NOT NULL,
 project_id INTEGER NOT NULL,
-KEY fk_project (project_id),
-CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+-- KEY fk_project (project_id),
+-- CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+-- CONSTRAINT fk_project 
+FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
 
 -- project tasks table
 CREATE TABLE project_tasks(
-id INTEGER PRIMARY KEY AUTO_INCREMENT,
-`order` INTEGER NOT NULL,
-`description` TEXT NOT NULL,
-`status` VARCHAR(50) NOT NULL,
-project_id INTEGER NOT NULL,
-KEY fk_project2 (project_id),
-CONSTRAINT fk_project2 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+task_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+task_order INTEGER NOT NULL,
+task_description TEXT NOT NULL,
+task_status VARCHAR(50) NOT NULL,
+project_id_task INTEGER NOT NULL,
+-- KEY fk_project (project_id),
+-- CONSTRAINT fk_project2 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+-- CONSTRAINT fk_project 
+FOREIGN KEY (project_id_task) REFERENCES projects(id) ON DELETE CASCADE
 );
 
 SELECT * FROM `project-manager`.projects;
