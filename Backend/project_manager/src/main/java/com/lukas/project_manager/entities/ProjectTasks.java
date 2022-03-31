@@ -28,4 +28,21 @@ public class ProjectTasks {
     @ManyToOne
     @JoinColumn(name = "project_id_task")
     private Project project;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ProjectTasks other = (ProjectTasks) obj;
+        return task_id != null && task_id.equals(other.getTask_id()) && task_description.equals(other.getTask_description());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getTask_id()*37;
+    }
 }
