@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -92,8 +93,8 @@ public class ProjectServiceImpl implements ProjectService {
 
         // update if tasks are different
         if (!Objects.equals(project.getTasks(), projectToUpdate.getTasks())) {
-            projectToUpdate.setTasks(project.getTasks());
-            handleTasks(projectToUpdate);
+            System.out.println("\nInside");
+            handleTasks(project, projectToUpdate);
         }
 
         // update if images are different
@@ -118,9 +119,31 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     // handle adding tasks to the project
-    private void handleTasks(Project project) {
-        List<ProjectTasks> taskList = project.getTasks();
-        taskList.forEach(task -> task.setProject(project));
+    private void handleTasks(Project project, Project projectToUpdate) {
+        //create an ArrayList that holds the received project tasks
+        List<ProjectTasks> newTasks = new ArrayList<>(project.getTasks());
+
+        // create an ArrayList that holds the tasks of the project from DB
+        List<ProjectTasks> removedTasks = new ArrayList<>(projectToUpdate.getTasks());
+
+        // leave only the new tasks
+        newTasks.removeAll(projectToUpdate.getTasks());
+
+        // leave only the removed tasks
+        removedTasks.removeAll(project.getTasks());
+
+        // add the new tasks to the DB
+        if (newTasks.size() > 0) {
+            newTasks.forEach(newTask -> {
+                newTask.setProject(projectToUpdate);
+                projectToUpdate.getTasks().add(newTask);
+            });
+        }
+
+        // remove the tasks from the project in DB
+        if (removedTasks.size() > 0) {
+            removedTasks.forEach(removedTask -> projectToUpdate.getTasks().remove(removedTask));
+        }
     }
 
     // handle adding images to the project
