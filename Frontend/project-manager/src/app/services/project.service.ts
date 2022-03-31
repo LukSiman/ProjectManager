@@ -53,6 +53,7 @@ export class ProjectService {
   }
 
   updateProject(project: Project): Observable<Project> {
+    // console.log(project); //TODO: Remove
     const projectId = project.id;
     const putUrl = `${this.baseUrl}/${projectId}`;
     return this.httpClient.put<getProject>(putUrl, project).pipe(catchError(this.handleError));

@@ -172,7 +172,6 @@ export class EditProjectComponent implements OnInit {
     this.project.status = this.status?.value;
 
     this.project.tasks = this.tasks.value;
-    console.log(this.project.tasks);
 
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
@@ -194,6 +193,11 @@ export class EditProjectComponent implements OnInit {
 
   // adds a new task to the task list
   addNewTask(): void {
+    if (this.projectFormGroup.status == 'DISABLED') {
+      alert("Please enable editing");
+      return;
+    }
+
     let projectTask = this.formBuilder.group({
       task_order: [this.tasks.length + 1],
       task_description: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
@@ -203,18 +207,13 @@ export class EditProjectComponent implements OnInit {
     this.tasks.push(projectTask);
   }
 
-  // adds a new task to the task list
+  // removes the task from the task list
   removeTask(index: number): void{
     if (this.projectFormGroup.status == 'DISABLED') {
       return;
     }
 
-    // console.log(this.tasks.value);
-    // console.log('index is: ' + index);
-
     this.tasks.removeAt(index);
-
-    //TODO: FINISH THIS
   }
 
   // shows a message and fades out
@@ -263,8 +262,6 @@ export class EditProjectComponent implements OnInit {
     currentImage.lastElementChild?.classList.toggle('d-none');
 
     this.previousImage = currentImage;
-
-
   }
 
   // removes the image from DB and reloads page
