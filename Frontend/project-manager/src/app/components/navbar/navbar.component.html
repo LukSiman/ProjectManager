@@ -1,6 +1,7 @@
 <nav class="navbar navbar-light bg-light my-4">
   <div class="container-fluid">
-    <div class="d-flex align-items-center">
+
+    <div class="d-flex align-items-center">      
       <a routerLink="/projects" class="mx-1">
         <img src="assets/images/logo.png" alt="logo" class="img-responsive" width="60" (click)="refresh()">
       </a>
@@ -8,7 +9,8 @@
         Home
       </a>
     </div>
-    <form class="d-flex">
+
+    <form class="d-flex col-12 col-sm-7 col-lg-5">
       <input #searchInput class="form-control me-md-3 me-sm-2" type="search" placeholder="Search for projects..."
         (keyup.enter)="searchProject(searchInput.value)">
       <button class="btn btn-secondary" (click)="searchProject(searchInput.value)">Search</button>
