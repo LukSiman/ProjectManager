@@ -127,12 +127,14 @@ export class AddProjectComponent implements OnInit {
   private handleProjectImages(): ProjectImages {
     // create empty ProjectImages object
     let newProjectImages: ProjectImages = {
+      imageId: 0,
       imageUrl: ''
     }
 
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
       newProjectImages = {
+        imageId: 0,
         imageUrl: `assets/images/projects/${this.newFileName}`
       }
     }
