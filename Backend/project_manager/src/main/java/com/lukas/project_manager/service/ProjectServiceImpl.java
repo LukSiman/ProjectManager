@@ -43,7 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         // add an image
-        handleImages(project);
+//        handleImages(project);
 
         return projectRepository.save(project);
     }
@@ -93,14 +93,12 @@ public class ProjectServiceImpl implements ProjectService {
 
         // update if tasks are different
         if (!Objects.equals(project.getTasks(), projectToUpdate.getTasks())) {
-            System.out.println("\nInside");
             handleTasks(project, projectToUpdate);
         }
 
         // update if images are different
-        if (project.getImages() != projectToUpdate.getImages()) {
-            projectToUpdate.setImages(project.getImages());
-            handleImages(projectToUpdate);
+        if (!Objects.equals(project.getImages(), projectToUpdate.getImages())) {
+            handleImages(project, projectToUpdate);
         }
 
         return projectRepository.save(projectToUpdate);
@@ -147,20 +145,48 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     // handle adding images to the project
-    private void handleImages(Project project) {
-        List<ProjectImages> imageList = project.getImages();
+    private void handleImages(Project project, Project projectToUpdate) {
+        //create an ArrayList that holds the received project images
+        List<ProjectImages> newImages = new ArrayList<>(project.getImages());
 
-        // throw exception if more image than maximum size
-        if (imageList.size() > MAX_IMAGES) {
-            throw new TooManyImagesException();
+        // create an ArrayList that holds the images of the project from DB
+        List<ProjectImages> removedImages = new ArrayList<>(projectToUpdate.getImages());
+
+        // leave only the new images
+        newImages.removeAll(projectToUpdate.getImages());
+
+        // leave only the removed images
+        removedImages.removeAll(project.getImages());
+
+        // add the new image to the DB
+        if (newImages.size() > 0) {
+            newImages.forEach(newImage -> {
+                newImage.setProject(projectToUpdate);
+                projectToUpdate.getImages().add(newImage);
+            });
         }
 
-        imageList.forEach(img -> {
-            // if project has no images add a default image
-            if (img.getImageUrl() == null || img.getImageUrl().isEmpty()) {
-                img.setImageUrl("assets/images/projects/default.png");
-            }
-            img.setProject(project);
-        });
+        // remove the images from the project in DB
+        if (removedImages.size() > 0) {
+            removedImages.forEach(removedImage -> projectToUpdate.getImages().remove(removedImage));
+        }
     }
+
+    // handle adding images to the project
+//    private void handleImages(Project project) {
+//        List<ProjectImages> imageList = project.getImages();
+//
+//        // throw exception if more image than maximum size
+//        if (imageList.size() > MAX_IMAGES) {
+//            throw new TooManyImagesException();
+//        }
+//
+//        imageList.forEach(img -> {
+//            // if project has no images add a default image
+//            if (img.getImageUrl() == null || img.getImageUrl().isEmpty()) {
+//                img.setImageUrl("assets/images/projects/default.png");
+//            }
+//            img.setProject(project);
+//        });
+//    }
 }
