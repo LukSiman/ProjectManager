@@ -37,21 +37,9 @@ public class Project {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectImages> images;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectTasks> tasks;
-
-
-    // TODO: Delete later?
-//    public void addImages(ProjectImages image){
-//        if(image != null){
-//            if(images == null){
-//                images = new ArrayList<>();
-//            }
-//            images.add(image);
-//            image.setProject(this);
-//        }
-//    }
 }
