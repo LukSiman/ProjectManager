@@ -13,7 +13,7 @@ public class TooManyImagesExceptionAdvice {
 
     // Handle too many files
     @ExceptionHandler(TooManyImagesException.class)
-    public ResponseEntity<UploadResponseMessage> TooManyImagesHandler() {
+    public ResponseEntity<UploadResponseMessage> tooManyImagesHandler() {
         return status(HttpStatus.PAYLOAD_TOO_LARGE)
                 .body(new UploadResponseMessage("You can't upload more than 6 images to a single project!"));
     }
