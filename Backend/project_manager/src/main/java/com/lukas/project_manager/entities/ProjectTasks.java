@@ -14,16 +14,16 @@ public class ProjectTasks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
-    private Integer task_id;
+    private Integer taskId;
 
     @Column(name = "task_order")
-    private Integer task_order;
+    private Integer taskOrder;
 
     @Column(name = "task_description")
-    private String task_description;
+    private String taskDescription;
 
     @Column(name = "task_status")
-    private String task_status;
+    private String taskStatus;
 
     @ManyToOne
     @JoinColumn(name = "project_id_task")
@@ -38,11 +38,11 @@ public class ProjectTasks {
         if (getClass() != obj.getClass())
             return false;
         ProjectTasks other = (ProjectTasks) obj;
-        return task_id != null && task_id.equals(other.getTask_id()) && task_description.equals(other.getTask_description());
+        return taskId != null && taskId.equals(other.getTaskId()) && taskDescription.equals(other.getTaskDescription());
     }
 
     @Override
     public int hashCode() {
-        return this.getTask_id()*37;
+        return this.getTaskId()*37;
     }
 }
