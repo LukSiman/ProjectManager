@@ -1,10 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { AbstractControl, Form, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Project } from 'src/app/entities/project';
-import { ProjectImages } from 'src/app/entities/project-images';
-import { ProjectTasks } from 'src/app/entities/project-tasks';
 import { ProjectImagesService } from 'src/app/services/project-images.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
@@ -16,7 +14,6 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 })
 export class EditProjectComponent implements OnInit {
   project: Project = new Project();
-  projectImages: ProjectImages[] = [];
   projectFormGroup: FormGroup;
   errorMessage: string;
   closeBtn = faTimes;
@@ -36,8 +33,9 @@ export class EditProjectComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: [''],
       status: [''],
-      images: ['', CustomValidators.correctFileType],
-      tasks: this.formBuilder.array([])
+      images: this.formBuilder.array([]),
+      tasks: this.formBuilder.array([]),
+      fileUpload: ['']
     }, { validators: CustomValidators.endDateAfterStartDate });
 
     this.initializeForm();
@@ -74,8 +72,7 @@ export class EditProjectComponent implements OnInit {
     this.project.endDate = responseProject.endDate;
     this.project.length = responseProject.length;
     this.project.status = responseProject.status;
-    this.projectImages = responseProject.images; //TODO: Fix this
-    this.project.images = responseProject.images; //TODO: Fix this
+    this.project.images = responseProject.images;
     this.project.tasks = responseProject.tasks;
   }
 
@@ -90,16 +87,24 @@ export class EditProjectComponent implements OnInit {
     // initialization for the projects tasks
     for (let project of this.project.tasks) {
       let projectTask = this.formBuilder.group({
-        task_id: [project.task_id],
-        task_order: [project.task_order],
-        task_description: [project.task_description],
-        task_status: [project.task_status]
+        taskId: [project.taskId],
+        taskOrder: [project.taskOrder],
+        taskDescription: [project.taskDescription],
+        taskStatus: [project.taskStatus]
       });
 
       this.tasks.push(projectTask);
     }
 
-    this.images?.reset();
+    // initialization for the projects tasks
+    for (let image of this.project.images) {
+      let projectImage = this.formBuilder.group({
+        imageId: [image.imageId],
+        imageUrl: [image.imageUrl]
+      });
+
+      this.images.push(projectImage);
+    }
 
     // disables the main fields
     this.projectFormGroup.disable();
@@ -110,8 +115,9 @@ export class EditProjectComponent implements OnInit {
   get startDate() { return this.projectFormGroup.get('startDate'); }
   get endDate() { return this.projectFormGroup.get('endDate'); }
   get status() { return this.projectFormGroup.get('status'); }
-  get images() { return this.projectFormGroup.get('images'); }
+  get images() { return this.projectFormGroup.get('images') as FormArray; }
   get tasks() { return this.projectFormGroup.get('tasks') as FormArray; }
+  get fileUpload() { return this.projectFormGroup.get('fileUpload'); }
 
   // informs user of required fields and initiates project adding to DB 
   checkForm(): void {
@@ -175,9 +181,10 @@ export class EditProjectComponent implements OnInit {
 
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
-      let newProjectImage: ProjectImages = this.handleProjectImages();
-      this.project.images.push(newProjectImage);
+      this.handleProjectImages();      
     }
+
+    this.project.images = this.images.value;
 
     // call service to add the project
     return new Promise((resolve, reject) => {
@@ -199,16 +206,16 @@ export class EditProjectComponent implements OnInit {
     }
 
     let projectTask = this.formBuilder.group({
-      task_order: [this.tasks.length + 1],
-      task_description: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
-      task_status: [this.taskStatuses[0], Validators.required]
+      taskOrder: [this.tasks.length + 1],
+      taskDescription: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
+      taskStatus: [this.taskStatuses[0], Validators.required]
     });
 
     this.tasks.push(projectTask);
   }
 
   // removes the task from the task list
-  removeTask(index: number): void{
+  removeTask(index: number): void {
     if (this.projectFormGroup.status == 'DISABLED') {
       return;
     }
@@ -264,16 +271,20 @@ export class EditProjectComponent implements OnInit {
     this.previousImage = currentImage;
   }
 
-  // removes the image from DB and reloads page
-  removeImage(id: number): void {
-    this.imageService.removeImageByID(id).subscribe(response => console.log(response));
-    window.location.reload();
+  removeImage(index: number): void {
+     this.images.removeAt(index);
   }
 
   // resets fields of the form
   private formCleaner(): void {
     // resets tasks FormArray
     this.tasks.clear();
+
+    // resets images FormArray
+    this.images.clear();
+
+    // resets the file upload field //TODO: Check if no bugs
+    this.fileUpload?.reset();
 
     // resets the selected file
     this.selectedFile = undefined as unknown as File;
@@ -291,17 +302,17 @@ export class EditProjectComponent implements OnInit {
     this.initializeForm();
   }
 
-  // create and return a new ProjectImage object
-  private handleProjectImages(): ProjectImages {
-    // create a new ProjectImages object and set the file name
-    let newProjectImages: ProjectImages = {
-      imageUrl: `assets/images/projects/${this.newFileName}`
-    }
-    return newProjectImages;
+  // add a new image to the FormArray
+  private handleProjectImages(): void {
+    let projectImage = this.formBuilder.group({
+      imageUrl: [`assets/images/projects/${this.newFileName}`]
+    });
+  
+    this.images.push(projectImage);
   }
 
   // selects the file
-  onFileSelected(event: any): void {
+  onFileSelected(event: any): void {    
     this.selectedFile = <File>event.target.files[0];
   }
 

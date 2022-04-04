@@ -28,7 +28,7 @@
             placeholder="This app will control other apps by spreading it's evil influence..."></textarea>
     </div>
 
-    <div class=row>
+    <div class="row">
         <div class="mb-3 col">
             <label for="projectStartDate" class="form-label">Project start date:</label>
             <input formControlName="startDate" type="date" class="form-control" id="projectStartDate">
@@ -63,27 +63,26 @@
                 <div [formGroup]="$any(tempTask)" class="d-flex flex-row">
                     <div class="row flex-fill">
                         <div class="col-sm-8 col-md-9 col-lg-10 mb-1">
-                            <!-- <input formControlName="task_description" type="text" class="form-control"> -->
-                            <textarea formControlName="task_description" class="form-control" rows="1"></textarea>
-
-                            <div *ngIf="tempTask.get('task_description')?.invalid && (tempTask.get('task_description')?.dirty || tempTask.get('task_description')?.touched)"
+                            <!-- <input formControlName="taskDescription" type="text" class="form-control"> -->
+                            <textarea formControlName="taskDescription" class="form-control" rows="1"></textarea>
+                            <div *ngIf="tempTask.get('taskDescription')?.invalid && (tempTask.get('taskDescription')?.dirty || tempTask.get('taskDescription')?.touched)"
                                 class="alert alert-danger mt-1">
-                                <div *ngIf="tempTask.get('task_description')?.errors?.required || 
-                                    tempTask.get('task_description')?.errors?.notOnlyWhitespace">
+                                <div *ngIf="tempTask.get('taskDescription')?.errors?.required || 
+                                    tempTask.get('taskDescription')?.errors?.notOnlyWhitespace">
                                     Task name is required.
                                 </div>
 
-                                <div *ngIf="tempTask.get('task_description')?.errors?.minlength">
+                                <div *ngIf="tempTask.get('taskDescription')?.errors?.minlength">
                                     Task name must be at least 4 characters long.
                                 </div>
 
-                                <div *ngIf="tempTask.get('task_description')?.errors?.maxlength">
+                                <div *ngIf="tempTask.get('taskDescription')?.errors?.maxlength">
                                     Task name must be less than 200 characters long.
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
-                            <select formControlName="task_status" class="form-control text-center" id="projectTasks">
+                            <select formControlName="taskStatus" class="form-control text-center" id="projectTasks">
                                 <option *ngFor="let temp of taskStatuses" [value]="temp">{{temp}}</option>
                             </select>
                         </div>
@@ -100,15 +99,18 @@
         <button type="button" class="btn btn-secondary" (click)="addNewTask()">Add new task</button>
     </div>
 
-    <div class="mb-3" *ngIf="projectImages.length > 0">
+    <div formArrayName="images" class="mb-3">
         <label for="projectImages" class="form-label">Project images:</label>
         <div class="row mt-1">
-            <div *ngFor="let tempImage of projectImages" class="col-6 col-sm-4 col-lg-2">
-                <div class="position-relative" id="projectImage">
-                    <img src="{{tempImage['imageUrl']}}" alt="Project image" class="img-thumbnail thumbnailImage">
-                    <fa-icon [icon]="closeBtn"
-                        class="position-absolute top-50 start-50 translate-middle deleteImg d-none" id="deleteButton"
-                        (click)="removeImage(tempImage['id'])"></fa-icon>
+            <div class=form-group *ngFor="let tempImage of images.controls, index as i" class="col-6 col-sm-4 col-lg-2">
+                <div [formGroup]="$any(tempImage)">
+                    <div class="position-relative" id="projectImage">
+                        <img src="{{tempImage.get('imageUrl')?.value}}" alt="Project image"
+                            class="img-thumbnail thumbnailImage">
+                        <fa-icon [icon]="closeBtn"
+                            class="position-absolute top-50 start-50 translate-middle deleteImg d-none"
+                            id="deleteButton" (click)="removeImage(i)"></fa-icon>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,13 +118,8 @@
 
     <div class="mb-3">
         <label for="projectImageUpload" class="form-label">Image upload:</label>
-        <input formControlName="images" class="form-control" type="file" id="projectImageUpload"
+        <input formControlName="fileUpload" class="form-control" type="file" accept="image/*" id="projectImageUpload"
             (change)="onFileSelected($event)">
-        <div *ngIf="images?.invalid && (images?.dirty)" class="alert alert-danger mt-1">
-            <div *ngIf="images?.errors?.correctFileType">
-                Invalid file type. Please use jpg, jpeg or png.
-            </div>
-        </div>
         <div *ngIf="errorMessage" class="alert alert-danger mt-1">
             {{errorMessage}}
         </div>
