@@ -139,16 +139,11 @@ export class EditProjectComponent implements OnInit {
   private async projectUpdateController(): Promise<void> {
     if (this.selectedFile != undefined || this.selectedFile != null) {
       try {
-        if (this.project.images.length < 6) {
-          // upload the image
-          await this.uploadImage();
+        // upload the image
+        await this.uploadImage();
 
-          // update the project
-          await this.updateProject();
-        } else {
-          this.errorMessage = "You can't upload more than 6 images to a single project!";
-          return;
-        }
+        // update the project
+        await this.updateProject()
 
       } catch (error: any) {
         this.errorMessage = error.responseMessage;
@@ -181,7 +176,7 @@ export class EditProjectComponent implements OnInit {
 
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
-      this.handleProjectImages();      
+      this.handleProjectImages();
     }
 
     this.project.images = this.images.value;
@@ -205,7 +200,7 @@ export class EditProjectComponent implements OnInit {
       return;
     }
 
-    let projectTask = this.formBuilder.group({
+    let projectTask: FormGroup = this.formBuilder.group({
       taskOrder: [this.tasks.length + 1],
       taskDescription: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(4), CustomValidators.notOnlyWhitespace]],
       taskStatus: [this.taskStatuses[0], Validators.required]
@@ -272,7 +267,7 @@ export class EditProjectComponent implements OnInit {
   }
 
   removeImage(index: number): void {
-     this.images.removeAt(index);
+    this.images.removeAt(index);
   }
 
   // resets fields of the form
@@ -307,20 +302,24 @@ export class EditProjectComponent implements OnInit {
     let projectImage = this.formBuilder.group({
       imageUrl: [`assets/images/projects/${this.newFileName}`]
     });
-  
+
     this.images.push(projectImage);
   }
 
   // selects the file
-  onFileSelected(event: any): void {    
+  onFileSelected(event: any): void {
     this.selectedFile = <File>event.target.files[0];
   }
 
   // handles image uploading
   private uploadImage(): Promise<Object> {
-    const formData = new FormData();
+    const formData: FormData = new FormData();
     this.newFileName = this.fileNameGenerator(this.selectedFile.name);
     formData.append('file', this.selectedFile, this.newFileName);
+
+    // the current count of images in the array to check against the limit
+    let count: string = `${this.images.length}`;
+    formData.append('count', count);
 
     return new Promise((resolve, reject) => {
       this.projectService.uploadImage(formData).subscribe(response => {
@@ -333,14 +332,22 @@ export class EditProjectComponent implements OnInit {
 
   // Add a timestamp to the filename
   private fileNameGenerator(fileName: string): string {
-    const date = new Date();
-    const timeStamp = date.getTime();
-    fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-    return `${fileName}${timeStamp}.png`;
+    const date: Date = new Date();
+    const timeStamp: number = date.getTime();
+
+    let extension: string = '';
+
+    if (fileName.includes('.')) {
+      let extensionIndex: number = fileName.lastIndexOf('.');
+      extension = fileName.substring(extensionIndex);
+      fileName = fileName.substring(0, extensionIndex);
+    }
+
+    return `${fileName}${timeStamp}${extension}`;
   }
 
   // toggles if the fields can be edited
-  toggleEditable() {
+  toggleEditable(): void {
     if (this.projectFormGroup.status == 'DISABLED') {
       this.projectFormGroup.enable();
     } else {
