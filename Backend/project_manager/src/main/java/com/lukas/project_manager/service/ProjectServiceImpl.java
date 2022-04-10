@@ -171,22 +171,4 @@ public class ProjectServiceImpl implements ProjectService {
             removedImages.forEach(removedImage -> projectToUpdate.getImages().remove(removedImage));
         }
     }
-
-    // handle adding images to the project
-//    private void handleImages(Project project) {
-//        List<ProjectImages> imageList = project.getImages();
-//
-//        // throw exception if more image than maximum size
-//        if (imageList.size() > MAX_IMAGES) {
-//            throw new TooManyImagesException();
-//        }
-//
-//        imageList.forEach(img -> {
-//            // if project has no images add a default image
-//            if (img.getImageUrl() == null || img.getImageUrl().isEmpty()) {
-//                img.setImageUrl("assets/images/projects/default.png");
-//            }
-//            img.setProject(project);
-//        });
-//    }
 }
