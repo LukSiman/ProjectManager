@@ -1,11 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCoffee, faMugHot, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/entities/project';
-import { ProjectImagesService } from 'src/app/services/project-images.service';
+import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
+import { ImageBoxComponent } from '../image-box/image-box.component';
 
 @Component({
   selector: 'app-edit-project',
@@ -17,6 +19,7 @@ export class EditProjectComponent implements OnInit {
   projectFormGroup: FormGroup;
   errorMessage: string;
   closeBtn = faTimes;
+  biggerImage = faSearch;
   statuses: string[] = ['New idea', 'In progress', 'On hold', 'Dropped', 'Completed'];
   taskStatuses: string[] = ['Not started', 'In progress', 'On hold', 'Completed'];
 
@@ -24,7 +27,7 @@ export class EditProjectComponent implements OnInit {
   private newFileName: string;
   private previousImage: HTMLElement;
 
-  constructor(private projectService: ProjectService, private route: ActivatedRoute, private formBuilder: FormBuilder, private imageService: ProjectImagesService) { }
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private formBuilder: FormBuilder, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.projectFormGroup = this.formBuilder.group({
@@ -121,6 +124,11 @@ export class EditProjectComponent implements OnInit {
 
   // informs user of required fields and initiates project adding to DB 
   checkForm(): void {
+    // enable the form for correct validation
+    if (this.projectFormGroup.status == 'DISABLED') {
+      this.projectFormGroup.enable();
+    }
+
     // resets the error message is not empty
     if (this.errorMessage != undefined || this.errorMessage != '') {
       this.errorMessage = '';
@@ -236,17 +244,19 @@ export class EditProjectComponent implements OnInit {
   // click eventListener to blur the image and show deletion button
   @HostListener('click', ['$event.target'])
   onClick(currentElement: HTMLElement): void {
-    // disable image manipulation if form is disabled
-    if (this.projectFormGroup.status == 'DISABLED') {
-      return;
-    }
-
     let currentImage: HTMLElement = currentElement;
 
     //  making sure only the correct element is being manipulated
     if (currentElement.parentElement?.id == 'projectImage') {
       currentImage = currentElement.parentElement;
     } else {
+      // remove blurring and hide icons
+      let blurredImages = document.body.querySelectorAll('#projectImage');
+      blurredImages.forEach((image) => {
+        image.firstElementChild?.classList.remove('blurImage');
+        image.lastElementChild?.classList.add('d-none');
+        image.lastElementChild?.lastElementChild?.classList.add('d-none');
+      });
       return;
     }
 
@@ -256,12 +266,20 @@ export class EditProjectComponent implements OnInit {
       blurredImages.forEach((image) => {
         image.firstElementChild?.classList.remove('blurImage');
         image.lastElementChild?.classList.add('d-none');
+        image.lastElementChild?.lastElementChild?.classList.add('d-none');
       });
     }
 
-    // blur image and unhide the deletion button
+    // blur image and unhide the icons
     currentImage.firstElementChild?.classList.toggle('blurImage');
-    currentImage.lastElementChild?.classList.toggle('d-none');
+    let iconContainer = currentImage.lastElementChild;
+    iconContainer?.classList.toggle('d-none');
+
+    // disable image deletion if form is disabled
+    if (this.projectFormGroup.status != 'DISABLED') {
+      // unhide the delete icon for the image
+      iconContainer?.lastElementChild?.classList.toggle('d-none');
+    }
 
     this.previousImage = currentImage;
   }
@@ -353,5 +371,15 @@ export class EditProjectComponent implements OnInit {
     } else {
       this.projectFormGroup.disable();
     }
+  }
+
+  // displays images in modal
+  displayImages(index: number): void {
+    const displayImages: ProjectImages[] = this.images.value;
+    const initialID: number = index;
+
+    const modalRef = this.modalService.open(ImageBoxComponent, { centered: true, size: 'xl' });
+    modalRef.componentInstance.images = displayImages;
+    modalRef.componentInstance.initialID = initialID;
   }
 }

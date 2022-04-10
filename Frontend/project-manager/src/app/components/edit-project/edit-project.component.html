@@ -104,12 +104,14 @@
         <div class="row mt-1">
             <div class=form-group *ngFor="let tempImage of images.controls, index as i" class="col-6 col-sm-4 col-lg-2">
                 <div [formGroup]="$any(tempImage)">
-                    <div class="position-relative" id="projectImage">
+                    <div class="position-relative img-container" id="projectImage">
                         <img src="{{tempImage.get('imageUrl')?.value}}" alt="Project image"
-                            class="img-thumbnail thumbnailImage">
-                        <fa-icon [icon]="closeBtn"
-                            class="position-absolute top-50 start-50 translate-middle deleteImg d-none"
-                            id="deleteButton" (click)="removeImage(i)"></fa-icon>
+                            class="img-thumbnail thumbnail-image">
+                        <div class="position-absolute top-50 start-50 translate-middle d-flex d-none">
+                            <fa-icon [icon]="biggerImage" class="magnifyImage" (click)="displayImages(i)"></fa-icon>
+                            <fa-icon [icon]="closeBtn" class="deleteImage ms-3 d-none" id="deleteButton"
+                                (click)="removeImage(i)"></fa-icon>
+                        </div>
                     </div>
                 </div>
             </div>

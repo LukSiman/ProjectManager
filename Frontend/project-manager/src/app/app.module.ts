@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EditProjectComponent } from './components/edit-project/edit-project.component';
 import { DeletionBoxComponent } from './components/deletion-box/deletion-box.component';
 import { FilterComponent } from './components/filter/filter.component';
+import { ImageBoxComponent } from './components/image-box/image-box.component';
 
 const routes: Routes = [
   { path: 'edit/:id', component: EditProjectComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
     AddProjectComponent,
     EditProjectComponent,
     DeletionBoxComponent,
-    FilterComponent
+    FilterComponent,
+    ImageBoxComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

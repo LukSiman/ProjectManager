@@ -69,11 +69,6 @@ ID SELECTORS
   height: 100%;
 }
 
-#projectImage{
-  width: 100%;
-  height: 100%;
-}
-
 #removalButton{
   height: 100%;
 }
@@ -118,16 +113,29 @@ CLASS SELECTORS
   opacity: 0;
 }
 
-.thumbnailImage{
+.img-container {
+  position: relative;
   width: 100%;
-  height: 100%;
 }
 
-.thumbnailImage:hover{
+.img-container:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.thumbnail-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-image:hover{
   transform: scale(1.05);
 }
 
-.deleteImg{
+.deleteImage{
   color: rgb(233, 230, 230);
   border-radius: 20px;
   border: solid 3px;
@@ -138,8 +146,17 @@ CLASS SELECTORS
   font-size: 30px;
 }
 
+.magnifyImage{
+  color: rgb(233, 230, 230);
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 30px;
+}
+
 .blurImage{
-  filter: blur(6px);
+  filter: blur(6px) brightness(80%);  
 }
 
 .sr-only{
@@ -148,6 +165,10 @@ CLASS SELECTORS
 
 .completed{
   background-color: rgb(140, 206, 140);
+}
+
+.biggerImage{
+  min-width: 100%;    
 }
 
 /**********************************************
