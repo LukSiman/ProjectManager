@@ -15,13 +15,13 @@
             <ngb-carousel>
                <ng-template ngbSlide *ngFor="let tempImage of tempProject.images">
                   <div>
-                     <img *ngIf="tempProject.images.length > 0" src="{{ tempImage['imageUrl'] }}" alt="Project image"
+                     <img *ngIf="tempProject.images.length > 0" src="{{tempImage['imageUrl']}}" alt="Project image"
                         class="card-img-top p-1 border-bottom border-2 border-secondary">
                   </div>
                </ng-template>
             </ngb-carousel>
 
-            <img *ngIf="tempProject.images.length == 0" src="{{ defaultImage }}" alt="Project image"
+            <img *ngIf="tempProject.images.length == 0" src="{{defaultImage}}" alt="Project image"
                class="card-img-top p-1 border-bottom border-2 border-secondary">
          </div>
 
