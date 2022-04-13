@@ -68,9 +68,9 @@ INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projec
 INSERT INTO project_images (image_url, project_id) VALUES ('assets/images/projects/placeholder4.jpg', 27);
 
 
-INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (1, 'Create a plan', 'Completed', 1);
-INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (2, 'Design the project', 'Completed', 1);
-INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (3, 'Create the project', 'Completed', 1);
+INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (2, 'Create a plan', 'Completed', 1);
+INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (3, 'Design the project', 'Completed', 1);
+INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (1, 'Create the project', 'Completed', 1);
 INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (4, 'Implement functionality', 'In progress', 1);
 INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (5, 'Add additional functionality', 'On hold', 1);
 INSERT INTO project_tasks (task_order, task_description, task_status, project_id_task) VALUES (6, 'Polish the design', 'Not started', 1);
