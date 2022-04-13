@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +31,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project getProject(int id) {
-        return projectRepository.getById(id);
+        // Sort tasks by taskOrder
+        Project returnProject = projectRepository.getById(id);
+        List<ProjectTasks> sortedTasks = returnProject.getTasks();
+        Collections.sort(sortedTasks);
+        returnProject.setTasks(sortedTasks);
+
+        return returnProject;
+//        return projectRepository.getById(id);
     }
 
     @Override

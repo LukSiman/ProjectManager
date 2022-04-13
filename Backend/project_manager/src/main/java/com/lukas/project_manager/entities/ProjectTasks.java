@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "project_tasks")
 @Getter
 @Setter
-public class ProjectTasks {
+public class ProjectTasks implements Comparable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +44,11 @@ public class ProjectTasks {
     @Override
     public int hashCode() {
         return this.getTaskId()*37;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ProjectTasks other = (ProjectTasks) o;
+        return this.getTaskOrder().compareTo(other.getTaskOrder());
     }
 }
