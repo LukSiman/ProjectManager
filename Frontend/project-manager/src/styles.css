@@ -59,17 +59,17 @@ ID SELECTORS
   transform: scale(1.02);
 }
 
-#cardButtons{
-  width: 100%; 
+#cardButtons {
+  width: 100%;
 }
 
-#blurBackground{
+#blurBackground {
   backdrop-filter: blur(6px);
   width: 100%;
   height: 100%;
 }
 
-#removalButton{
+#removalButton {
   height: 100%;
 }
 
@@ -103,12 +103,12 @@ CLASS SELECTORS
   font-size: 1em;
 }
 
-.blur-button{
-  width: 5em;  
+.blur-button {
+  width: 5em;
   height: 3em;
 }
 
-.fade-out{
+.fade-out {
   transition: 1s;
   opacity: 0;
 }
@@ -131,11 +131,11 @@ CLASS SELECTORS
   object-fit: cover;
 }
 
-.thumbnail-image:hover{
+.thumbnail-image:hover {
   transform: scale(1.05);
 }
 
-.deleteImage{
+.deleteImage {
   color: rgb(233, 230, 230);
   border-radius: 20px;
   border: solid 3px;
@@ -146,7 +146,7 @@ CLASS SELECTORS
   font-size: 30px;
 }
 
-.magnifyImage{
+.magnifyImage {
   color: rgb(233, 230, 230);
   height: 40px;
   width: 40px;
@@ -155,22 +155,30 @@ CLASS SELECTORS
   font-size: 30px;
 }
 
-.blurImage{
-  filter: blur(6px) brightness(80%);  
+.blurImage {
+  filter: blur(6px) brightness(80%);
 }
 
-.sr-only{
+.sr-only {
   display: none;
 }
 
-.completed{
+.completed {
   background-color: rgb(140, 206, 140);
 }
 
-.biggerImage{
-  min-width: 100%;    
+.biggerImage {
+  min-width: 100%;
 }
 
 /**********************************************
 MEDIA 
 **********************************************/
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  /* font-family: Roboto, "Helvetica Neue", sans-serif;  */
+}
