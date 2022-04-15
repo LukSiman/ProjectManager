@@ -193,7 +193,7 @@ export class EditProjectComponent implements OnInit {
       this.handleProjectImages();
     }
 
-    this.project.images = this.images.value;
+    this.project.images = this.images?.value;
 
     // call service to add the project
     return new Promise((resolve, reject) => {
