@@ -59,50 +59,61 @@
     <div formArrayName="tasks" class="mb-3">
         <div class="mb-2 list-group">
             <label for="projectTasks" class="form-label">Project tasks:</label>
-            <div class=form-group *ngFor="let tempTask of tasks.controls, index as i">
-                <div [formGroup]="$any(tempTask)" class="d-flex flex-row">
-                    <div class="row flex-fill">
-                        <div class="col-sm-8 col-md-9 col-lg-10 mb-1">
-                            <!-- <input formControlName="taskDescription" type="text" class="form-control"> -->
-                            <textarea formControlName="taskDescription" class="form-control" rows="1"></textarea>
-                            <div *ngIf="tempTask.get('taskDescription')?.invalid && (tempTask.get('taskDescription')?.dirty || tempTask.get('taskDescription')?.touched)"
-                                class="alert alert-danger mt-1">
-                                <div *ngIf="tempTask.get('taskDescription')?.errors?.required || 
+            <div cdkDropList (cdkDropListDropped)="drop($event)">
+                <div cdkDrag class=form-group *ngFor="let tempTask of tasks.controls, index as i">
+                    <div [formGroup]="$any(tempTask)" class="d-flex flex-row">
+                        <div class="d-flex flex-column flex-sm-row flex-fill">
+                            <div class="d-flex flex-row flex-fill mb-1 me-1">
+                                <div cdkDragHandle placement="end" ngbTooltip="Hold to drag task" [openDelay]="1000">
+                                    <fa-icon [icon]="dragHandle" class="form-control"></fa-icon>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <textarea formControlName="taskDescription" class="form-control" rows="1"
+                                        id="projectTasks"></textarea>
+                                    <div *ngIf="tempTask.get('taskDescription')?.invalid && (tempTask.get('taskDescription')?.dirty || tempTask.get('taskDescription')?.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div *ngIf="tempTask.get('taskDescription')?.errors?.required || 
                                     tempTask.get('taskDescription')?.errors?.notOnlyWhitespace">
-                                    Task name is required.
-                                </div>
+                                            Task name is required.
+                                        </div>
 
-                                <div *ngIf="tempTask.get('taskDescription')?.errors?.minlength">
-                                    Task name must be at least 4 characters long.
-                                </div>
+                                        <div *ngIf="tempTask.get('taskDescription')?.errors?.minlength">
+                                            Task name must be at least 4 characters long.
+                                        </div>
 
-                                <div *ngIf="tempTask.get('taskDescription')?.errors?.maxlength">
-                                    Task name must be less than 200 characters long.
+                                        <div *ngIf="tempTask.get('taskDescription')?.errors?.maxlength">
+                                            Task name must be less than 200 characters long.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="mb-1 me-1">
+                                <select formControlName="taskStatus" class="form-control text-center">
+                                    <option *ngFor="let temp of taskStatuses" [value]="temp">{{temp}}</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
-                            <select formControlName="taskStatus" class="form-control text-center" id="projectTasks">
-                                <option *ngFor="let temp of taskStatuses" [value]="temp">{{temp}}</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="align-self-stretch mb-1">
-                        <button type="button" class="btn btn-danger" id="removalButton" (click)="removeTask(i)">
-                            <fa-icon [icon]="closeBtn"></fa-icon>
-                        </button>
+                        <div class="mb-1">
+                            <button type="button" class="btn btn-danger" id="removalButton" (click)="removeTask(i)">
+                                <fa-icon [icon]="closeBtn"></fa-icon>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <button type="button" class="btn btn-secondary" (click)="addNewTask()">Add new task</button>
+        <div *ngIf="warningMessage" class="alert alert-warning mt-1">
+            {{warningMessage}}
+        </div>
     </div>
 
     <div formArrayName="images" class="mb-3">
         <label for="projectImages" class="form-label">Project images:</label>
         <div class="row mt-1">
-            <div class=form-group *ngFor="let tempImage of images.controls, index as i" class="col-6 col-sm-4 col-lg-2">
+            <div class=form-group *ngFor="let tempImage of images.controls, index as i" class="col-6 col-sm-4 col-lg-2"
+                id="projectImages">
                 <div [formGroup]="$any(tempImage)">
                     <div class="position-relative img-container" id="projectImage">
                         <img src="{{tempImage.get('imageUrl')?.value}}" alt="Project image"
@@ -127,7 +138,7 @@
         </div>
     </div>
 
-    <div class="d-flex gap-2 mt-4">
+    <div class="d-flex gap-2 mt-2 pb-3 pb-sm-0 justify-content-center justify-content-sm-start">
         <button type="submit" class="btn btn-secondary">Save Changes</button>
         <button type="button" class="btn btn-danger" (click)="formCleanerManual()">Reset</button>
         <button type="button" class="btn btn-primary" routerLink="/projects">Go back</button>

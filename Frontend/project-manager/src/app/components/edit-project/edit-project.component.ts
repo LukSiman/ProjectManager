@@ -1,13 +1,14 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { faCoffee, faMugHot, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsAlt, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/entities/project';
 import { ProjectImages } from 'src/app/entities/project-images';
 import { ProjectService } from 'src/app/services/project.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 import { ImageBoxComponent } from '../image-box/image-box.component';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-edit-project',
@@ -18,8 +19,10 @@ export class EditProjectComponent implements OnInit {
   project: Project = new Project();
   projectFormGroup: FormGroup;
   errorMessage: string;
+  warningMessage: string;
   closeBtn = faTimes;
   biggerImage = faSearch;
+  dragHandle = faArrowsAlt;
   statuses: string[] = ['New idea', 'In progress', 'On hold', 'Dropped', 'Completed'];
   taskStatuses: string[] = ['Not started', 'In progress', 'On hold', 'Completed'];
 
@@ -43,7 +46,6 @@ export class EditProjectComponent implements OnInit {
 
     this.initializeForm();
   }
-
 
   // Creates the form and fills out the project data
   private async initializeForm(): Promise<void> {
@@ -88,12 +90,12 @@ export class EditProjectComponent implements OnInit {
     this.status?.setValue(this.project.status);
 
     // initialization for the projects tasks
-    for (let project of this.project.tasks) {
+    for (let task of this.project.tasks) {
       let projectTask = this.formBuilder.group({
-        taskId: [project.taskId],
-        taskOrder: [project.taskOrder],
-        taskDescription: [project.taskDescription],
-        taskStatus: [project.taskStatus]
+        taskId: [task.taskId],
+        taskOrder: [task.taskOrder],
+        taskDescription: [task.taskDescription],
+        taskStatus: [task.taskStatus]
       });
 
       this.tasks.push(projectTask);
@@ -140,6 +142,11 @@ export class EditProjectComponent implements OnInit {
       return;
     }
 
+    // changes taskOrder values 
+    for (let i = 0; i < this.tasks.controls.length; i++) {
+      this.tasks.controls[i].get('taskOrder')?.setValue(i + 1);
+    }
+
     this.projectUpdateController();
   }
 
@@ -167,7 +174,6 @@ export class EditProjectComponent implements OnInit {
     this.formCleaner();
   }
 
-
   // updates the project with the new values
   private updateProject(): Promise<Object> {
     this.project.name = this.name?.value;
@@ -180,7 +186,7 @@ export class EditProjectComponent implements OnInit {
 
     this.project.status = this.status?.value;
 
-    this.project.tasks = this.tasks.value;
+    this.project.tasks = this.tasks?.value;
 
     // checks if a file was selected and set as the image
     if (this.selectedFile != undefined || this.selectedFile != null) {
@@ -204,7 +210,8 @@ export class EditProjectComponent implements OnInit {
   // adds a new task to the task list
   addNewTask(): void {
     if (this.projectFormGroup.status == 'DISABLED') {
-      alert("Please enable editing");
+      // alert("Please enable editing");
+      this.warningMessage = 'Please enable editing';
       return;
     }
 
@@ -284,6 +291,7 @@ export class EditProjectComponent implements OnInit {
     this.previousImage = currentImage;
   }
 
+  // removes the image from the FormArray
   removeImage(index: number): void {
     this.images.removeAt(index);
   }
@@ -296,7 +304,7 @@ export class EditProjectComponent implements OnInit {
     // resets images FormArray
     this.images.clear();
 
-    // resets the file upload field //TODO: Check if no bugs
+    // resets the file upload field
     this.fileUpload?.reset();
 
     // resets the selected file
@@ -307,6 +315,9 @@ export class EditProjectComponent implements OnInit {
 
     // reset the error message
     this.errorMessage = '';
+
+    // reset the warning message
+    this.warningMessage = '';
   }
 
   // manual form reset
@@ -368,6 +379,7 @@ export class EditProjectComponent implements OnInit {
   toggleEditable(): void {
     if (this.projectFormGroup.status == 'DISABLED') {
       this.projectFormGroup.enable();
+      this.warningMessage = '';
     } else {
       this.projectFormGroup.disable();
     }
@@ -381,5 +393,10 @@ export class EditProjectComponent implements OnInit {
     const modalRef = this.modalService.open(ImageBoxComponent, { centered: true, size: 'xl' });
     modalRef.componentInstance.images = displayImages;
     modalRef.componentInstance.initialID = initialID;
+  }
+
+  // allows dragging the tasks
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.tasks.controls, event.previousIndex, event.currentIndex);
   }
 }
