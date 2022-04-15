@@ -38,7 +38,7 @@ public class ProjectTasks implements Comparable {
         if (getClass() != obj.getClass())
             return false;
         ProjectTasks other = (ProjectTasks) obj;
-        return taskId != null && taskId.equals(other.getTaskId()) && taskDescription.equals(other.getTaskDescription());
+        return taskId != null && taskId.equals(other.getTaskId()) && taskDescription.equals(other.getTaskDescription()) && taskOrder.equals(other.getTaskOrder()) && taskStatus.equals(other.getTaskStatus());
     }
 
     @Override
