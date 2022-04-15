@@ -4,7 +4,6 @@ import com.lukas.project_manager.dao.ProjectRepository;
 import com.lukas.project_manager.entities.Project;
 import com.lukas.project_manager.entities.ProjectImages;
 import com.lukas.project_manager.entities.ProjectTasks;
-import com.lukas.project_manager.exceptions.TooManyImagesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,6 @@ public class ProjectServiceImpl implements ProjectService {
         returnProject.setTasks(sortedTasks);
 
         return returnProject;
-//        return projectRepository.getById(id);
     }
 
     @Override
@@ -50,8 +48,15 @@ public class ProjectServiceImpl implements ProjectService {
             project.setLength(dayDifference);
         }
 
-        // add an image
-//        handleImages(project);
+        // add the tasks
+        if (project.getTasks().size() > 0) {
+            handleTasks(project);
+        }
+
+        // add the image
+        if (project.getImages().size() > 0) {
+            handleImages(project);
+        }
 
         return projectRepository.save(project);
     }
@@ -124,7 +129,7 @@ public class ProjectServiceImpl implements ProjectService {
         return ChronoUnit.DAYS.between(startDate, endDate);
     }
 
-    // handle adding tasks to the project
+    // handle adding tasks to the project when updating
     private void handleTasks(Project project, Project projectToUpdate) {
         //create an ArrayList that holds the received project tasks
         List<ProjectTasks> newTasks = new ArrayList<>(project.getTasks());
@@ -152,7 +157,14 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
-    // handle adding images to the project
+    // handle adding tasks to the project
+    private void handleTasks(Project project) {
+        List<ProjectTasks> tasks = new ArrayList<>(project.getTasks());
+
+        tasks.forEach(task -> task.setProject(project));
+    }
+
+    // handle adding images to the project when updating
     private void handleImages(Project project, Project projectToUpdate) {
         //create an ArrayList that holds the received project images
         List<ProjectImages> newImages = new ArrayList<>(project.getImages());
@@ -178,5 +190,12 @@ public class ProjectServiceImpl implements ProjectService {
         if (removedImages.size() > 0) {
             removedImages.forEach(removedImage -> projectToUpdate.getImages().remove(removedImage));
         }
+    }
+
+    // handle adding images to the project
+    private void handleImages(Project project) {
+        List<ProjectImages> images = new ArrayList<>(project.getImages());
+
+        images.forEach(image -> image.setProject(project));
     }
 }
