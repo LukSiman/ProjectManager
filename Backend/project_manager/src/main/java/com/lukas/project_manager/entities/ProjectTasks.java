@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@SuppressWarnings("rawtypes")
 @Entity
 @Table(name = "project_tasks")
 @Getter

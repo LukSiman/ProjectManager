@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
