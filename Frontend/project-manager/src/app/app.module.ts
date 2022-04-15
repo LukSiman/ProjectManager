@@ -15,6 +15,8 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
 import { DeletionBoxComponent } from './components/deletion-box/deletion-box.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { ImageBoxComponent } from './components/image-box/image-box.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const routes: Routes = [
   { path: 'edit/:id', component: EditProjectComponent },
@@ -45,7 +47,9 @@ const routes: Routes = [
     NgbModule,
     HttpClientModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    DragDropModule
   ],
   providers: [ProjectService, NgbActiveModal, DeletionBoxComponent],
   bootstrap: [AppComponent]
