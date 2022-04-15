@@ -1,4 +1,4 @@
-<ngb-carousel [activeId]="initialID" [interval]="1000000">
+<ngb-carousel [activeId]="initialID" [interval]="10000">
     <ng-template *ngFor="let tempImage of images, let index = index" ngbSlide [id]="'index_' + index">
         <img [src]="tempImage['imageUrl']" alt="Project image" class="img-fluid biggerImage">
     </ng-template>
