@@ -16,7 +16,7 @@ export class DeletionBoxComponent {
 
   // deletes the selected project and reloads page
   deleteProjectConfirm(): void {
-    this.projectService.deleteProject(this.deleteID).subscribe(res => console.log(res));
+    this.projectService.deleteProject(this.deleteID).subscribe();
     window.location.reload();
   }
 }

@@ -79,7 +79,7 @@ export class AddProjectComponent implements OnInit {
         await this.addNewProject();
 
       } catch (error: any) {
-        this.errorMessage = error;
+        this.errorMessage = error.responseMessage;
         return;
       }
     } else {
@@ -138,7 +138,7 @@ export class AddProjectComponent implements OnInit {
   }
 
   // resets fields of the form
-  private formCleaner(): void { //TODO:
+  private formCleaner(): void {
     // resets the form
     this.projectFormGroup.reset();
 
