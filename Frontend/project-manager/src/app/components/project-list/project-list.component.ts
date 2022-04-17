@@ -150,11 +150,16 @@ export class ProjectListComponent implements OnInit {
       currentElement.classList.contains('carousel-control-prev-icon'))) {
       currentCard = currentElement.closest('#cardParent')!;
     } else {
+      // remove blurring
+      let blurredCards = document.body.querySelectorAll('#cardParent');
+      blurredCards.forEach((card) => {
+        card.lastElementChild?.classList.add('d-none');
+      });
       return;
     }
 
     // removes blur and buttons from previous card 
-    if (this.previousCard != currentCard) {
+    if ((this.previousCard != currentCard)) {
       let blurredCards = document.body.querySelectorAll('#cardParent');
       blurredCards.forEach((card) => {
         card.lastElementChild?.classList.add('d-none');
