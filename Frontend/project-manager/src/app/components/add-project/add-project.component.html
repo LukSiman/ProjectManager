@@ -1,4 +1,4 @@
-<form #projectForm [formGroup]="projectFormGroup" (ngSubmit)="checkForm()">
+<form #projectForm [formGroup]="projectFormGroup" (ngSubmit)="checkForm()" class="container">
     <div class="mb-3">
         <label for="projectName" class="form-label">Project name:</label>
         <input formControlName="name" type="text" class="form-control" id="projectName" placeholder="The One App">
