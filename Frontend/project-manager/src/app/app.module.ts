@@ -17,6 +17,7 @@ import { FilterComponent } from './components/filter/filter.component';
 import { ImageBoxComponent } from './components/image-box/image-box.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FooterBarComponent } from './components/footer-bar/footer-bar.component';
 
 const routes: Routes = [
   { path: 'edit/:id', component: EditProjectComponent },
@@ -39,7 +40,8 @@ const routes: Routes = [
     EditProjectComponent,
     DeletionBoxComponent,
     FilterComponent,
-    ImageBoxComponent
+    ImageBoxComponent,
+    FooterBarComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
