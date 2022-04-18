@@ -22,6 +22,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
+  { path: 'register', component: RegisterComponent }, //TODO: fix later
   { path: 'login', component: LoginPageComponent }, //TODO: change to default
   { path: 'edit/:id', component: EditProjectComponent },
   { path: 'newProject', component: AddProjectComponent },
