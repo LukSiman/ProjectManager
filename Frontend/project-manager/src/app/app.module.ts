@@ -18,8 +18,11 @@ import { ImageBoxComponent } from './components/image-box/image-box.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FooterBarComponent } from './components/footer-bar/footer-bar.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
+  { path: 'login', component: LoginPageComponent }, //TODO: change to default
   { path: 'edit/:id', component: EditProjectComponent },
   { path: 'newProject', component: AddProjectComponent },
   { path: 'projects/:sort/:filter', component: ProjectListComponent },
@@ -41,7 +44,9 @@ const routes: Routes = [
     DeletionBoxComponent,
     FilterComponent,
     ImageBoxComponent,
-    FooterBarComponent
+    FooterBarComponent,
+    LoginPageComponent,
+    RegisterComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
