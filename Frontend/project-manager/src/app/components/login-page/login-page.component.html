@@ -3,16 +3,26 @@
         <img class="img-fluid" src="assets/images/logo.png" alt="logo">
     </div>
 
-    <form id="loginForm" class="container d-grid gap-3">
-        <div class=""> 
-            <input type="text" class="form-control" placeholder="Username">
+    <form [formGroup]="loginForm" id="loginForm" class="container d-grid gap-3" (ngSubmit)="checkForm()">
+        <div>
+            <input formControlName="username" type="text" class="form-control" placeholder="Username">
+            <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger mt-1">
+                <div *ngIf="username?.errors?.required">
+                    Username is required
+                </div>
+            </div>
         </div>
 
-        <div class="">
-            <input type="text" class="form-control" placeholder="Password">
+        <div>
+            <input formControlName="password" type="text" class="form-control" placeholder="Password">
+            <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="alert alert-danger mt-1">
+                <div *ngIf="password?.errors?.required">
+                    Password is required
+                </div>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Login</button>
-        <button type="button" class="btn btn-outline-primary">Register</button>
+        <button type="button" class="btn btn-outline-primary" routerLink="/register">Register</button>
     </form>
 </div>

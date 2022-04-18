@@ -23,7 +23,7 @@ export class CustomValidators {
             // extension is valid, return null
             if (extension.toLowerCase() == 'png' ||
                 extension.toLowerCase() == 'jpeg' ||
-                extension.toLowerCase() == 'jpg'||
+                extension.toLowerCase() == 'jpg' ||
                 name.length == 0) {
                 return null;
             } else {
@@ -47,6 +47,20 @@ export class CustomValidators {
         // check if end date is after start date
         if (start > end) {
             return { 'endDateAfterStartDate': true };
+        } else {
+            // valid, return null
+            return null;
+        }
+    }
+
+    // check if passwords match
+    static samePassword: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+        const password = control.get('password')?.value;
+        const repeatPassword = control.get('repeatPassword')?.value;
+
+        // true if not matching
+        if (password != repeatPassword) {
+            return { 'samePassword': true };
         } else {
             // valid, return null
             return null;
