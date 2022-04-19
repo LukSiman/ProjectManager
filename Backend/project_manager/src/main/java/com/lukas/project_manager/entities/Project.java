@@ -41,4 +41,8 @@ public class Project {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectTasks> tasks;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
