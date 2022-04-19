@@ -19,6 +19,9 @@
                     Username must be at least 4 characters long
                 </div>
             </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-1">
+                {{errorMessage}}
+            </div>
         </div>
 
         <div>
@@ -46,7 +49,11 @@
             </div>
         </div>
 
+        <div *ngIf="successMessage" class="alert alert-success mt-1">
+            {{successMessage}}
+        </div>
+
         <button type="submit" class="btn btn-primary">Register new user</button>
-        <!-- <button type="button" class="btn btn-outline-primary" routerLink="/register">Register</button> -->
+        <button type="button" class="btn btn-outline-primary" routerLink="/login">Go Back</button>
     </form>
 </div>

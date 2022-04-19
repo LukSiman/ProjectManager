@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { User } from 'src/app/entities/user';
+import { UserService } from 'src/app/services/user.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
 @Component({
@@ -9,8 +12,10 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
+  errorMessage: string;
+  successMessage: string;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -35,7 +40,22 @@ export class RegisterComponent implements OnInit {
     this.registerNewUser();
   }
 
-  private registerNewUser(){
-    
+  private registerNewUser() {
+    const newUser: User = {
+      userID: 0,
+      username: this.username?.value,
+      password: this.password?.value
+    };
+
+    // call service to add new user
+    return this.userService.addNewUser(newUser).subscribe(() => {
+      this.errorMessage = '';
+      this.successMessage = 'User was successfully registered';
+      setTimeout(() => {
+        this.router.navigateByUrl('/login');
+      }, 3000);
+    }, (error) => {
+      this.errorMessage = error.responseMessage;
+    });
   }
 }
