@@ -1,5 +1,6 @@
 package com.lukas.project_manager.service;
 
+import com.lukas.project_manager.entities.ProjectImages;
 import com.lukas.project_manager.exceptions.FileTypeException;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ public class FileServiceImpl implements FileService {
     private final String[] allowedFileTypes = {"jpg", "jpeg", "png", "bmp"};
 
     @Override
+    // saves the image files
     public void save(MultipartFile file) {
         try {
             checkFileType(file);
@@ -35,6 +37,19 @@ public class FileServiceImpl implements FileService {
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
+    }
+
+    // deletes the image files
+    public void delete(List<ProjectImages> imagesList){
+        imagesList.forEach(image -> {
+            String imageFileName = image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/'));
+            Path fileToDelete = Paths.get(uploadPath + imageFileName);
+            try {
+                Files.delete(fileToDelete);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     // checks the file type and throws an exception if invalid type
