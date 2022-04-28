@@ -1,10 +1,10 @@
 USE `project-manager`;
 
-INSERT INTO users (username, user_password) VALUES ('test', 'test123');
-INSERT INTO users (username, user_password) VALUES ('admin', 'admin123');
-INSERT INTO users (username, user_password) VALUES ('user1', '123456');
-INSERT INTO users (username, user_password) VALUES ('user2', 'abcdef');
-INSERT INTO users (username, user_password) VALUES ('user3', 'password1');
+INSERT INTO users (username, user_password) VALUES ('test', '$2a$10$.jdn9nLLmUQMOT6fmwRcJuCBX.FVR8XGBZwpZb80LBaDjxWiPPeqK');
+INSERT INTO users (username, user_password) VALUES ('admin', '$2a$10$.jdn9nLLmUQMOT6fmwRcJuCBX.FVR8XGBZwpZb80LBaDjxWiPPeqK');
+INSERT INTO users (username, user_password) VALUES ('user1', '$2a$10$.jdn9nLLmUQMOT6fmwRcJuCBX.FVR8XGBZwpZb80LBaDjxWiPPeqK');
+INSERT INTO users (username, user_password) VALUES ('user2', '$2a$10$.jdn9nLLmUQMOT6fmwRcJuCBX.FVR8XGBZwpZb80LBaDjxWiPPeqK');
+INSERT INTO users (username, user_password) VALUES ('user3', '$2a$10$.jdn9nLLmUQMOT6fmwRcJuCBX.FVR8XGBZwpZb80LBaDjxWiPPeqK');
 
 INSERT INTO projects (`name`, start_date, `description`, `status`, user_id) VALUES ('1 Project Manager', '2021-11-12', 'A fullstack app that tracks your projects.', 'New idea', 1);
 INSERT INTO projects (`name`, start_date, end_date, `length`, `description`, `status`, user_id) VALUES ('Hacker app', CURRENT_DATE(), '2022-12-12', DATEDIFF(end_date, start_date), 'An app that hacks anyone automaticaly', 'Completed', 1);
