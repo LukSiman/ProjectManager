@@ -8,4 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     boolean existsUserByUsername(String username);
+
+    User findByUsername(String username);
 }
