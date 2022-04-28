@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +9,12 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authentication: AuthenticationService) { }
+
+  authenticationStatus: boolean;
 
   ngOnInit(): void {
+    this.authenticationStatus = this.authentication.isUserLoggedIn();
   }
 
   // navigate to initiate searching for projects

@@ -5,7 +5,7 @@
 
     <form [formGroup]="loginForm" id="loginForm" class="container d-grid gap-3" (ngSubmit)="checkForm()">
         <div>
-            <input formControlName="username" type="text" class="form-control" placeholder="Username">
+            <input formControlName="username" type="text" class="form-control" placeholder="Username" autocomplete="on">
             <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger mt-1">
                 <div *ngIf="username?.errors?.required">
                     Username is required
@@ -14,7 +14,7 @@
         </div>
 
         <div>
-            <input formControlName="password" type="text" class="form-control" placeholder="Password">
+            <input formControlName="password" type="password" class="form-control" placeholder="Password" autocomplete="on">
             <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="alert alert-danger mt-1">
                 <div *ngIf="password?.errors?.required">
                     Password is required

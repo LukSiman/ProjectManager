@@ -42,7 +42,6 @@ export class RegisterComponent implements OnInit {
 
   private registerNewUser() {
     const newUser: User = {
-      userID: 0,
       username: this.username?.value,
       password: this.password?.value
     };

@@ -80,7 +80,7 @@ export class ProjectListComponent implements OnInit {
     const filterUrl: string = this.filterMap.get(filterValue)!;
 
     // send page number, size and sorting url to service for it to get data from the backend
-    this.projectService.getProjectListSortFilterPaginate(this.thePageNumber - 1, this.thePageSize, sortUrl, filterUrl)
+    this.projectService.getProjectListSortFilterPaginateUser(this.thePageNumber - 1, this.thePageSize, sortUrl, filterUrl)
       .subscribe(response => {
         this.processResult(response);
         this.populateImages();
@@ -110,13 +110,14 @@ export class ProjectListComponent implements OnInit {
     // checks the filter map to see which filtering method to use
     const filterUrl: string = this.filterMap.get(filterValue)!;
 
-    this.projectService.searchProjectListSortFilterPaginate(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl, filterUrl)
+    this.projectService.searchProjectListSortFilterPaginateUser(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl, filterUrl)
       .subscribe(response => {
         this.processResult(response);
         this.populateImages();
       });
   }
 
+  //TODO: Improve with projection
   // add images to the projects
   private populateImages(): void {
     this.projects.forEach(project => {

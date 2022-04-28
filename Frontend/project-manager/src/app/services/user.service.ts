@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,14 +10,19 @@ import { User } from '../entities/user';
 })
 export class UserService {
 
-  private usersUrl = environment.springUrl + "/users";
+  private baseUrl = environment.springUrl;
 
   constructor(private httpClient: HttpClient) { }
 
   addNewUser(newUser: User): Observable<User> {
-    const newUserUrl = `${this.usersUrl}/signup`;
+    const newUserUrl = `${this.baseUrl}/register`;
     return this.httpClient.post<getUser>(newUserUrl, newUser).pipe(catchError(this.handleError));
   }
+
+  // checkUser(userDetails: User): Observable<User> {
+  //   const userUrl = `${this.usersUrl}/signin`;
+  //   return this.httpClient.post<getUser>(userUrl, userDetails).pipe(catchError(this.handleError));
+  // }
 
   // Handles errors
   private handleError(error: HttpErrorResponse) {
@@ -37,7 +42,6 @@ export class UserService {
 }
 
 interface getUser {
-  userID: number,
   username: string,
   password: string
 }
