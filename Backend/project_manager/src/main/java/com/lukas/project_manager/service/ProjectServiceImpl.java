@@ -1,9 +1,11 @@
 package com.lukas.project_manager.service;
 
 import com.lukas.project_manager.dao.ProjectRepository;
+import com.lukas.project_manager.dao.UserRepository;
 import com.lukas.project_manager.entities.Project;
 import com.lukas.project_manager.entities.ProjectImages;
 import com.lukas.project_manager.entities.ProjectTasks;
+import com.lukas.project_manager.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,15 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    private final UserRepository userRepository;
+
+    private final FileServiceImpl fileService;
+
+    @Autowired
+    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, FileServiceImpl fileService) {
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
+        this.fileService = fileService;
     }
 
     @Override
@@ -44,6 +53,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public Project saveProject(Project project) {
         // calculate difference between dates for the length
+
+        handleUser(project);
+
         if (project.getEndDate() != null) {
             long dayDifference = calculateLength(project.getStartDate(), project.getEndDate());
             project.setLength(dayDifference);
@@ -121,6 +133,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public String deleteProject(int id) {
         String projectName = projectRepository.getById(id).getName();
+
+        // deletes images
+        List<ProjectImages> images = projectRepository.getById(id).getImages();
+        fileService.delete(images);
+
         projectRepository.deleteById(id);
         return projectName + " has been deleted";
     }
@@ -187,9 +204,10 @@ public class ProjectServiceImpl implements ProjectService {
             });
         }
 
-        // remove the images from the project in DB
+        // remove the images from the project in DB and the image file
         if (removedImages.size() > 0) {
             removedImages.forEach(removedImage -> projectToUpdate.getImages().remove(removedImage));
+            fileService.delete(removedImages);
         }
     }
 
@@ -198,5 +216,12 @@ public class ProjectServiceImpl implements ProjectService {
         List<ProjectImages> images = new ArrayList<>(project.getImages());
 
         images.forEach(image -> image.setProject(project));
+    }
+
+    // handle user of the project
+    private void handleUser(Project project) {
+        User user = userRepository.findByUsername(project.getUser().getUsername());
+        user.getProjects().add(project);
+        project.setUser(user);
     }
 }
