@@ -108,7 +108,8 @@ export class AddProjectComponent implements OnInit {
       length: 0,
       status: this.status?.value,
       tasks: this.tasks?.value,
-      images: this.images?.value
+      images: this.images?.value,
+      userUsername: sessionStorage.getItem('username')!
     };
 
     // call service to add the project
@@ -144,6 +145,9 @@ export class AddProjectComponent implements OnInit {
 
     // resets tasks FormArray
     this.tasks.clear();
+
+    // resets images FormArray
+    this.images.clear();
 
     // resets the file upload field
     this.fileUpload?.reset();

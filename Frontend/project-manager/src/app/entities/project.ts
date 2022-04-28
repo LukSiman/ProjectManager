@@ -11,4 +11,5 @@ export class Project {
     status: string;
     images: ProjectImages[] = [];
     tasks: ProjectTasks[] = [];
+    userUsername: string;
 }

@@ -12,9 +12,9 @@ import { User } from '../entities/user';
 export class ProjectService {
   private baseUrl = environment.springUrl + "/projects";
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  // httpOptions = {
+  //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  // };
 
   constructor(private httpClient: HttpClient) { }
 
@@ -35,16 +35,30 @@ export class ProjectService {
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
+  
+  // Receives JSON objects and maps them to Project array with pagination, sorting and filtering
+  getProjectListSortFilterPaginateUser(thePage: number, thePageSize: number, sortType: string, filterType: string): Observable<getJSONProjects> {
+    const searchUrl = `${this.baseUrl}/search/findByStatusContainingAndUserUsername` + `?status=${filterType}&user=${sessionStorage.getItem('username')}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<getJSONProjects>(searchUrl);
+  }
+
   // Searches for projects by name with pagination, sorting and filtering
   searchProjectListSortFilterPaginate(thePage: number, thePageSize: number, keyword: string, sortType: string, filterType: string): Observable<getJSONProjects> {
     const searchUrl = `${this.baseUrl}/search/findByNameContainingAndStatusContaining` + `?name=${keyword}&status=${filterType}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<getJSONProjects>(searchUrl);
   }
 
+    // Searches for projects by name with pagination, sorting and filtering
+    searchProjectListSortFilterPaginateUser(thePage: number, thePageSize: number, keyword: string, sortType: string, filterType: string): Observable<getJSONProjects> {
+      const searchUrl = `${this.baseUrl}/search/findByNameContainingAndStatusContainingAndUserUsername` + `?name=${keyword}&status=${filterType}&user=${sessionStorage.getItem('username')}&sort=${sortType}&page=${thePage}&size=${thePageSize}`;
+      return this.httpClient.get<getJSONProjects>(searchUrl);
+    }
+
   // add a new project
   addProject(project: Project): Observable<Project> {
     const postUrl = `${this.baseUrl}/save`;
-    return this.httpClient.post<getProject>(postUrl, project, this.httpOptions);
+    console.log(project);
+    return this.httpClient.post<getProject>(postUrl, project);
   }
 
   // delete the project from DB
@@ -112,5 +126,6 @@ interface getProject {
   description: string,
   status: string,
   images: [],
-  tasks: []
+  tasks: [],
+  userUsername: string
 }
