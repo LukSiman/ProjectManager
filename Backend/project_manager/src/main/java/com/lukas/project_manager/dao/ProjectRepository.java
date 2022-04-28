@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@RepositoryRestResource
+@RepositoryRestResource(excerptProjection = InlineUser.class)
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     Page<Project> findBy(Pageable pageable);
@@ -17,4 +17,10 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     Page<Project> findByStatusContaining(@Param("status") String status, Pageable pageable);
 
     Page<Project> findByNameContainingAndStatusContaining(@Param("name") String name, @Param("status") String status, Pageable pageable);
+
+    Page<Project> findByUserUsername(@Param("user") String user, Pageable pageable);
+
+    Page<Project> findByStatusContainingAndUserUsername(@Param("status") String status, @Param("user") String user, Pageable pageable);
+
+    Page<Project> findByNameContainingAndStatusContainingAndUserUsername(@Param("name") String name, @Param("status") String status, @Param("user") String user, Pageable pageable);
 }
