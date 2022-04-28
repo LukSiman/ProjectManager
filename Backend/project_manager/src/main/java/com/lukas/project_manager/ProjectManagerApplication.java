@@ -16,5 +16,4 @@ public class ProjectManagerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectManagerApplication.class, args);
 	}
-
 }
