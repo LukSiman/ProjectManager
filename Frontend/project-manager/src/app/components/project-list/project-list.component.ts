@@ -83,7 +83,6 @@ export class ProjectListComponent implements OnInit {
     this.projectService.getProjectListSortFilterPaginateUser(this.thePageNumber - 1, this.thePageSize, sortUrl, filterUrl)
       .subscribe(response => {
         this.processResult(response);
-        this.populateImages();
       });
   }
 
@@ -113,18 +112,7 @@ export class ProjectListComponent implements OnInit {
     this.projectService.searchProjectListSortFilterPaginateUser(this.thePageNumber - 1, this.thePageSize, keyword, sortUrl, filterUrl)
       .subscribe(response => {
         this.processResult(response);
-        this.populateImages();
       });
-  }
-
-  //TODO: Improve with projection
-  // add images to the projects
-  private populateImages(): void {
-    this.projects.forEach(project => {
-      this.projectService.getSingleProject(project.id).subscribe(response => {
-        project.images = response.images;
-      });
-    });
   }
 
   // processes the results from server

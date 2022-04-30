@@ -27,18 +27,18 @@
             </div>
 
             <div class="card-body">
-               <p class="card-title text-center card-name"> {{ tempProject.name }} </p>
+               <p class="card-title text-center card-name"> {{tempProject.name}} </p>
                <p class="card-text description-text line-clamp"> {{ tempProject.description }}</p>
             </div>
 
             <div class="card-footer h-100 text-muted">
-               <p class="mb-1"> {{ tempProject.startDate | date }} - {{ tempProject.endDate | date }} </p>
-               <div *ngIf="tempProject.length > 1; else elseBlock">Total length: {{ tempProject.length }} days</div>
+               <p class="mb-1"> {{tempProject.startDate | date}} - {{tempProject.endDate | date}} </p>
+               <div *ngIf="tempProject.length > 1; else elseBlock">Total length: {{tempProject.length}} days</div>
                <ng-template #elseBlock>
-                  <div *ngIf="tempProject.length > 0; else zeroBlock">Total length: {{ tempProject.length }} day</div>
+                  <div *ngIf="tempProject.length > 0; else zeroBlock">Total length: {{tempProject.length}} day</div>
                   <ng-template #zeroBlock>Not finished</ng-template>
                </ng-template>
-               <p class="mt-1 fw-bold">Status: {{ tempProject.status }} </p>
+               <p class="mt-1 fw-bold">Status: {{tempProject.status}} </p>
             </div>
 
             <div class="position-absolute top-50 start-50 translate-middle d-none" id="blurBackground">

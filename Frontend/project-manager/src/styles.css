@@ -93,6 +93,9 @@ CLASS SELECTORS
 }
 
 .card-img-top {
+  width: 100%;
+  height: 15vw;
+  min-height: 10em;
   max-height: 14em;
 }
 
