@@ -161,7 +161,8 @@ export class EditProjectComponent implements OnInit {
         await this.updateProject()
 
       } catch (error: any) {
-        this.errorMessage = error.responseMessage;
+        console.log(error);
+        this.errorMessage = error;
         return;
       }
     } else {

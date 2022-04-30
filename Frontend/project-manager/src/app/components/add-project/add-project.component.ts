@@ -79,7 +79,7 @@ export class AddProjectComponent implements OnInit {
         await this.addNewProject();
 
       } catch (error: any) {
-        this.errorMessage = error.responseMessage;
+        this.errorMessage = error;
         return;
       }
     } else {

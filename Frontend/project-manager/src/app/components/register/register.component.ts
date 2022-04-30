@@ -49,12 +49,12 @@ export class RegisterComponent implements OnInit {
     // call service to add new user
     return this.userService.addNewUser(newUser).subscribe(() => {
       this.errorMessage = '';
-      this.successMessage = 'User was successfully registered';
+      this.successMessage = 'Success! Redirecting to login page...';
       setTimeout(() => {
         this.router.navigateByUrl('/login');
       }, 3000);
     }, (error) => {
-      this.errorMessage = error.responseMessage;
+      this.errorMessage = error;
     });
   }
 }

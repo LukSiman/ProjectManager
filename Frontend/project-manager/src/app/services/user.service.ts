@@ -19,11 +19,6 @@ export class UserService {
     return this.httpClient.post<getUser>(newUserUrl, newUser).pipe(catchError(this.handleError));
   }
 
-  // checkUser(userDetails: User): Observable<User> {
-  //   const userUrl = `${this.usersUrl}/signin`;
-  //   return this.httpClient.post<getUser>(userUrl, userDetails).pipe(catchError(this.handleError));
-  // }
-
   // Handles errors
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

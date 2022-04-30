@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
   invalidLogin = false //TODO: DELETE LATER
+  errorMessage: string;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authentication: AuthenticationService) { }
 
@@ -42,7 +43,7 @@ export class LoginPageComponent implements OnInit {
       this.router.navigateByUrl('');
       this.invalidLogin = false;
     }, error => {
-      console.log(error);
+      this.errorMessage = error;
       this.invalidLogin = true;
     });
   }
