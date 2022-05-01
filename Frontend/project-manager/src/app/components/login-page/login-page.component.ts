@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/entities/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login-page',
@@ -12,12 +10,16 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
-  invalidLogin = false //TODO: DELETE LATER
   errorMessage: string;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authentication: AuthenticationService) { }
 
   ngOnInit(): void {
+    // navigate to main screen if already logged in
+    if(this.authentication.isUserLoggedIn()){
+      this.router.navigateByUrl('');
+    }
+
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -38,13 +40,12 @@ export class LoginPageComponent implements OnInit {
     this.login();
   }
 
+  // calls authentication service for authentication
   private login(): void {
-    this.authentication.authenticate(this.username?.value, this.password?.value).subscribe(data => {
+    this.authentication.authenticate(this.username?.value, this.password?.value).subscribe(() => {
       this.router.navigateByUrl('');
-      this.invalidLogin = false;
-    }, error => {
+    }, (error: string) => {
       this.errorMessage = error;
-      this.invalidLogin = true;
     });
   }
 }

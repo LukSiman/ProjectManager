@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/entities/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
@@ -15,9 +16,14 @@ export class RegisterComponent implements OnInit {
   errorMessage: string;
   successMessage: string;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router, private authentication: AuthenticationService) { }
 
   ngOnInit(): void {
+    // navigate to main screen if already logged in
+    if(this.authentication.isUserLoggedIn()){
+      this.router.navigateByUrl('');
+    }
+
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]],

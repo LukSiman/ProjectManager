@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
@@ -9,12 +9,13 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthenticationService {
 
-  private baseUrl = environment.springUrl;
+  private baseUrl: string = environment.springUrl;
   authenticated: boolean = false;
 
   constructor(private httpClient: HttpClient) { }
 
-  authenticate(username: string, password: string) {
+  // authenticates the user by getting the jwt token
+  authenticate(username: string, password: string): any {
     const authUrl = `${this.baseUrl}/authenticate`;
     return this.httpClient.post<any>(authUrl, { username, password }).pipe(
       map(
@@ -28,17 +29,19 @@ export class AuthenticationService {
     );
   }
 
-  isUserLoggedIn() {
+  // return status if user is logged in
+  isUserLoggedIn(): boolean {
     let user = sessionStorage.getItem('username')
     return !(user === null)
   }
 
-  logOut() {
+  // logs out the user
+  logOut(): void {
     sessionStorage.removeItem('username')
   }
 
   // Handles errors
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);

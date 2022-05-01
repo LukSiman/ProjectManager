@@ -125,7 +125,7 @@ export class ProjectListComponent implements OnInit {
 
   // navigates to component for adding new projects
   addNewProjectNavigation(): void {
-    this.router.navigateByUrl('/newProject');
+    this.router.navigateByUrl('/new');
   }
 
   // click eventListener to blur the cards and show buttons

@@ -25,11 +25,11 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 const routes: Routes = [
-  { path: 'logout', component: LogoutComponent, canActivate:[AuthGuardService] }, //TODO: fix later
-  { path: 'register', component: RegisterComponent }, //TODO: fix later 
-  { path: 'login', component: LoginPageComponent }, //TODO: change to default
+  { path: 'logout', component: LogoutComponent, canActivate:[AuthGuardService] },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginPageComponent },
   { path: 'edit/:id', component: EditProjectComponent, canActivate:[AuthGuardService] },
-  { path: 'newProject', component: AddProjectComponent, canActivate:[AuthGuardService] },
+  { path: 'new', component: AddProjectComponent, canActivate:[AuthGuardService] },
   { path: 'projects/:sort/:filter', component: ProjectListComponent, canActivate:[AuthGuardService] },
   { path: 'projects/:sort', redirectTo: '/projects/na/al', pathMatch: 'full'},
   { path: 'search/:keyword/:sort/:filter', component: ProjectListComponent, canActivate:[AuthGuardService] },

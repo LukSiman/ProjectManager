@@ -1,7 +1,6 @@
-<nav class="navbar navbar-light bg-light mt-2 mb-3 my-sm-3">
-  <div class="container-fluid">
-
-    <div class="d-flex align-items-center">      
+<nav *ngIf="authenticationStatus" class="navbar navbar-light bg-light mt-2 mb-3 my-sm-3">
+  <div class="container-fluid d-flex justify-content-between">
+    <div class="d-flex align-items-center">
       <a routerLink="/projects" class="mx-1">
         <img src="assets/images/logo.png" alt="logo" class="img-responsive" width="60" (click)="refresh()">
       </a>
@@ -10,12 +9,23 @@
       </a>
     </div>
 
-    <form class="d-flex col-12 col-sm-7 col-lg-5">
+    <form class="d-flex col-12 col-md col-lg-7 mt-2 mt-md-0 order-last">
       <input #searchInput class="form-control me-md-3 me-sm-2" type="search" placeholder="Search for projects..."
         (keyup.enter)="searchProject(searchInput.value)">
-      <button class="btn btn-secondary me-1" (click)="searchProject(searchInput.value)">Search</button>
+      <button class="btn btn-secondary me-md-2" (click)="searchProject(searchInput.value)">Search</button>
     </form>
-    <p></p>
-    <button *ngIf="authenticationStatus" class="btn btn-secondary" routerLink="/logout">Log out</button>
+
+    <div class="order-md-last">
+      <div ngbDropdown class="d-inline-block">
+        <button type="button" class="btn btn-secondary" ngbDropdownToggle id="userButton">
+          <fa-icon [icon]="userIcon"></fa-icon>
+        </button>
+        <div ngbDropdownMenu class="dropdown-menu-end">
+          <button ngbDropdownItem>{{username}}</button>
+          <div class="dropdown-divider"></div>
+          <button ngbDropdownItem routerLink="/logout">Log out</button>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
