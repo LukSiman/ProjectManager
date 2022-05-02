@@ -57,7 +57,6 @@ export class ProjectService {
   // add a new project
   addProject(project: Project): Observable<Project> {
     const postUrl = `${this.baseUrl}/save`;
-    console.log(project);
     return this.httpClient.post<getProject>(postUrl, project);
   }
 

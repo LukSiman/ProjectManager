@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <div formArrayName="images" class="mb-3">
+        <div formArrayName="images" class="mb-3" *ngIf="images.length > 0">
             <label for="projectImages" class="form-label">Project images:</label>
             <div class="row mt-1">
                 <div class=form-group *ngFor="let tempImage of images.controls, index as i"
