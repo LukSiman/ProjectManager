@@ -116,6 +116,8 @@ export class AddProjectComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.projectService.addProject(newProject).subscribe(response => {
         resolve(response);
+        // shows a message that the project has been saved
+        this.savedMessage();
       }, (error) => {
         reject(error);
       });
@@ -221,5 +223,20 @@ export class AddProjectComponent implements OnInit {
   // allows dragging the tasks
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.tasks.controls, event.previousIndex, event.currentIndex);
+  }
+
+  // shows a message and fades out
+  private savedMessage(): void {
+    let updateConfirmation = document.getElementById('projectSaved');
+    updateConfirmation?.classList.toggle('d-none');
+
+    setTimeout(() => {
+      updateConfirmation?.classList.toggle('fade-out');
+    }, 2000);
+
+    setTimeout(() => {
+      updateConfirmation?.classList.add('d-none');
+      updateConfirmation?.classList.remove('fade-out');
+    }, 3000);
   }
 }

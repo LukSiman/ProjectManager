@@ -128,6 +128,13 @@ export class ProjectListComponent implements OnInit {
     this.router.navigateByUrl('/new');
   }
 
+  // navigates to component for editing projects and saved the id
+  editProjectNavigation(id: number): void {
+    const editID: string = <string><unknown>id;
+    sessionStorage.setItem('editID', editID);
+    this.router.navigateByUrl('/edit');
+  }
+
   // click eventListener to blur the cards and show buttons
   @HostListener('click', ['$event.target'])
   onClick(currentElement: HTMLElement): void {

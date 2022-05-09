@@ -1,0 +1,13 @@
+[Unit]
+Description=Project Manager Backend Spring Boot
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/bin/java -jar /artifact/project_manager-0.0.1-SNAPSHOT.jar
+
+[Install]
+WantedBy=multi-user.target

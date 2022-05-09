@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  springUrl: "https://lukassimanavicius.net:8443/api"
 };

@@ -4,18 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Project } from '../entities/project';
-import { User } from '../entities/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   private baseUrl = environment.springUrl + "/projects";
-
-  // httpOptions = {
-  //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  // };
-
+  
   constructor(private httpClient: HttpClient) { }
 
   // Receives JSON objects and maps them to Project array

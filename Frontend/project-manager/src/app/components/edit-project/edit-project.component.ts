@@ -33,6 +33,10 @@ export class EditProjectComponent implements OnInit {
   constructor(private projectService: ProjectService, private route: ActivatedRoute, private formBuilder: FormBuilder, private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    if(!sessionStorage.getItem('editID')){
+      return;
+    }
+
     this.projectFormGroup = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50), CustomValidators.notOnlyWhitespace]],
       description: [''],
@@ -56,7 +60,7 @@ export class EditProjectComponent implements OnInit {
 
   // Receives the project by id
   private initializeProject(): Promise<Object> {
-    const id: number = <number><unknown>this.route.snapshot.paramMap.get('id')!;
+    const id: number = <number><unknown>sessionStorage.getItem('editID');
 
     return new Promise((resolve, reject) => {
       this.projectService.getSingleProject(id).subscribe(response => {

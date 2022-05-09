@@ -38,6 +38,7 @@ export class AuthenticationService {
   // logs out the user
   logOut(): void {
     sessionStorage.removeItem('username')
+    sessionStorage.removeItem('editID')
   }
 
   // Handles errors
@@ -53,6 +54,7 @@ export class AuthenticationService {
       console.error(`Backend returned code ${error.status}, body was: `, error.error);
     }
     // Return an observable with a user-facing error message.
+    // return throwError(error.error);
     return throwError('Something bad happened; please try again later.');
   }
 }

@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent, canActivate:[AuthGuardService] },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginPageComponent },
-  { path: 'edit/:id', component: EditProjectComponent, canActivate:[AuthGuardService] },
+  { path: 'edit', component: EditProjectComponent, canActivate:[AuthGuardService] },
   { path: 'new', component: AddProjectComponent, canActivate:[AuthGuardService] },
   { path: 'projects/:sort/:filter', component: ProjectListComponent, canActivate:[AuthGuardService] },
   { path: 'projects/:sort', redirectTo: '/projects/na/al', pathMatch: 'full'},
