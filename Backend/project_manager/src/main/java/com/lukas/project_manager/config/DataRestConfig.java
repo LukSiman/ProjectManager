@@ -17,6 +17,7 @@ public class DataRestConfig implements RepositoryRestConfigurer {
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         // configure cors mapping
         cors.addMapping(config.getBasePath() + "/**").allowedOrigins(theAllowedOrigins);
+//        cors.addMapping(config.getBasePath() + "/**").allowedOrigins("http://localhost:4200", "https://lukassimanavicius.net");
 
         // expose ids
         config.exposeIdsFor(Project.class);
